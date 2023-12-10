@@ -4,3 +4,7 @@ language = "en"
 multilingual = false
 src = "src"
 title = "Zig cookbook"
+
+[output.html]
+git-repository-url = "https://github.com/zigcc/zig-cookbook"
+edit-url-template = "https://github.com/zigcc/zig-cookbook/edit/main/{path}"

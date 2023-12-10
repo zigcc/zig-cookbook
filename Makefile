@@ -4,3 +4,6 @@ lint:
 
 run-all:
 	cd examples && zig build run-all --summary all
+
+serve:
+	mdbook serve
