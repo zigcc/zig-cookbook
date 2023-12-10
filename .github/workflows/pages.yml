@@ -1,0 +1,49 @@
+name: Pages
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.md"
+      - ".github/workflows/**"
+  pull_request:
+    paths:
+      - "**.md"
+      - ".github/workflows/**"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup mdBook
+        uses: peaceiris/actions-mdbook@v1
+        with:
+          mdbook-version: '0.4.10'
+          # mdbook-version: 'latest'
+      - run: mdbook build
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/main' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./book
+
+  lint:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "14"
+      - name: Prettier check
+        run: |
+          # if you encounter error, rerun the command below and commit the changes
+          make lint
+          git diff --exit-code
