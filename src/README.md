@@ -9,11 +9,11 @@
 
 Each recipe is accompanied by an illustrative example named after its corresponding sequence number. These examples can be executed using the command `zig build run-{chapter-num}-{sequence-num}`, or `zig build run-all` to execute all.
 
-> Currently 0.11.0 is required to run those examples.
+> Currently Zig 0.11.0 is required to run those examples.
 
 # Contributing
 
-Anyone is welcome to contribute, and this project use [prettier](https://prettier.io/) to format markdown files, make sure to execute `make lint` before open new PR.
+Anyone is welcome to contribute. This project use [prettier](https://prettier.io/) to format markdown files, make sure to execute `make lint` before open PR.
 
 # Acknowledgment
 
