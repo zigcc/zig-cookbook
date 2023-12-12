@@ -3,9 +3,9 @@ const fs = std.fs;
 const print = std.debug.print;
 
 pub fn main() !void {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
 
     const file = try fs.cwd().openFile("build.zig", .{});
     defer file.close();
@@ -13,6 +13,8 @@ pub fn main() !void {
     const rdr = file.reader();
     var line_no: usize = 0;
     while (try rdr.readUntilDelimiterOrEofAlloc(allocator, '\n', 4096)) |line| {
+        defer allocator.free(line);
+
         line_no += 1;
         print("{d}--{s}\n", .{ line_no, line });
     }
