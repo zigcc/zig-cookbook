@@ -27,7 +27,7 @@ fn sha256_digest(reader: fs.File.Reader) ![32]u8 {
 
 pub fn main() !void {
     const path = "file.txt";
-    const file = try fs.cwd().openFile(path, .{.mode=.write_only});
+    const file = try fs.cwd().createFile(path, .{});
     errdefer file.close();
 
     try file.writeAll("We will generate a digest of this text");
