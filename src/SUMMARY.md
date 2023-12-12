@@ -5,4 +5,4 @@
   - [Mmap file](./01-02-mmap-file.md)
 
 - [Cryptography]()
-  - [Calculate the SHA-256 digest of a file](./02-01-sha-digest.md)
+  - [Calculate SHA-256 digest of a file](./02-01-sha-digest.md)
