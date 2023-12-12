@@ -13,7 +13,7 @@ Each recipe is accompanied by an illustrative example named after its correspond
 
 # Contributing
 
-Anyone is welcome to contribute. This project use [prettier](https://prettier.io/) to format markdown files, make sure to execute `make lint` before open PR.
+This cookbook is a work in progress, and we welcome contributions from the community. If you have a favorite recipe that you'd like to share, please submit a pull request.
 
 # Acknowledgment
 
