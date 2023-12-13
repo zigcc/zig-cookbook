@@ -8,4 +8,4 @@
   - [Calculate SHA-256 digest of a file](./02-01-sha-digest.md)
 
 - [Date and Time]()
-  - [Measure the elapsed time between two code sections](./03-01-duration.md)
+  - [Measure the elapsed time between two code sections](./03-01-elapsed-time.md)

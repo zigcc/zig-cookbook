@@ -4,15 +4,17 @@ const Instant = time.Instant;
 const print = std.debug.print;
 
 fn expensive_function() void {
-    time.sleep(time.ns_per_s);
+    // sleep 500ms
+    time.sleep(time.ns_per_ms * 500);
 }
 
 pub fn main() !void {
     const start = try Instant.now();
     expensive_function();
     const now = try Instant.now();
-    const duration = now.since(start);
-    const duration_s = @as(f64, @floatFromInt(duration));
+    const elapsed_ns: f64 = @floatFromInt(now.since(start));
 
-    print("Time elapsed in expensive_function() is: {d:.3}s", .{duration_s / time.ns_per_s});
+    print("Time elapsed in expensive_function() is: {d:.3}ms", .{
+        elapsed_ns / time.ns_per_s,
+    });
 }
