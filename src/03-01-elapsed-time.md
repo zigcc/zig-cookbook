@@ -1,6 +1,6 @@
 ### Measure the elapsed time between two code sections
 
-Measures [`std.time.Instant.since`] since [`std.time.Instant.now`].
+[`Instant`] represents a timestamp with respect to the currently executing program that ticks during suspend and can be used to record elapsed time.
 
 Calling [`std.time.Instant.since`] returns a u64 representing nanoseconds elapsed.
 
@@ -27,8 +27,5 @@ pub fn main() !void {
 }
 ```
 
-[`std.time.ns_per_s`]: https://ziglang.org/documentation/master/std/#A;std:time.ns_per_s
+[`Instant`]: https://ziglang.org/documentation/master/std/#A;std:time.Instant
 [`std.time.Instant.since`]: https://ziglang.org/documentation/master/std/#A;std:time.Instant.since
-[`std.time.Instant.now`]: https://ziglang.org/documentation/master/std/#A;std:time.Instant.now
-[`std.time.Instant`]:https://ziglang.org/documentation/master/std/#A;std:time.Instant
- Measure the elapsed time
