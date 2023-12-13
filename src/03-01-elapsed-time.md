@@ -22,7 +22,7 @@ pub fn main() !void {
     const elapsed_ns: f64 = @floatFromInt(now.since(start));
 
     print("Time elapsed in expensive_function() is: {d:.3}ms", .{
-        elapsed_ns / time.ns_per_s,
+        elapsed_ns / time.ns_per_ms,
     });
 }
 ```
