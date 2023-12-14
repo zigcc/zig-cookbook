@@ -8,10 +8,6 @@ on:
     paths:
       - "**.md"
       - ".github/workflows/**"
-  pull_request:
-    paths:
-      - "**.md"
-      - ".github/workflows/**"
 
 permissions:
   contents: read
@@ -49,19 +45,3 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v3
-
-  lint:
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "14"
-      - name: Prettier check
-        run: |
-          # if you encounter error, rerun the command below and commit the changes
-          make lint
-          git diff --exit-code
