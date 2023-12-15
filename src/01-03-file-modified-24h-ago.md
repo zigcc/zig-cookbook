@@ -1,6 +1,12 @@
-# File names that have been modified in the last 24 hours
+# Find files that have been modified in the last 24 hours
+
+Gets the current working directory by calling `fs.cwd()`, and then iterate files using `walk()`, which will recursively iterates over a directory.
+
+For each entries, we check if it's a file, and use `statFile()` to retrieve file's metadata.
 
 ```zig
+//! Find files that have been modified in the last 24 hours
+
 const std = @import("std");
 const fs = std.fs;
 const print = std.debug.print;
@@ -24,15 +30,13 @@ pub fn main() !void {
             continue;
         }
 
-        const file = try iter_dir.dir.openFile(entry.path, .{});
-        const md = try file.metadata();
-        const last_modified = md.modified();
+        const stat = try iter_dir.dir.statFile(entry.path);
+        const last_modified = stat.mtime;
         const duration = now - last_modified;
         if (duration < std.time.ns_per_hour * 24) {
-            print("Last modified: {d} seconds ago, read_only:{any}, size:{d} bytes, filename: {s}\n", .{
+            print("Last modified: {d} seconds ago, size: {d} bytes, filename: {s}\n", .{
                 @divTrunc(duration, std.time.ns_per_s),
-                md.permissions().readOnly(),
-                md.size(),
+                stat.size,
                 entry.path,
             });
         }
