@@ -19,3 +19,6 @@
 - [Web Programming]()
   - [Clients]()
     - [Making Requests](./05-01-get.md)
+
+- [Algorithms]()
+  - [Generate Random Values](./06-01-rand.md)
