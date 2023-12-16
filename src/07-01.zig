@@ -10,7 +10,6 @@ pub fn main() !void {
 fn findMax(max_value: *i32, values: []i32) !void {
     const THRESHOLD: usize = 2;
 
-    if (values.len == 0) unreachable;
 
     if (values.len <= THRESHOLD) {
         var res = values[0];
