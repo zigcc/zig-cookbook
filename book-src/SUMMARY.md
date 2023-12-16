@@ -24,3 +24,6 @@
 
 - [Concurrency]()
   - [Explicit Threads](./07-01-spawn.md)
+
+- [Hardware Support]()
+  - [Processor](./08-01-cpu-count.md)
