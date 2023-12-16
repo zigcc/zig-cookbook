@@ -38,5 +38,5 @@ pub fn main() !void {
     std.mem.copyForwards(u8, ptr, "hello zig cookbook");
 
     // Read file via mmap
-    print("File body: {s}", .{ptr});
+    print("File body: {s}\n", .{ptr});
 }

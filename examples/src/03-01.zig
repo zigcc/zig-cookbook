@@ -14,7 +14,7 @@ pub fn main() !void {
     const now = try Instant.now();
     const elapsed_ns: f64 = @floatFromInt(now.since(start));
 
-    print("Time elapsed in expensive_function() is: {d:.3}ms", .{
+    print("Time elapsed in expensive_function() is: {d:.3}ms\n", .{
         elapsed_ns / time.ns_per_ms,
     });
 }

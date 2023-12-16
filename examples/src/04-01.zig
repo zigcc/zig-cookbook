@@ -1,6 +1,8 @@
 //! Start a TCP server at an unused port.
 //!
+//! Test with
 //! echo "hello zig" | nc localhost <port>
+
 const std = @import("std");
 const net = std.net;
 const print = std.debug.print;

@@ -30,6 +30,11 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     "Run example {s}",
                     .{name},
                 )).dependOn(run_step);
+
+                // 04-01 start tcp server, and won't stop so we skip it here
+                if (std.mem.eql(u8, "04-01", name)) {
+                    continue;
+                }
                 run_all.dependOn(run_step);
             },
             else => {},

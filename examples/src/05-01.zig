@@ -13,7 +13,7 @@ pub fn main() !void {
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
-    const uri = try std.Uri.parse("https://ziglang.org/download/index.json");
+    const uri = try std.Uri.parse("http://httpbin.org/headers");
     var req = try client.request(.GET, uri, headers, .{});
     defer req.deinit();
 
