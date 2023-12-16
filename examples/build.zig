@@ -16,7 +16,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
-                print("Add example {s}...", .{name});
+                // print("Add example {s}...\n", .{name});
 
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
@@ -30,6 +30,11 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     "Run example {s}",
                     .{name},
                 )).dependOn(run_step);
+
+                // 04-01 start tcp server, and won't stop so we skip it here
+                if (std.mem.eql(u8, "04-01", name)) {
+                    continue;
+                }
                 run_all.dependOn(run_step);
             },
             else => {},

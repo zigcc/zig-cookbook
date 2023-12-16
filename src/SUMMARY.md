@@ -12,3 +12,12 @@
 
 - [Date and Time]()
   - [Measure the elapsed time between two code sections](./03-01-elapsed-time.md)
+
+- [Network]()
+  - [Listen on unused port TCP/IP](./04-01-tcp-server.md)
+
+- [Web Programming]()
+  - [Making Requests](./05-01-http-client.md)
+
+- [Algorithms]()
+  - [Generate Random Values](./06-01-rand.md)

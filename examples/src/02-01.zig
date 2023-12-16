@@ -26,5 +26,5 @@ pub fn main() !void {
     defer file.close();
 
     const digest = try sha256_digest(allocator, file);
-    print("SHA-256 digest is {s}", .{std.fmt.fmtSliceHexLower(&digest)});
+    print("SHA-256 digest is {s}\n", .{std.fmt.fmtSliceHexLower(&digest)});
 }
