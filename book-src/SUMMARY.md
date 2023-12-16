@@ -17,7 +17,7 @@
   - [Listen on unused port TCP/IP](./04-01-tcp-server.md)
 
 - [Web Programming]()
-  - [Making Requests](./05-01-http-client.md)
+  - [Make HTTP requests](./05-01-http-requests.md)
 
 - [Algorithms]()
   - [Generate Random Values](./06-01-rand.md)

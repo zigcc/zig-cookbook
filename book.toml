@@ -2,7 +2,7 @@
 authors = ["ZigCC"]
 language = "en"
 multilingual = false
-src = "src"
+src = "book-src"
 title = "Zig cookbook"
 
 [output.html]
