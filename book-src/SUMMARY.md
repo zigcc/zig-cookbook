@@ -21,3 +21,6 @@
 
 - [Algorithms]()
   - [Generate Random Values](./06-01-rand.md)
+
+- [Concurrency]()
+  - [Explicit Threads](./07-01-spawn.md)
