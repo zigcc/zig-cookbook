@@ -1,9 +1,7 @@
-## Make a HTTP GET request
+## GET
 
 Parses the supplied URL and makes a synchronous HTTP GET request
 with [`request`]. Prints obtained [`Response`] status and headers.
-Reads HTTP response body into an allocated [`buf`] using [`read`].
-
 
 ```zig
 const std = @import("std");
@@ -39,5 +37,4 @@ pub fn main() !void {
 ```
 
 [`request`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L992
-[`read`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L236
 [`Response`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L322

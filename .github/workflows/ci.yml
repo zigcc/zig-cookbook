@@ -28,14 +28,12 @@ jobs:
           version: 0.11.0
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
-        working-directory: examples
         run: |
           zig fmt --check src/
           zig build run-all --summary all
 
       - name: Run examples(Windows)
         if: matrix.os == 'windows-latest'
-        working-directory: examples
         run: |
           zig.exe fmt --check src/
           zig.exe build run-all --summary all
