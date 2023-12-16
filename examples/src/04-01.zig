@@ -1,8 +1,15 @@
+//! Start a TCP server at an unused port.
+//!
+//! echo "hello zig" | nc localhost <port>
 const std = @import("std");
 const net = std.net;
 const print = std.debug.print;
 
 pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
+
     const loopback = try net.Ip4Address.parse("127.0.0.1", 0);
     const localhost = net.Address{ .in = loopback };
     var server = net.StreamServer.init(net.StreamServer.Options{
@@ -20,7 +27,8 @@ pub fn main() !void {
 
     print("Connection received! {} is sending data.\n", .{client.address});
 
-    var buf: [16]u8 = undefined;
-    const n = try client.stream.reader().read(&buf);
-    print("{} says {s}\n", .{ client.address, buf[0..n] });
+    const message = try client.stream.reader().readAllAlloc(allocator, 1024);
+    defer allocator.free(message);
+
+    print("{} says {s}\n", .{ client.address, message });
 }

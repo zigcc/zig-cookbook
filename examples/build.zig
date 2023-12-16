@@ -16,7 +16,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
-                print("Add example {s}...", .{name});
+                // print("Add example {s}...\n", .{name});
 
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),

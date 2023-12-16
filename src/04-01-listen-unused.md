@@ -32,3 +32,9 @@ pub fn main() !void {
     print("{} says {s}\n", .{ client.address, buf[0..n] });
 }
 ```
+
+When start starts up, try test like this:
+
+```bash
+echo "hello zig" | nc localhost <port>
+```

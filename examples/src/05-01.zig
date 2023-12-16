@@ -13,18 +13,19 @@ pub fn main() !void {
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
-    const uri = try std.Uri.parse("https://ziglang.org");
+    const uri = try std.Uri.parse("https://ziglang.org/download/index.json");
     var req = try client.request(.GET, uri, headers, .{});
     defer req.deinit();
 
     try req.start();
     try req.wait();
 
-    var buf: [1024]u8 = undefined;
-    const n = try req.read(&buf);
-    const res = req.response;
+    print("Status: {}\n", .{req.response.status});
+    print("Headers:\n{}\n", .{req.response.headers});
 
-    print("Status: {}\n", .{res.status});
-    print("Headers:\n{}\n", .{res.headers});
-    print("Body:\n{s}\n", .{buf[0..n]});
+    var rdr = req.reader();
+    const body = try rdr.readAllAlloc(allocator, 1024 * 1024 * 4);
+    defer allocator.free(body);
+
+    print("Body:\n{s}\n", .{body});
 }
