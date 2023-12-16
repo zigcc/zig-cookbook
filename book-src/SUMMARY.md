@@ -21,3 +21,6 @@
 
 - [Algorithms]()
   - [Generate Random Values](./06-01-rand.md)
+
+- [Hardware Support]()
+  - [Processor](./08-01-cpu-count.md)
