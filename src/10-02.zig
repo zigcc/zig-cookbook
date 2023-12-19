@@ -4,7 +4,7 @@ const Encoder = std.base64.standard.Encoder;
 const Decoder = std.base64.standard.Decoder;
 
 pub fn main() !void {
-    const src = "hello rustaceans";
+    const src = "hello zig";
     const dst_len = Encoder.calcSize(src.len);
 
     var encode_buffer: [1024]u8 = undefined;
