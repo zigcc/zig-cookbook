@@ -32,5 +32,6 @@
 - [Development Tools]()
   - [Versioning](./09-01-semver.md)
 
-- []()
+- [Encoding]()
   - [Deserialize JSON](./10-01-json.md)
+  - [Encode and decode base64](./10-02-base64.md)
