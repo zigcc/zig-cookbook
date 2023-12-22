@@ -25,4 +25,4 @@ When working on zig-cookbook, we benefit a lot from several similar projects, th
 
 # License
 
-[CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+The markdown files are licensed under [CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/), and zig files are under MIT.
