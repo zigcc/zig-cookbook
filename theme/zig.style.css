@@ -5,13 +5,13 @@
 
 
 .hljs-punctuation {
-    color: #eb1294;
+    color: #8ff810;
 
 }
 
 
 .hljs-optional {
-    color: #835601;
+    color: #e5c07b;
 
 }
 
@@ -36,13 +36,13 @@
 
 
 .hljs-function-call {
-    color: #7d0015;
+    color: #e5c07b;
 
 }
 
 
 .hljs-params {
-    color: #9f0e0e;
+    color: #98c379;
 
 }
 
@@ -54,13 +54,13 @@
 
 
 .hljs-number {
-    color: #ff00ff;
+    color: #dcdcaa;
 
 }
 
 
 .hljs-string {
-    color: #f84e0b;
+    color: #98c379;
 
 }
 
