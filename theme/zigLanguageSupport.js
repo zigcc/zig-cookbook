@@ -1,215 +1,53 @@
 const zigLanguageSupport = (hljs) => {
-  const LITERALS = ["true", "false", "null", "undefined"];
-  const BUILT_INS = [
-    "std",
-    "meme",
-    "@This",
-    "@Import",
-    "@ass",
-    "i8",
-    "i16",
-    "i32",
-    "i64",
-    "i128",
-    "u8",
-    "u16",
-    "u32",
-    "u64",
-    "u128",
-    "f16",
-    "f32",
-    "f64",
-    "usize",
-    "isize",
-    "c_short",
-    "c_int",
-    "c_long",
-    "c_longlong",
-    "c_ushort",
-    "c_uint",
-    "c_ulong",
-    "c_ulonglong",
-    "c_float",
-    "c_double",
-    "c_void",
-    "mem",
-    "print"
-  ];
-  const TYPES = [
-    "anytype",
-    "noreturn",
-    "error",
-    "anyerror",
-    "anyframe",
-    "anyopaque",
-  ];
-  const KWS = [
-    "inline",
-    "while",
-    "for",
-    "extern",
-    "packed",
-    "export",
-    "pub",
-    "noalias",
-    "comptime",
-    "volatile",
-    "align",
-    "linksection",
-    "threadlocal",
-    "allowzero",
-    "noinline",
-    "callconv",
-    "struct",
-    "enum",
-    "const",
-    "union",
-    "opaque",
-    "asm",
-    "unreachable",
-    "break",
-    "return",
-    "continue",
-    "defer",
-    "errdefer",
-    "await",
-    "resume",
-    "suspend",
-    "async",
-    "nosuspend",
-    "try",
-    "catch",
-    "if",
-    "else",
-    "switch",
-    "orelse",
-    "usingnamespace",
-    "test",
-    "and",
-    "or",
-    "bool",
-    "void",
-    "type",
-    "blk",
-    "var"
-  ];
-
-  const OPERATORS = ["+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="];
-
-  const KEYWORDS = {
-    keyword: KWS.join(" "),
-    literal: LITERALS.join(" "),
-    built_in: BUILT_INS.join(" "),
-    type: TYPES.join(" "),
-    operator: OPERATORS.join(" "),
-  };
-
   return {
-    name: "zig",
+    name: "Zig",
     aliases: ["zig"],
-    keywords: KEYWORDS,
-    illegal: /\/\*/,
+    keywords: {
+      keyword:
+        "unreachable continue errdefer suspend return resume cancel break catch async await defer asm try " +
+        "threadlocal linksection allowzero stdcallcc volatile comptime noalias nakedcc inline export packed extern align const pub var " +
+        "struct union error enum while for switch orelse else and if or usingnamespace test fn",
+      type: "comptime_float comptime_int c_longdouble c_ulonglong c_longlong c_voidi8 noreturn c_ushort anyerror promise c_short c_ulong c_uint c_long isize c_int usize void f128 i128 type bool u128 u16 f64 f32 u64 i16 f16 i32 u32 i64 u8 i0 u0",
+      literal: "undefined false true null",
+    },
     contains: [
-      // built-in
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.APOS_STRING_MODE,
+      hljs.C_NUMBER_MODE,
       {
-        className: "built_in",
-        begin: "\\bmem\\.Copy\\b",
+        className: "string",
+        begin: "@[a-zA-Z_]\\w*",
       },
-      // meta-event
       {
-        className: "meta-event",
-        begin: /\|[a-zA-Z_]+\|/,
+        className: "meta",
+        begin: /@[a-zA-Z_]\w*/,
       },
-      // TODO 注释
       {
-        className: "comment-todo",
-        begin: /\/\/\s*TODO:.*$/,
+        className: "symbol",
+        begin: /'[a-zA-Z_][a-zA-Z0-9_]*'/,
       },
-      // 单行注释
       {
-        className: "comment",
-        begin: /\/\/[^\n]*/,
+        className: "literal",
+        begin: /\\[xuU][a-fA-F0-9]+/,
       },
-      // 错误处理符号 !（特别是在类型中）
-      {
-        className: "errorhandling",
-        begin: /!(?=\w+)/,
-      },
-
-      // 处理可选参数和可选类型，如 ?params 或 ?void
-      {
-        className: "optional",
-        begin: /\?(?=[a-zA-Z_])/,
-      },
-      // 简化的操作符
-      {
-        className: "operator",
-        begin: /[-+%/*=<>!]=?|&&|\|\||<<=?|>>=?|\*\*|\+\+|--|\->/,
-      },
-      // 属性访问和方法调用
-      {
-        className: "property",
-        begin: /\.\w+/,
-      },
-      // 数字
       {
         className: "number",
-        variants: [
-          {
-            begin:
-              "\\b0x[0-9a-fA-F_]*(\\.[0-9a-fA-F_]*)?([pP][+-]?[0-9a-fA-F_]+)?\\b",
-          },
-          { begin: "\\b[0-9][0-9_]*(\\.[0-9][0-9_]*)?([eE][+-]?[0-9_]+)?\\b" },
-          { begin: "\\b[0-9][0-9_]*\\b" },
-          { begin: "\\b0x[a-fA-F0-9_]+\\b" },
-          { begin: "\\b0o[0-7_]+\\b" },
-          { begin: "\\b0b[01_]+\\b" },
-        ],
+        begin: /\b0x[0-9a-fA-F]+/,
       },
-      // 字符串
-      hljs.QUOTE_STRING_MODE,
-      // 函数声明
       {
-        className: "function",
-        beginKeywords: "fn",
-        end: /\{/,
-        excludeEnd: true,
-        contains: [
-          hljs.inherit(hljs.TITLE_MODE, { begin: /[a-zA-Z_][a-zA-Z0-9_]*/ }),
-          {
-            className: "params",
-            begin: /\(/,
-            end: /\)/,
-            endsParent: true,
-            contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE],
-          },
-        ],
+        className: "number",
+        begin: /\b0b[01]+/,
       },
-      // 函数调用
       {
-        className: "function-call",
-        begin: /[a-zA-Z_][a-zA-Z0-9_]*\(/, // 匹配函数名和左括号
-        end: /\)?/,
-        excludeEnd: true,
-        contains: [
-          {
-            className: "params",
-            begin: /\(/,
-            end: /\)/,
-            contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE],
-          },
-        ],
+        className: "number",
+        begin: /\b0o[0-7]+/,
       },
-      // 标点符号
       {
-        className: "punctuation",
-        begin: /[{}=\[\];(),.:]/,
+        className: "number",
+        begin: /\b[0-9]+\b/,
       },
-      // 特殊宏调用
-      {
-        className: "macro",
-        begin: /@[a-zA-Z_][a-zA-Z0-9_]*/,
-      },
+      hljs.REGEXP_MODE,
     ],
   };
 };

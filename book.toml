@@ -8,5 +8,4 @@ title = "Zig cookbook"
 [output.html]
 git-repository-url = "https://github.com/zigcc/zig-cookbook"
 edit-url-template = "https://github.com/zigcc/zig-cookbook/edit/main/{path}"
-additional-css = ["theme/zig.style.css"]
 additional-js = ["theme/zigLanguageSupport.js"]
