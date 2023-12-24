@@ -1,0 +1,90 @@
+.hljs-keyword {
+    color: #c678dd;
+
+}
+
+
+.hljs-punctuation {
+    color: #eb1294;
+
+}
+
+
+.hljs-optional {
+    color: #835601;
+
+}
+
+
+.hljs-errorhandling {
+    color: #e06c75;
+
+}
+
+
+.hljs-macro {
+    color: #61afef;
+
+    font-weight: bold;
+}
+
+
+.hljs-function {
+    color: #61afef;
+
+}
+
+
+.hljs-function-call {
+    color: #7d0015;
+
+}
+
+
+.hljs-params {
+    color: #9f0e0e;
+
+}
+
+
+.hljs-operator {
+    color: #d19a66;
+
+}
+
+
+.hljs-number {
+    color: #ff00ff;
+
+}
+
+
+.hljs-string {
+    color: #f84e0b;
+
+}
+
+
+.hljs-comment {
+    color: #5c6370;
+
+}
+
+
+.hljs-comment-todo {
+    color: #d19a66;
+
+    font-weight: bold;
+
+}
+
+.hljs-meta-event {
+    color: #ff79c6;
+
+    font-weight: bold;
+
+}
+
+.hljs-literal {
+    color: #e06c75;
+}
