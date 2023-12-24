@@ -33,6 +33,7 @@ const zigLanguageSupport = (hljs) => {
     "c_double",
     "c_void",
     "mem",
+    "print"
   ];
   const TYPES = [
     "anytype",
@@ -90,6 +91,7 @@ const zigLanguageSupport = (hljs) => {
     "void",
     "type",
     "blk",
+    "var"
   ];
 
   const OPERATORS = ["+", "-", "*", "/", "%", "==", "!=", "<", ">", "<=", ">="];
@@ -187,7 +189,7 @@ const zigLanguageSupport = (hljs) => {
       {
         className: "function-call",
         begin: /[a-zA-Z_][a-zA-Z0-9_]*\(/, // 匹配函数名和左括号
-        end: /\)/,
+        end: /\)?/,
         excludeEnd: true,
         contains: [
           {
