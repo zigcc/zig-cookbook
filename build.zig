@@ -4,12 +4,14 @@ const allocPrint = std.fmt.allocPrint;
 const print = std.debug.print;
 
 pub fn build(b: *std.Build) !void {
-    var run_all_step = b.step("run-all", "Run all examples");
+    const run_all_step = b.step("run-all", "Run all examples");
     try addExample(b, run_all_step);
 }
 
 fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
-    const src_dir = try fs.cwd().openIterableDir("src", .{});
+    const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
+    const zigcli = b.dependency("zigcli", .{});
+    const sqlite = b.dependency("sqlite", .{});
 
     var it = src_dir.iterate();
     while (try it.next()) |entry| {
@@ -24,7 +26,18 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     .target = .{},
                     .optimize = .Debug,
                 });
-                const run_step = &b.addRunArtifact(exe).step;
+                if (std.mem.eql(u8, "13-01", name)) {
+                    exe.addModule("simargs", zigcli.module("simargs"));
+                } else if (std.mem.eql(u8, "14-01", name)) {
+                    exe.addModule("sqlite", sqlite.module("sqlite"));
+                    exe.linkLibrary(sqlite.artifact("sqlite"));
+                }
+
+                const run_cmd = b.addRunArtifact(exe);
+                if (b.args) |args| {
+                    run_cmd.addArgs(args);
+                }
+                const run_step = &run_cmd.step;
                 b.step(try allocPrint(b.allocator, "run-{s}", .{name}), try allocPrint(
                     b.allocator,
                     "Run example {s}",

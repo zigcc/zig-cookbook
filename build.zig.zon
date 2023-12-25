@@ -1,0 +1,19 @@
+.{
+    .name = "zig-cookbook",
+    .version = "0.1.0",
+    .paths = .{
+        "src",
+        "build.zig",
+        "build.zig.zon",
+    },
+    .dependencies = .{
+        .zigcli = .{
+            .url = "https://github.com/jiacai2050/zigcli/archive/d5db773.tar.gz",
+            .hash = "1220f4ba4de1b2574bc0f10977bcce464933f7c01c9a071b4484f1b0bda56de30a67",
+        },
+        .sqlite = .{
+            .url = "https://github.com/vrischmann/zig-sqlite/archive/aa6f95b.tar.gz",
+            .hash = "1220d751f09c5c18c45f0a42af71ff255e62ae73deb34567ca42e9e67c614a4daa5a",
+        },
+    },
+}
