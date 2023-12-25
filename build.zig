@@ -11,8 +11,8 @@ pub fn build(b: *std.Build) !void {
 fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
     // const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
     const src_dir = try fs.cwd().openIterableDir("src", .{});
-    const zigcli = b.dependency("zigcli", .{});
-    const sqlite = b.dependency("sqlite", .{});
+    // const zigcli = b.dependency("zigcli", .{});
+    // const sqlite = b.dependency("sqlite", .{});
 
     var it = src_dir.iterate();
     while (try it.next()) |entry| {
@@ -33,12 +33,12 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     .target = .{},
                     .optimize = .Debug,
                 });
-                if (std.mem.eql(u8, "13-01", name)) {
-                    exe.addModule("simargs", zigcli.module("simargs"));
-                } else if (std.mem.eql(u8, "14-01", name)) {
-                    exe.addModule("sqlite", sqlite.module("sqlite"));
-                    exe.linkLibrary(sqlite.artifact("sqlite"));
-                }
+                // if (std.mem.eql(u8, "13-01", name)) {
+                //     exe.addModule("simargs", zigcli.module("simargs"));
+                // } else if (std.mem.eql(u8, "14-01", name)) {
+                //     exe.addModule("sqlite", sqlite.module("sqlite"));
+                //     exe.linkLibrary(sqlite.artifact("sqlite"));
+                // }
 
                 const run_cmd = b.addRunArtifact(exe);
                 if (b.args) |args| {

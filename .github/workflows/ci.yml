@@ -20,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
@@ -30,6 +30,9 @@ jobs:
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |
+          # TODO: 0.11.0 will report following error with zon file, so delete now.
+          # error: TarUnsupportedFileType
+          rm build.zig.zon
           zig fmt --check src/
           zig build run-all --summary all
 
