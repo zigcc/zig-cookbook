@@ -41,3 +41,10 @@
 
 - [Data Structures]()
   - [Bitfield](./12-01-bitfield.md)
+
+- [Command line]()
+  - [Argument Parse](./13-01-argparse.md)
+
+- [Database]()
+  - [SQLite](./14-01-sqlite.md)
+  - [Postgres](./14-02-postgres.md)

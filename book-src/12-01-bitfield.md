@@ -17,24 +17,24 @@ const ColorFlags = packed struct(u32) {
 };
 
 pub fn main() !void {
-    const flag_a: ColorFlags = @bitCast(@as(u32, 0xFF));
+    const tom: ColorFlags = @bitCast(@as(u32, 0xFF));
 
-    if (flag_a.red) {
-        print("flag_a contains red\n", .{});
+    if (tom.red) {
+        print("Tom likes red.\n", .{});
     }
 
-    if (flag_a.red and flag_a.green) {
-        print("flag_a contains red and green\n", .{});
+    if (tom.red and tom.green) {
+        print("Tom likes red and green.\n", .{});
     }
 
-    const flag_b: ColorFlags = @bitCast(@as(u32, 0x01));
+    const jerry: ColorFlags = @bitCast(@as(u32, 0x01));
 
-    if (flag_b.red) {
-        print("flag_b contains red\n", .{});
+    if (jerry.red) {
+        print("Jerry likes red.\n", .{});
     }
 
-    if (flag_b.red and flag_b.green) {
-        print("flag_b contains red and green\n", .{});
+    if (jerry.red and !jerry.green) {
+        print("Jerry likes red, not green.\n", .{});
     }
 }
 ```
