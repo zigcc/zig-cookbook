@@ -9,7 +9,8 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
-    const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
+    // const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
+    const src_dir = try fs.cwd().openIterableDir("src", .{});
     const zigcli = b.dependency("zigcli", .{});
     const sqlite = b.dependency("sqlite", .{});
 
@@ -19,6 +20,12 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
                 // print("Add example {s}...\n", .{name});
+                if (std.mem.eql(u8, "13-01", name) or
+                    std.mem.eql(u8, "14-01", name))
+                {
+                    // Those require zig master to run.
+                    continue;
+                }
 
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
