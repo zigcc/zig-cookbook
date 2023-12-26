@@ -39,6 +39,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     exe.addModule("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
                     exe.linkSystemLibrary("sqlite3");
+                    exe.linkLibC();
                     // const sqlite = b.dependency("sqlite", .{});
                     // exe.addModule("sqlite", sqlite.module("sqlite"));
                     // exe.linkLibrary(sqlite.artifact("sqlite"));
