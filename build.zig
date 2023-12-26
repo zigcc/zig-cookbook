@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 const fs = std.fs;
 const allocPrint = std.fmt.allocPrint;
 const print = std.debug.print;
@@ -9,22 +10,24 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
-    // const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
-    const src_dir = try fs.cwd().openIterableDir("src", .{});
-    // const zigcli = b.dependency("zigcli", .{});
-    // const sqlite = b.dependency("sqlite", .{});
+    const gt_zig_0_11 = builtin.zig_version.minor > 11;
+    const src_dir = if (gt_zig_0_11)
+        try fs.cwd().openDir("src", .{ .iterate = true })
+    else
+        try fs.cwd().openIterableDir("src", .{});
 
     var it = src_dir.iterate();
     while (try it.next()) |entry| {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
-                // print("Add example {s}...\n", .{name});
-                if (std.mem.eql(u8, "13-01", name) or
-                    std.mem.eql(u8, "14-01", name))
-                {
+                if (!gt_zig_0_11) {
                     // Those require zig master to run.
-                    continue;
+                    if (std.mem.eql(u8, "13-01", name) or
+                        std.mem.eql(u8, "14-01", name))
+                    {
+                        continue;
+                    }
                 }
 
                 const exe = b.addExecutable(.{
@@ -33,12 +36,14 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     .target = .{},
                     .optimize = .Debug,
                 });
-                // if (std.mem.eql(u8, "13-01", name)) {
-                //     exe.addModule("simargs", zigcli.module("simargs"));
-                // } else if (std.mem.eql(u8, "14-01", name)) {
-                //     exe.addModule("sqlite", sqlite.module("sqlite"));
-                //     exe.linkLibrary(sqlite.artifact("sqlite"));
-                // }
+                if (std.mem.eql(u8, "13-01", name)) {
+                    const zigcli = b.dependency("zigcli", .{});
+                    exe.addModule("simargs", zigcli.module("simargs"));
+                } else if (std.mem.eql(u8, "14-01", name)) {
+                    const sqlite = b.dependency("sqlite", .{});
+                    exe.addModule("sqlite", sqlite.module("sqlite"));
+                    exe.linkLibrary(sqlite.artifact("sqlite"));
+                }
 
                 const run_cmd = b.addRunArtifact(exe);
                 if (b.args) |args| {

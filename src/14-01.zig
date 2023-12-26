@@ -29,10 +29,7 @@ fn createTable(db: *sqlite.Db) !void {
     };
 
     inline for (create_tables) |query| {
-        var stmt = try db.prepare(query);
-        defer stmt.deinit();
-
-        try stmt.exec(.{}, .{});
+        try db.exec(query, .{}, .{});
     }
 }
 
@@ -48,11 +45,11 @@ fn insertTable(db: *sqlite.Db) !void {
         },
     };
 
-    const query =
-        \\INSERT INTO cat_colors (name) values (?)
-    ;
-    var stmt = try db.prepare(query);
-    defer stmt.deinit();
+    // const query =
+    //     \\INSERT INTO cat_colors (name) values (?)
+    // ;
+    // var stmt = try db.prepare(query);
+    // defer stmt.deinit();
 
     // const query2 =
     //     \\INSERT INTO cats (name, color_id) values (?, ?)
@@ -65,7 +62,7 @@ fn insertTable(db: *sqlite.Db) !void {
         const catnames = item.@"1";
         _ = catnames;
 
-        try db.exec("INSERT INTO cat_colors (name) values (?)", .{}, .{color});
+        try db.exec("INSERT INTO cat_colors (name) values ($)", .{}, .{color});
         // stmt.reset();
     }
 }
