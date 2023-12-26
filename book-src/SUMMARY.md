@@ -19,6 +19,7 @@
 
 - [Web Programming]()
   - [Make HTTP requests](./05-01-http-requests.md)
+  - [Download]()
 
 - [Algorithms]()
   - [Generate Random Values](./06-01-rand.md)
@@ -43,8 +44,13 @@
   - [Bitfield](./12-01-bitfield.md)
 
 - [Command line]()
-  - [Argument Parse](./13-01-argparse.md)
+  - [Argument Parsing](./13-01-argparse.md)
+  - [ANSI Terminal]()
 
 - [Database]()
   - [SQLite](./14-01-sqlite.md)
   - [Postgres](./14-02-postgres.md)
+
+- [Text Processing]()
+  - [Regex Expressions]()
+  - [String Parsing]()
