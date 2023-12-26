@@ -27,6 +27,8 @@ jobs:
         with:
           version: 0.11.0
           # version: master
+      - run: |
+          make install-deps
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |

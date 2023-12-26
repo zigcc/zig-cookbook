@@ -23,9 +23,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
                 if (!gt_zig_0_11) {
                     // Those require zig master to run.
-                    if (std.mem.eql(u8, "13-01", name) or
-                        std.mem.eql(u8, "14-01", name))
-                    {
+                    if (std.mem.eql(u8, "13-01", name)) {
                         continue;
                     }
                 }
@@ -40,9 +38,10 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.addModule("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
-                    const sqlite = b.dependency("sqlite", .{});
-                    exe.addModule("sqlite", sqlite.module("sqlite"));
-                    exe.linkLibrary(sqlite.artifact("sqlite"));
+                    exe.linkSystemLibrary("sqlite3");
+                    // const sqlite = b.dependency("sqlite", .{});
+                    // exe.addModule("sqlite", sqlite.module("sqlite"));
+                    // exe.linkLibrary(sqlite.artifact("sqlite"));
                 }
 
                 const run_cmd = b.addRunArtifact(exe);
