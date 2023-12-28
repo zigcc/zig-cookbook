@@ -1,3 +1,7 @@
+//! Libpq API example
+//! https://gist.github.com/jiacai2050/00709b98ee69d73d022d2f293555f08f
+//! https://www.postgresql.org/docs/16/libpq-example.html
+//!
 const std = @import("std");
 const c = @cImport({
     @cInclude("libpq-fe.h");
