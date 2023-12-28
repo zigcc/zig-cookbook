@@ -43,6 +43,11 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     // const sqlite = b.dependency("sqlite", .{});
                     // exe.addModule("sqlite", sqlite.module("sqlite"));
                     // exe.linkLibrary(sqlite.artifact("sqlite"));
+                } else if (std.mem.eql(u8, "14-02", name)) {
+                    exe.addIncludePath(.{ .path = "/opt/homebrew/opt/libpq/include" });
+                    exe.addLibraryPath(.{ .path = "/opt/homebrew/opt/libpq/lib" });
+                    exe.linkSystemLibrary("pq");
+                    exe.linkLibC();
                 }
 
                 const run_cmd = b.addRunArtifact(exe);
