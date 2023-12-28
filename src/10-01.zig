@@ -6,13 +6,14 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
+    // Deserialize JSON
     const json_str =
         \\{
         \\  "userid": 103609,
         \\  "verified": true,
         \\  "access_privileges": [
-        \\      "user",
-        \\      "admin"
+        \\    "user",
+        \\    "admin"
         \\  ]
         \\}
     ;
@@ -20,10 +21,26 @@ pub fn main() !void {
     const parsed = try json.parseFromSlice(T, allocator, json_str, .{});
     defer parsed.deinit();
 
-    const value = parsed.value;
+    var value = parsed.value;
 
     std.debug.assert(value.userid == 103609);
     std.debug.assert(value.verified);
     std.debug.assert(std.mem.eql(u8, value.access_privileges[0], "user"));
     std.debug.assert(std.mem.eql(u8, value.access_privileges[1], "admin"));
+
+    // Serialize JSON
+    value.verified = false;
+    const new_json_str = try json.stringifyAlloc(allocator, value, .{ .whitespace = .indent_2 });
+    defer allocator.free(new_json_str);
+
+    std.debug.assert(std.mem.eql(u8, new_json_str,
+        \\{
+        \\  "userid": 103609,
+        \\  "verified": false,
+        \\  "access_privileges": [
+        \\    "user",
+        \\    "admin"
+        \\  ]
+        \\}
+    ));
 }
