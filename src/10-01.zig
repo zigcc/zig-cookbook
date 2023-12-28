@@ -1,18 +1,20 @@
 const std = @import("std");
 const json = std.json;
+const testing = std.testing;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
+    // Deserialize JSON
     const json_str =
         \\{
         \\  "userid": 103609,
         \\  "verified": true,
         \\  "access_privileges": [
-        \\      "user",
-        \\      "admin"
+        \\    "user",
+        \\    "admin"
         \\  ]
         \\}
     ;
@@ -20,10 +22,28 @@ pub fn main() !void {
     const parsed = try json.parseFromSlice(T, allocator, json_str, .{});
     defer parsed.deinit();
 
-    const value = parsed.value;
+    var value = parsed.value;
 
-    std.debug.assert(value.userid == 103609);
-    std.debug.assert(value.verified);
-    std.debug.assert(std.mem.eql(u8, value.access_privileges[0], "user"));
-    std.debug.assert(std.mem.eql(u8, value.access_privileges[1], "admin"));
+    try testing.expect(value.userid == 103609);
+    try testing.expect(value.verified);
+    try testing.expectEqualStrings("user", value.access_privileges[0]);
+    try testing.expectEqualStrings("admin", value.access_privileges[1]);
+
+    // Serialize JSON
+    value.verified = false;
+    const new_json_str = try json.stringifyAlloc(allocator, value, .{ .whitespace = .indent_2 });
+    defer allocator.free(new_json_str);
+
+    try testing.expectEqualStrings(
+        \\{
+        \\  "userid": 103609,
+        \\  "verified": false,
+        \\  "access_privileges": [
+        \\    "user",
+        \\    "admin"
+        \\  ]
+        \\}
+    ,
+        new_json_str,
+    );
 }
