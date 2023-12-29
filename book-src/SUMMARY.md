@@ -16,6 +16,7 @@
 
 - [Network]()
   - [Listen on unused port TCP/IP](./04-01-tcp-server.md)
+  - [TCP Client](./04-02-tcp-client.md)
 
 - [Web Programming]()
   - [Make HTTP requests](./05-01-http-requests.md)

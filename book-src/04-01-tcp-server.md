@@ -38,3 +38,5 @@ When start starts up, try test like this:
 ```bash
 echo "hello zig" | nc localhost <port>
 ```
+
+The next section will show how to connect this server using Zig code.
