@@ -10,7 +10,7 @@ const print = std.debug.print;
 
 pub fn main() !void {
     var args = std.process.args();
-    // The First (0 index) Argument is the path to the program.
+    // The first (0 index) Argument is the path to the program.
     _ = args.skip();
     const port_value = args.next() orelse {
         print("expect port as command line argument\n", .{});
