@@ -57,7 +57,8 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 )).dependOn(run_step);
 
                 // 04-01 start tcp server, and won't stop so we skip it here
-                if (std.mem.eql(u8, "04-01", name)) {
+                // 04-02 is the server's client.
+                if (std.mem.eql(u8, "04-01", name) or std.mem.eql(u8, "04-02", name)) {
                     continue;
                 }
                 run_all.dependOn(run_step);
