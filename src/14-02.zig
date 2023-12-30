@@ -135,7 +135,7 @@ const DB = struct {
 };
 
 pub fn main() !void {
-    const conn_info = "host=127.0.0.1";
+    const conn_info = "host=127.0.0.1 user=postgres password=postgres dbname=postgres";
 
     const db = try DB.init(conn_info);
     defer db.deinit();
