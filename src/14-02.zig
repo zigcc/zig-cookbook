@@ -14,7 +14,7 @@ const DB = struct {
     fn init(conn_info: [:0]const u8) !DB {
         const conn = c.PQconnectdb(conn_info);
         if (c.PQstatus(conn) != c.CONNECTION_OK) {
-            std.debug.print("Connect failed, err: {s}\n", .{c.PQerrorMessage(conn)});
+            print("Connect failed, err: {s}\n", .{c.PQerrorMessage(conn)});
             return error.connect;
         }
         return DB{ .conn = conn.? };
@@ -24,22 +24,33 @@ const DB = struct {
         c.PQfinish(self.conn);
     }
 
+    // Execute a query without returning any data.
     fn exec(self: DB, query: [:0]const u8) !void {
         const result = c.PQexec(self.conn, query);
         defer c.PQclear(result);
 
         if (c.PQresultStatus(result) != c.PGRES_COMMAND_OK) {
-            std.debug.print("exec query failed, query:{s}, err: {s}\n", .{ query, c.PQerrorMessage(self.conn) });
+            print("exec query failed, query:{s}, err: {s}\n", .{ query, c.PQerrorMessage(self.conn) });
             return error.Exec;
         }
     }
 
     fn insertTable(self: DB) !void {
+        // 1. create two prepared statements.
         {
-            const res = c.PQprepare(self.conn, "insert_cat_colors", "INSERT INTO cat_colors (name) VALUES ($1) returning id ", 1, null);
+            // There is no `get_last_insert_rowid` in libpq, so we use RETURNING id to get the last insert id.
+            const res = c.PQprepare(
+                self.conn,
+                "insert_cat_colors",
+                "INSERT INTO cat_colors (name) VALUES ($1) returning id",
+                1, // nParams, number of parameters supplied
+                // Specifies, by OID, the data types to be assigned to the parameter symbols.
+                // When null, the server infers a data type for the parameter symbol in the same way it would do for an untyped literal string.
+                null, // paramTypes.
+            );
             defer c.PQclear(res);
             if (c.PQresultStatus(res) != c.PGRES_COMMAND_OK) {
-                std.debug.print("prepare insert cat_colors failed, err: {s}\n", .{c.PQerrorMessage(self.conn)});
+                print("prepare insert cat_colors failed, err: {s}\n", .{c.PQerrorMessage(self.conn)});
                 return error.prepare;
             }
         }
@@ -47,7 +58,7 @@ const DB = struct {
             const res = c.PQprepare(self.conn, "insert_cats", "INSERT INTO cats (name, color_id) VALUES ($1, $2)", 2, null);
             defer c.PQclear(res);
             if (c.PQresultStatus(res) != c.PGRES_COMMAND_OK) {
-                std.debug.print("prepare insert cats failed, err: {s}\n", .{c.PQerrorMessage(self.conn)});
+                print("prepare insert cats failed, err: {s}\n", .{c.PQerrorMessage(self.conn)});
                 return error.prepare;
             }
         }
@@ -65,6 +76,8 @@ const DB = struct {
                 },
             },
         };
+
+        // 2. Use prepared statements to insert data.
         inline for (cat_colors) |row| {
             const color = row.@"0";
             const cat_names = row.@"1";
@@ -80,8 +93,9 @@ const DB = struct {
                 );
                 defer c.PQclear(res);
 
+                // Since this insert has returns, so we check res with PGRES_TUPLES_OK
                 if (c.PQresultStatus(res) != c.PGRES_TUPLES_OK) {
-                    std.debug.print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
+                    print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
                     return error.InsertCatColors;
                 }
                 break :blk std.mem.span(c.PQgetvalue(res, 0, 0));
@@ -94,12 +108,13 @@ const DB = struct {
                     &[_][*c]const u8{ name, color_id }, // paramValues
                     &[_]c_int{ name.len, @intCast(color_id.len) }, // paramLengths
                     &[_]c_int{ 0, 0 }, // paramFormats
-                    0, // resultFormat
+                    0, // resultFormat, 0 means text, 1 means binary.
                 );
                 defer c.PQclear(res);
 
+                // This insert has no returns, so we check res with PGRES_COMMAND_OK
                 if (c.PQresultStatus(res) != c.PGRES_COMMAND_OK) {
-                    std.debug.print("exec insert cats failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
+                    print("exec insert cats failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
                     return error.InsertCats;
                 }
             }
@@ -121,7 +136,7 @@ const DB = struct {
         defer c.PQclear(result);
 
         if (c.PQresultStatus(result) != c.PGRES_TUPLES_OK) {
-            std.debug.print("exec query failed, query:{s}, err: {s}\n", .{ query, c.PQerrorMessage(self.conn) });
+            print("exec query failed, query:{s}, err: {s}\n", .{ query, c.PQerrorMessage(self.conn) });
             return error.queryTable;
         }
 
