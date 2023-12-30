@@ -4,21 +4,31 @@ Gets the current working directory by calling `fs.cwd()`, and then iterate files
 
 For each entries, we check if it's a file, and use `statFile()` to retrieve file's metadata.
 
+Note: iterate api has been changed in zig `nightly`, see this [issue](https://github.com/ziglang/zig/pull/18076)!
+
+For zig `nightly`, we nedd use `fs.cwd().openDir(".", .{ .iterate = true })` to replace `fs.cwd().openIterableDir(".", .{ .no_follow = true })`
+
 ```zig
 //! Find files that have been modified in the last 24 hours
 
 const std = @import("std");
+const builtin = @import("builtin");
 const fs = std.fs;
 const print = std.debug.print;
+
+const current_zig = builtin.zig_version;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    var iter_dir = try fs.cwd().openIterableDir(".", .{
-        .no_follow = true, // `true` means it won't dereference the symlinks.
-    });
+    var iter_dir = if (comptime current_zig.minor == 11)
+        try fs.cwd().openIterableDir(".", .{
+            .no_follow = true, // `true` means it won't dereference the symlinks.
+        })
+    else
+        fs.cwd().openDir(".", .{ .iterate = true });
     defer iter_dir.close();
 
     var walker = try iter_dir.walk(allocator);
@@ -34,7 +44,7 @@ pub fn main() !void {
         const last_modified = stat.mtime;
         const duration = now - last_modified;
         if (duration < std.time.ns_per_hour * 24) {
-            print("Last modified: {d} seconds ago, size: {d} bytes, filename: {s}\n", .{
+            print("Last modified: {d} seconds ago, size:{d} bytes, filename: {s}\n", .{
                 @divTrunc(duration, std.time.ns_per_s),
                 stat.size,
                 entry.path,
