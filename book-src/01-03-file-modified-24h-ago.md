@@ -4,7 +4,6 @@ Gets the current working directory by calling `fs.cwd()`, and then iterate files
 
 For each entries, we check if it's a file, and use `statFile()` to retrieve file's metadata.
 
-Note: iterate api has been changed in zig `nightly`, see this [issue](https://github.com/ziglang/zig/pull/18076)!
 
 > Note: In Zig master,  use `fs.cwd().openDir(".", .{ .iterate = true })` to replace `fs.cwd().openIterableDir(".", .{ .no_follow = true })`
 
