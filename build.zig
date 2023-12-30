@@ -47,6 +47,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
                 } else if (std.mem.eql(u8, "15-01", name)) {
+                    exe.addIncludePath(.{ .path = "include" });
                     exe.linkLibC();
                 }
 
