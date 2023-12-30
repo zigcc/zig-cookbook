@@ -3,6 +3,7 @@
 //! https://www.postgresql.org/docs/16/libpq-example.html
 //!
 const std = @import("std");
+const print = std.debug.print;
 const c = @cImport({
     @cInclude("libpq-fe.h");
 });
@@ -67,46 +68,74 @@ const DB = struct {
         inline for (cat_colors) |row| {
             const color = row.@"0";
             const cat_names = row.@"1";
-            _ = cat_names;
-            // PGresult *PQexecPrepared(PGconn *conn,
-            //              const char *stmtName,
-            //              int nParams,
-            //              const char * const *paramValues,
-            //              const int *paramLengths,
-            //              const int *paramFormats,
-            //              int resultFormat);
-            const res = c.PQexecPrepared(
-                self.conn,
-                "insert_cat_colors",
-                1, // nParams
-                &[_][*c]const u8{color}, // paramValues
-                &[_]c_int{color.len}, // paramLengths
-                &[_]c_int{0}, // paramFormats
-                0, // resultFormat
-            );
-            defer c.PQclear(res);
+            const color_id = blk: {
+                const res = c.PQexecPrepared(
+                    self.conn,
+                    "insert_cat_colors",
+                    1, // nParams
+                    &[_][*c]const u8{color}, // paramValues
+                    &[_]c_int{color.len}, // paramLengths
+                    &[_]c_int{0}, // paramFormats
+                    0, // resultFormat
+                );
+                defer c.PQclear(res);
 
-            std.debug.print("res:{d}\n", .{c.PQresultStatus(res)});
+                if (c.PQresultStatus(res) != c.PGRES_TUPLES_OK) {
+                    std.debug.print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
+                    return error.InsertCatColors;
+                }
+                break :blk std.mem.span(c.PQgetvalue(res, 0, 0));
+            };
+            inline for (cat_names) |name| {
+                const res = c.PQexecPrepared(
+                    self.conn,
+                    "insert_cats",
+                    2, // nParams
+                    &[_][*c]const u8{ name, color_id }, // paramValues
+                    &[_]c_int{ name.len, @intCast(color_id.len) }, // paramLengths
+                    &[_]c_int{ 0, 0 }, // paramFormats
+                    0, // resultFormat
+                );
+                defer c.PQclear(res);
 
-            if (c.PQresultStatus(res) != c.PGRES_TUPLES_OK) {
-                std.debug.print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
-                return error.InsertCatColors;
+                if (c.PQresultStatus(res) != c.PGRES_COMMAND_OK) {
+                    std.debug.print("exec insert cats failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
+                    return error.InsertCats;
+                }
             }
+        }
+    }
 
-            std.debug.print("row:{d}, cols:{d}\n", .{
-                c.PQntuples(res),
-                c.PQnfields(res),
-            });
+    fn queryTable(self: DB) !void {
+        const query =
+            \\ SELECT
+            \\     c.name,
+            \\     cc.name
+            \\ FROM
+            \\     cats c
+            \\     INNER JOIN cat_colors cc ON cc.id = c.color_id;
+            \\
+        ;
 
-            const value: [:0]const u8 = std.mem.span(c.PQgetvalue(res, 0, 0));
-            const id = try std.fmt.parseInt(i32, value, 10);
-            std.debug.print("value is {d}\n", .{id});
+        const result = c.PQexec(self.conn, query);
+        defer c.PQclear(result);
+
+        if (c.PQresultStatus(result) != c.PGRES_TUPLES_OK) {
+            std.debug.print("exec query failed, query:{s}, err: {s}\n", .{ query, c.PQerrorMessage(self.conn) });
+            return error.queryTable;
+        }
+
+        const num_rows = c.PQntuples(result);
+        for (0..@intCast(num_rows)) |row| {
+            const cat_name = std.mem.span(c.PQgetvalue(result, @intCast(row), 0));
+            const color_name = std.mem.span(c.PQgetvalue(result, @intCast(row), 1));
+            print("Cat {s} is in {s} color\n", .{ cat_name, color_name });
         }
     }
 };
 
 pub fn main() !void {
-    const conn_info = "host=127.0.0.1 dbname=jiacai user=jiacai";
+    const conn_info = "host=127.0.0.1";
 
     const db = try DB.init(conn_info);
     defer db.deinit();
@@ -124,16 +153,5 @@ pub fn main() !void {
     );
 
     try db.insertTable();
-    // const result = c.PQexec(conn, "SELECT datname FROM pg_database");
-    // defer c.PQclear(result);
-    // if (c.PQresultStatus(result) != c.PGRES_COMMAND_OK) {
-    //     std.debug.print("select db failed, err: {s}\n", .{c.PQerrorMessage(conn)});
-    //     return error.Exec;
-    // }
-    // var i: c_int = 0;
-    // while (i < c.PQntuples(result)) {
-    //     const value = c.PQgetvalue(result, i, 0);
-    //     std.debug.print("value is {s}\n", .{value});
-    //     i += 1;
-    // }
+    try db.queryTable();
 }

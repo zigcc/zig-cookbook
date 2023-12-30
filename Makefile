@@ -16,7 +16,8 @@ run:
 install-deps:
 ifeq ($(uname_S), Darwin)
 	echo "Nothing required"
+	brew install libpq
 endif
 ifeq ($(uname_S), Linux)
-	sudo apt install -y pkg-config libsqlite3-dev
+	sudo apt install -y pkg-config libsqlite3-dev libpq-dev
 endif
