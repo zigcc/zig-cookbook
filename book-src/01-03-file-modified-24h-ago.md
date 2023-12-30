@@ -6,7 +6,7 @@ For each entries, we check if it's a file, and use `statFile()` to retrieve file
 
 Note: iterate api has been changed in zig `nightly`, see this [issue](https://github.com/ziglang/zig/pull/18076)!
 
-For zig `nightly`, we nedd use `fs.cwd().openDir(".", .{ .iterate = true })` to replace `fs.cwd().openIterableDir(".", .{ .no_follow = true })`
+> Note: In Zig master,  use `fs.cwd().openDir(".", .{ .iterate = true })` to replace `fs.cwd().openIterableDir(".", .{ .no_follow = true })`
 
 ```zig
 //! Find files that have been modified in the last 24 hours
