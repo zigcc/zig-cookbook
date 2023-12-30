@@ -27,13 +27,26 @@ jobs:
         with:
           version: 0.11.0
           # version: master
-      - run: |
+      - name: Start services
+        uses: ikalnytskyi/action-setup-postgres@v4
+        with:
+          username: postgres
+          password: postgres
+          database: postgres
+          port: 5432
+      - name: Install deps
+        run: |
           make install-deps
+      - name: Set pkg-config(macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig" >> ${GITHUB_ENV}
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |
           # TODO: 0.11.0 will report following error with zon file, so delete now.
           # error: TarUnsupportedFileType
+          pkg-config --libs --cflags libpq
           rm build.zig.zon
           zig fmt --check src/
           zig build run-all --summary all
