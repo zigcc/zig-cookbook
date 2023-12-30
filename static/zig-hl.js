@@ -50,7 +50,7 @@ const zigLanguageSupport = (hljs) => {
       hljs.REGEXP_MODE,
       {
         // multiline string literals
-        className: "multiline",
+        className: "string",
         begin: /\\/, end: /$/,
         relevance: 0,
         contains: [
