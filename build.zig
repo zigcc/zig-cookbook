@@ -46,7 +46,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 } else if (std.mem.eql(u8, "14-02", name)) {
                     // exe.addIncludePath(.{ .path = "/opt/homebrew/opt/libpq/include" });
                     // exe.addLibraryPath(.{ .path = "/opt/homebrew/opt/libpq/lib" });
-                    exe.linkSystemLibrary("pq");
+                    exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
                 }
 

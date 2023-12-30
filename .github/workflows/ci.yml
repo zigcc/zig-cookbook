@@ -39,6 +39,7 @@ jobs:
           # TODO: 0.11.0 will report following error with zon file, so delete now.
           # error: TarUnsupportedFileType
           echo "pkg_path:${PKG_CONFIG_PATH}"
+          pkg-config --libs --cflags libpq
           rm build.zig.zon
           zig fmt --check src/
           zig build run-all --summary all
