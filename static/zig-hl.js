@@ -48,6 +48,18 @@ const zigLanguageSupport = (hljs) => {
         begin: /\b[0-9]+\b/,
       },
       hljs.REGEXP_MODE,
+      {
+        // multiline string literals
+        className: "string",
+        begin: /\\/, end: /$/,
+        relevance: 0,
+        contains: [
+          {
+            begin: /\\/, end: /$/,
+            relevance: 0,
+          },
+        ],
+      },
     ],
   };
 };
