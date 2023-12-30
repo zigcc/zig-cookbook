@@ -11,7 +11,8 @@
 
 Each recipe is accompanied by an illustrative example named after its corresponding sequence number. These examples can be executed using the command `zig build run-{chapter-num}-{sequence-num}`, or `zig build run-all` to execute all.
 
-> Currently Zig 0.11.0 is required to run those examples.
+> - Currently Zig 0.11.0 is required to run those examples.
+> - Some example may depend on system libraries, use `make install-deps` to install them.
 
 # Contributing
 

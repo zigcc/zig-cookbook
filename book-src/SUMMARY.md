@@ -53,5 +53,5 @@
   - [Postgres](./14-02-postgres.md)
 
 - [Text Processing]()
-  - [Regex Expressions]()
-  - [String Parsing]()
+  - [Regex Expressions](15-01-regex.md)
+  - [String Parsing](15-02-string.md)

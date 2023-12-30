@@ -46,6 +46,8 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 } else if (std.mem.eql(u8, "14-02", name)) {
                     exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
+                } else if (std.mem.eql(u8, "15-01", name)) {
+                    exe.linkLibC();
                 }
 
                 const run_cmd = b.addRunArtifact(exe);
