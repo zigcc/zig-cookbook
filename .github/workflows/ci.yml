@@ -28,7 +28,7 @@ jobs:
           version: 0.11.0
           # version: master
       - name: Start services
-        uses: ikalnytskyi/action-setup-postgis@v1
+        uses: ikalnytskyi/action-setup-postgres@v4
         with:
           username: postgres
           password: postgres
