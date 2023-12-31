@@ -12,8 +12,8 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    const loopback = try net.Ip4Address.parse("127.0.0.1", 0);
-    const localhost = net.Address{ .in = loopback };
+    const loopback = try net.Ip6Address.parse("::1", 0);
+    const localhost = net.Address{ .in6 = loopback };
     var server = net.StreamServer.init(net.StreamServer.Options{
         .reuse_port = true,
     });

@@ -12,7 +12,7 @@ pub fn main() !void {
     };
     const port = try std.fmt.parseInt(u16, port_value, 10);
 
-    const peer = try net.Address.parseIp4("127.0.0.1", port);
+    const peer = try net.Address.parseIp6("::1", port);
     // Connect to peer
     const stream = try net.tcpConnectToAddress(peer);
     defer stream.close();
