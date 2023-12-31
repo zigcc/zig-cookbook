@@ -1,3 +1,0 @@
-Hello Zig. 😁
-
-I love Zig very much!
