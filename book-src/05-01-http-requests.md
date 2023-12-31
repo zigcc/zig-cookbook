@@ -3,6 +3,8 @@
 Parses the supplied URL and makes a synchronous HTTP GET request
 with [`request`]. Prints obtained [`Response`] status and headers.
 
+> Note: Since HTTP support is in early stage, it's recommended to use [libcurl](https://curl.se/libcurl/c/) for any complex task.
+
 ```zig
 const std = @import("std");
 const print = std.debug.print;
@@ -19,7 +21,7 @@ pub fn main() !void {
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
-    const uri = try std.Uri.parse("https://ziglang.org");
+    const uri = try std.Uri.parse("http://httpbin.org/headers");
     var req = try client.request(.GET, uri, headers, .{});
     defer req.deinit();
 
