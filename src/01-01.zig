@@ -7,7 +7,7 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    const file = try fs.cwd().openFile("tests/hello-world.txt", .{});
+    const file = try fs.cwd().openFile("tests/zig-zen.txt", .{});
     defer file.close();
 
     const rdr = file.reader();
