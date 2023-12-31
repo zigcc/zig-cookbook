@@ -46,6 +46,21 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 } else if (std.mem.eql(u8, "14-02", name)) {
                     exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
+                } else if (std.mem.eql(u8, "15-01", name)) {
+                    const lib = b.addStaticLibrary(.{
+                        .name = "regex_slim",
+                        .optimize = .Debug,
+                        .target = .{},
+                    });
+                    lib.addIncludePath(.{ .path = "lib" });
+                    lib.addCSourceFiles(
+                        &.{"lib/regex_slim.c"},
+                        &.{"-std=c99"},
+                    );
+                    lib.linkLibC();
+                    exe.linkLibrary(lib);
+                    exe.addIncludePath(.{ .path = "lib" });
+                    exe.linkLibC();
                 }
 
                 const run_cmd = b.addRunArtifact(exe);
