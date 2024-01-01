@@ -30,8 +30,15 @@ pub fn main() !void {
     defer file.close();
 
     const digest = try sha256_digest(file);
-    const hex_digest = try std.fmt.allocPrint(allocator, "{s}", .{std.fmt.fmtSliceHexLower(&digest)});
+    const hex_digest = try std.fmt.allocPrint(
+        allocator,
+        "{s}",
+        .{std.fmt.fmtSliceHexLower(&digest)},
+    );
     defer allocator.free(hex_digest);
 
-    try std.testing.expectEqualStrings("2210e9263ece534df0beff39ec06850d127dc60aa17bbc7769c5dc2ea5f3e342", hex_digest);
+    try std.testing.expectEqualStrings(
+        "2210e9263ece534df0beff39ec06850d127dc60aa17bbc7769c5dc2ea5f3e342",
+        hex_digest,
+    );
 }
