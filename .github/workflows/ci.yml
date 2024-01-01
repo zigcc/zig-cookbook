@@ -21,12 +21,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
+        zig: [0.11.0, master]
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
         with:
-          version: 0.11.0
-          # version: master
+          version: ${{ matrix.zig }}
       - name: Start services
         uses: ikalnytskyi/action-setup-postgres@v4
         with:
@@ -41,13 +41,16 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig" >> ${GITHUB_ENV}
+      - name: Hack
+        if: matrix.zig == '0.11.0'
+        run: |
+          # 0.11.0 will report following error with zon file, so delete now.
+          # error: TarUnsupportedFileType
+          rm build.zig.zon
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          # TODO: 0.11.0 will report following error with zon file, so delete now.
-          # error: TarUnsupportedFileType
           pkg-config --libs --cflags libpq
-          rm build.zig.zon
           zig fmt --check src/
           zig build run-all --summary all
 

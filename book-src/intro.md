@@ -3,7 +3,7 @@
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml)
 
-[Zig cookbook](https://zigcc.github.io/zig-cookbook/) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
+[Zig cookbook](https://github.com/zigcc/zig-cookbook) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
 
 # How to use
 

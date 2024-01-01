@@ -24,7 +24,7 @@ pub fn main() !void {
     const md = try file.metadata();
     print("File size: {d}\n", .{md.size()});
 
-    var ptr = try std.os.mmap(
+    const ptr = try std.os.mmap(
         null,
         20,
         std.os.PROT.READ | std.os.PROT.WRITE,
