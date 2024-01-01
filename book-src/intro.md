@@ -3,7 +3,7 @@
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml)
 
-[Zig cookbook](https://zigcc.github.io/zig-cookbook/) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
+[Zig cookbook](https://github.com/zigcc/zig-cookbook) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
 
 # How to use
 
@@ -11,8 +11,10 @@
 
 Each recipe is accompanied by an illustrative example named after its corresponding sequence number. These examples can be executed using the command `zig build run-{chapter-num}-{sequence-num}`, or `zig build run-all` to execute all.
 
-> - Currently Zig 0.11.0 is required to run those examples.
+> - Currently both 0.11.0 and master are supported to run those recipes.
 > - Some example may depend on system libraries, use `make install-deps` to install them.
+
+> Note: Some recipes can't compile in 0.11.0, so they are skipped.
 
 # Contributing
 

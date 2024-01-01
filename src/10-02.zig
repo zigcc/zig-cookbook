@@ -12,7 +12,7 @@ pub fn main() !void {
 
     // Encode
     const encoded_length = Encoder.calcSize(src.len);
-    var encoded_buffer = try allocator.alloc(u8, encoded_length);
+    const encoded_buffer = try allocator.alloc(u8, encoded_length);
     defer allocator.free(encoded_buffer);
 
     _ = Encoder.encode(encoded_buffer, src);
@@ -20,7 +20,7 @@ pub fn main() !void {
 
     // Decode
     const decoded_length = try Decoder.calcSizeForSlice(encoded_buffer);
-    var decoded_buffer = try allocator.alloc(u8, decoded_length);
+    const decoded_buffer = try allocator.alloc(u8, decoded_length);
     defer allocator.free(decoded_buffer);
 
     try Decoder.decode(decoded_buffer, encoded_buffer);

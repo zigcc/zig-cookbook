@@ -25,7 +25,6 @@
 - [Web Programming]()
 
   - [Make HTTP requests](./05-01-http-requests.md)
-  - [Download]()
 
 - [Algorithms]()
 
@@ -68,4 +67,4 @@
 
 - [Text Processing]()
   - [Regex Expressions](15-01-regex.md)
-  - [String](15-02-string.md)
+  - [String Parsing](15-02-string.md)
