@@ -12,6 +12,7 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
+    // There are API changes between 0.11.0 and master, so we need to use different APIs depending on the version.
     var iter_dir = if (comptime current_zig.minor == 11)
         try fs.cwd().openIterableDir(".", .{
             .no_follow = true, // `true` means it won't dereference the symlinks.

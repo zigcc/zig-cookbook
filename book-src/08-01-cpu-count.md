@@ -3,12 +3,7 @@
 Shows the number of logical CPU cores in current machine using [`std.Thread.getCpuCount`].
 
 ```zig
-const std = @import("std");
-const print = std.debug.print;
-
-pub fn main() !void {
-    print("Number of logical cores is {}\n", .{try std.Thread.getCpuCount()});
-}
+{{#include ../src/08-01.zig }}
 ```
 
-[`std.Thread.getCpuCount`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.getCpuCount
+[`std.thread.getcpucount`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.getCpuCount
