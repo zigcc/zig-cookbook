@@ -15,28 +15,27 @@ pub fn main() !void {
     const file = try fs.cwd().openFile("tests/zig-zen.txt", .{});
     defer file.close();
 
-    var rdr = blk: {
-        // Usually buffered reader is faster, so we use one here.
-        var buf_reader = std.io.bufferedReader(file.reader());
-        break :blk buf_reader.reader();
-    };
-    var line_no: usize = 0;
+    // Wrap the file reader in a buffered reader.
+    // Since it's usually faster to read a bunch of bytes at once.
+    var buf_reader = std.io.bufferedReader(file.reader());
+    const reader = buf_reader.reader();
 
     var line = std.ArrayList(u8).init(allocator);
     defer line.deinit();
-    var wtr = line.writer();
-    while (true) {
+
+    const writer = line.writer();
+    var line_no: usize = 1;
+    while (reader.streamUntilDelimiter(writer, '\n', null)) : (line_no += 1) {
         // Clear the line so we can reuse it.
         defer line.clearRetainingCapacity();
 
-        rdr.streamUntilDelimiter(wtr, '\n', 4096) catch |err| switch (err) {
-            error.EndOfStream => return,
-            else => return err,
-        };
-        line_no += 1;
         print("{d}--{s}\n", .{ line_no, line.items });
+    } else |err| switch (err) {
+        error.EndOfStream => {}, // Continue on
+        else => |e| return e, // Propagate error
     }
 }
+
 ```
 
 [Reader]: https://ziglang.org/documentation/0.11.0/std/#A;std:io.Reader
