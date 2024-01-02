@@ -1,6 +1,6 @@
 # External Command
 
-Run external command via [`std.process.Child`], collect output via [pipe].
+Run external command via [`std.process.Child`], and collect output into `ArrayList` via [pipe].
 ```zig
 {{#include ../src/08-02.zig }}
 ```
