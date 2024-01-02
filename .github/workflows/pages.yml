@@ -22,11 +22,15 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup mdBook
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: "latest"
-      - run: mdbook build
+      - run: |
+          cargo install mdbook-last-changed
+          mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:

@@ -9,4 +9,9 @@ title = "Zig cookbook"
 git-repository-url = "https://github.com/zigcc/zig-cookbook"
 edit-url-template = "https://github.com/zigcc/zig-cookbook/edit/main/{path}"
 additional-js = ["static/zig-hl.js"]
+additional-css = ["static/last-changed.css"]
 site-url = "zig-cookbook"
+
+[preprocessor.last-changed]
+command = "mdbook-last-changed"
+renderer = ["html"]
