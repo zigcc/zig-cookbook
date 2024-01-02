@@ -1,5 +1,7 @@
 # Zig Cookbook
 
+[![](https://img.shields.io/discord/1155469703846834187?label=Chat%20on%20Discord)](https://discord.gg/bAehMGPb2R)
+[![](https://img.shields.io/github/stars/zigcc/zig-cookbook?style=square&color=#30a14e)](https://github.com/zigcc/zig-cookbook/stargazers)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml)
 
@@ -11,10 +13,10 @@
 
 Each recipe is accompanied by an illustrative example named after its corresponding sequence number. These examples can be executed using the command `zig build run-{chapter-num}-{sequence-num}`, or `zig build run-all` to execute all.
 
-> - Currently both 0.11.0 and master are supported to run those recipes.
-> - Some example may depend on system libraries, use `make install-deps` to install them.
+> - Support Zig 0.11.0 and master, and they are tested on Linux and macOS via GitHub actions.
+> - Some recipes may depend on system libraries, use `make install-deps` to install them.
 
-> Note: Some recipes can't compile in 0.11.0, so they are skipped.
+> Note: Some recipes can't compile in 0.11.0, so they are skipped in CI.
 
 # Contributing
 

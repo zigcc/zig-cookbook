@@ -34,9 +34,10 @@
 
   - [Explicit Threads](./07-01-spawn.md)
 
-- [Hardware Support]()
+- [Operating System]()
 
   - [Processor](./08-01-cpu-count.md)
+  - [External Command](./08-02-external.md)
 
 - [Development Tools]()
 
