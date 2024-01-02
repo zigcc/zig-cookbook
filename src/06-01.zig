@@ -2,8 +2,7 @@ const std = @import("std");
 const print = std.debug.print;
 
 pub fn main() !void {
-    var prng = std.rand.DefaultPrng.init(@intCast(std.time.timestamp()));
-    const rand = prng.random();
+    const rand = std.crypto.random;
 
     print("Random u8: {}\n", .{rand.int(u8)});
     print("Random u8 less than 10: {}\n", .{rand.uintLessThan(u8, 10)});
