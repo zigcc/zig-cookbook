@@ -4,9 +4,9 @@ Parse arguments is common in command line programs and there are some packages i
 
 - [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
 - [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
-- [Zigcli](https://zigcli.liujiacai.net/)
+- [simargs](https://zigcli.liujiacai.net/docs/modules/simargs/)
 
-Here we will give an example using [zigcli](https://github.com/jiacai2050/zigcli).
+Here we will give an example using `simargs`.
 
 ```zig
 {{#include ../src/13-01.zig }}
