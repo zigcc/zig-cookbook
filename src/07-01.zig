@@ -1,10 +1,10 @@
 const std = @import("std");
 
 pub fn main() !void {
-    var arr: [4]i32 = .{ 1, 25, -4, 10 };
+    var arr = [_]i32{ 1, 25, -4, 10, 100, 200, -100, -200 };
     var max_value: i32 = undefined;
     try findMax(&max_value, &arr);
-    std.debug.assert(max_value == 25);
+    try std.testing.expectEqual(max_value, 200);
 }
 
 fn findMax(max_value: *i32, values: []i32) !void {
@@ -23,13 +23,13 @@ fn findMax(max_value: *i32, values: []i32) !void {
     const left = values[0..mid];
     const right = values[mid..];
 
-    var v1: i32 = undefined;
-    const t1 = try std.Thread.spawn(.{}, findMax, .{ &v1, left });
-    t1.join();
+    var left_max: i32 = undefined;
+    const t1 = try std.Thread.spawn(.{}, findMax, .{ &left_max, left });
+    var right_max: i32 = undefined;
+    const t2 = try std.Thread.spawn(.{}, findMax, .{ &right_max, right });
 
-    var v2: i32 = undefined;
-    const t2 = try std.Thread.spawn(.{}, findMax, .{ &v2, right });
+    t1.join();
     t2.join();
 
-    max_value.* = @max(v1, v2);
+    max_value.* = @max(left_max, right_max);
 }

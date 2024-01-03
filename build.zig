@@ -53,10 +53,17 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                         .target = .{},
                     });
                     lib.addIncludePath(.{ .path = "lib" });
-                    lib.addCSourceFiles(
-                        &.{"lib/regex_slim.c"},
-                        &.{"-std=c99"},
-                    );
+                    if (gt_zig_0_11) {
+                        lib.addCSourceFiles(.{
+                            .files = &.{"lib/regex_slim.c"},
+                            .flags = &.{"-std=c99"},
+                        });
+                    } else {
+                        lib.addCSourceFiles(
+                            &.{"lib/regex_slim.c"},
+                            &.{"-std=c99"},
+                        );
+                    }
                     lib.linkLibC();
                     exe.linkLibrary(lib);
                     exe.addIncludePath(.{ .path = "lib" });

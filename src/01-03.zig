@@ -4,20 +4,20 @@ const std = @import("std");
 const builtin = @import("builtin");
 const fs = std.fs;
 const print = std.debug.print;
-
-const current_zig = builtin.zig_version;
+const is_zig_11 = builtin.zig_version.minor == 11;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    var iter_dir = if (comptime current_zig.minor == 11)
+    // There are API changes between 0.11.0 and master, so we need to use different APIs depending on the version.
+    var iter_dir = if (is_zig_11)
         try fs.cwd().openIterableDir(".", .{
             .no_follow = true, // `true` means it won't dereference the symlinks.
         })
     else
-        fs.cwd().openDir(".", .{ .iterate = true });
+        try fs.cwd().openDir("src", .{ .iterate = true });
     defer iter_dir.close();
 
     var walker = try iter_dir.walk(allocator);
@@ -29,7 +29,11 @@ pub fn main() !void {
             continue;
         }
 
-        const stat = try iter_dir.dir.statFile(entry.path);
+        const stat = if (is_zig_11)
+            try iter_dir.dir.statFile(entry.path)
+        else
+            try iter_dir.statFile(entry.path);
+
         const last_modified = stat.mtime;
         const duration = now - last_modified;
         if (duration < std.time.ns_per_hour * 24) {

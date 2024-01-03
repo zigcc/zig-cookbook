@@ -1,8 +1,12 @@
 const std = @import("std");
 const print = std.debug.print;
 const http = std.http;
+const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 pub fn main() !void {
+    if (!is_zig_11) {
+        return;
+    }
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
