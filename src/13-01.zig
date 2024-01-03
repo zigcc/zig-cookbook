@@ -1,8 +1,12 @@
 const std = @import("std");
-const simargs = @import("simargs");
 const print = std.debug.print;
+const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 pub fn main() !void {
+    if (is_zig_11) return;
+
+    // This example can't be compiled with zig 0.11
+    const simargs = @import("simargs");
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
