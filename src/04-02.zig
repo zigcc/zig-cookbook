@@ -2,6 +2,8 @@ const std = @import("std");
 const net = std.net;
 const print = std.debug.print;
 
+const select = @import("./select-address.zig");
+
 pub fn main() !void {
     var args = std.process.args();
     // The first (0 index) Argument is the path to the program.
@@ -12,7 +14,7 @@ pub fn main() !void {
     };
     const port = try std.fmt.parseInt(u16, port_value, 10);
 
-    const peer = try net.Address.parseIp6("::1", port);
+    const peer = try select.remoteAddress(port);
     // Connect to peer
     const stream = try net.tcpConnectToAddress(peer);
     defer stream.close();

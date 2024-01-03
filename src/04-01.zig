@@ -4,25 +4,26 @@
 //! echo "hello zig" | nc localhost <port>
 
 const std = @import("std");
-const net = std.net;
 const print = std.debug.print;
+const net = std.net;
+
+const select = @import("./select-address.zig");
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
-
-    const loopback = try net.Ip6Address.parse("::1", 0);
-    const localhost = net.Address{ .in6 = loopback };
+    const myAddr = try select.myAddress();
+    const textAddress: []const u8 = myAddr.textAddr;
     var server = net.StreamServer.init(net.StreamServer.Options{
         .reuse_port = true,
     });
     defer server.deinit();
 
-    try server.listen(localhost);
+    try server.listen(myAddr.local);
 
     const addr = server.listen_address;
-    print("Listening on {}, access this port to end the program\n", .{addr.getPort()});
+    print("Listening on {s}:{d}, access this port to end the program\n", .{textAddress, addr.getPort()});
 
     var client = try server.accept();
     defer client.stream.close();
