@@ -21,20 +21,13 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
-                if (!gt_zig_0_11) {
-                    // Those require zig master to run.
-                    if (std.mem.eql(u8, "13-01", name)) {
-                        continue;
-                    }
-                }
-
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
                     .root_source_file = .{ .path = try allocPrint(b.allocator, "src/{s}.zig", .{name}) },
                     .target = .{},
                     .optimize = .Debug,
                 });
-                if (std.mem.eql(u8, "13-01", name)) {
+                if (std.mem.eql(u8, "13-01", name) and gt_zig_0_11) {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.addModule("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {

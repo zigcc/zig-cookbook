@@ -28,8 +28,16 @@ jobs:
         uses: peaceiris/actions-mdbook@v1
         with:
           mdbook-version: "latest"
+      - name: Cache Cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin
+          key: pages-${{ runner.os }}
       - run: |
-          cargo install mdbook-last-changed
+          if ! command -v mdbook-last-changed; then
+            cargo install mdbook-last-changed
+          fi
           mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
