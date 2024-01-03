@@ -9,7 +9,7 @@ const print = std.debug.print;
 
 const ipVersion = 6; // Currently (december 2023), only 4 or 6
 
-inline fn myAddress() !struct { textAddr: []const u8, local: net.Address } {
+fn myAddress() !struct { textAddr: []const u8, local: net.Address } {
     if (ipVersion == 6) {
         const loopback = try net.Ip6Address.parse("::1", 0);
         const localhost = net.Address{ .in6 = loopback };
