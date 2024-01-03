@@ -14,7 +14,7 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
     const myAddr = try select.myAddress();
-    const textAddress: []const u8 = myAddr.textAddr;
+    const textAddress = myAddr.textAddr;
     var server = net.StreamServer.init(net.StreamServer.Options{
         .reuse_port = true,
     });
