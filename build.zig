@@ -9,13 +9,14 @@ pub fn build(b: *std.Build) !void {
     try addExample(b, run_all_step);
 }
 
-fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
+fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
     const gt_zig_0_11 = builtin.zig_version.minor > 11;
     const src_dir = if (gt_zig_0_11)
         try fs.cwd().openDir("src", .{ .iterate = true })
     else
         try fs.cwd().openIterableDir("src", .{});
 
+    const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
     while (try it.next()) |entry| {
         switch (entry.kind) {
@@ -24,18 +25,15 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
                     .root_source_file = .{ .path = try allocPrint(b.allocator, "src/{s}.zig", .{name}) },
-                    .target = .{},
+                    .target = target,
                     .optimize = .Debug,
                 });
                 if (std.mem.eql(u8, "13-01", name) and gt_zig_0_11) {
                     const zigcli = b.dependency("zigcli", .{});
-                    exe.addModule("simargs", zigcli.module("simargs"));
+                    exe.root_module.addImport("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
                     exe.linkSystemLibrary("sqlite3");
                     exe.linkLibC();
-                    // const sqlite = b.dependency("sqlite", .{});
-                    // exe.addModule("sqlite", sqlite.module("sqlite"));
-                    // exe.linkLibrary(sqlite.artifact("sqlite"));
                 } else if (std.mem.eql(u8, "14-02", name)) {
                     exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
@@ -43,7 +41,7 @@ fn addExample(b: *std.Build, run_all: *std.build.Step) !void {
                     const lib = b.addStaticLibrary(.{
                         .name = "regex_slim",
                         .optimize = .Debug,
-                        .target = .{},
+                        .target = target,
                     });
                     lib.addIncludePath(.{ .path = "lib" });
                     if (gt_zig_0_11) {

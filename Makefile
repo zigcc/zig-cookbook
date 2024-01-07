@@ -29,4 +29,4 @@ endif
 
 .PHONY: clean
 clean:
-	rm -f zig-out zig-cache
+	rm -rf zig-out zig-cache

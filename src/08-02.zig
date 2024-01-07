@@ -32,7 +32,7 @@ pub fn main() !void {
     try child.collectOutput(&stdout, &stderr, 1024);
     const term = try child.wait();
 
-    try std.testing.expectEqual(term, .{ .Exited = 0 });
+    try std.testing.expectEqual(term.Exited, 0);
     try std.testing.expectEqualStrings("hello world", stdout.items);
     try std.testing.expectEqualStrings("", stderr.items);
 }
