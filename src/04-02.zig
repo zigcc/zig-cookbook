@@ -23,6 +23,6 @@ pub fn main() !void {
     var writer = stream.writer();
     const size = try writer.write(data);
     print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, size });
-    // Or just using `stream.writeAll`
-    // try stream.writer().writeAll("hello zig");
+    // Or just using `writer.writeAll`
+    // try writer.writeAll("hello zig");
 }
