@@ -33,6 +33,7 @@
 - [Concurrency]()
 
   - [Explicit Threads](./07-01-spawn.md)
+  - [Pass Data](./07-02-pass-data.md)
 
 - [Operating System]()
 
