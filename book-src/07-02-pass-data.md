@@ -46,13 +46,5 @@ All 1 tests passed.
 {{#include ../src/07-02-04.zig}}
 ```
 
-### Channel
-
-```zig
-{{#include ../src/07-02-05.zig}}
-```
-**Note*: Because [`event.Channel`] is still being updated and the required `async` feature has not yet been added, I wrote a simulated channel to implement this functionality.
-
 [`std.thread`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread
 [`std.thread.spawn`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.spawn
-[`event.Channel`]: https://ziglang.org/documentation/0.11.0/std/#A;std:event.Channel
