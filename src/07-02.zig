@@ -10,59 +10,38 @@ const SharedData = struct {
 
     const Self = @This();
 
-    pub fn updateValue(self: *Self, increment: i32, max_iterations: usize) void {
+    pub fn updateValue(self: *Self, increment: i32) void {
         self.mutex.lock();
         defer self.mutex.unlock();
 
-        for (0..max_iterations) |_| {
-            self.value += increment;
-        }
-
-        std.debug.print("Thread {} updated value to {}\n", .{ Thread.getCurrentId(), self.value });
+        self.value += increment;
     }
 
     // tryUpdateValue attempts to update the value, but returns false if it can't
-    pub fn tryUpdateValue(self: *Self, increment: i32, max_iterations: usize) bool {
+    pub fn tryUpdateValue(self: *Self, increment: i32) bool {
         if (!self.mutex.tryLock()) {
             return false; // if we can't lock the mutex, return false
         }
-
         defer self.mutex.unlock();
 
-        for (0..max_iterations) |_| {
-            self.value += increment;
-        }
-
-        // while loop
-        // var start_index: usize = 0;
-        // while (start_index < max_iterations) : (start_index += 1) {
-        //     self.value += increment;
-        // }
-
+        self.value += increment;
         return true;
     }
 };
 
 // 1. pass data by multiple arguments
-fn threadFuncMultipleArgs(shared_data: *SharedData, increment: i32, max_iterations: usize) void {
-    // Get current thread id
-    std.debug.print("Thread {} locked mutex, current value is: {}\n", .{ Thread.getCurrentId(), shared_data.value });
-
-    shared_data.updateValue(increment, max_iterations);
+fn threadFuncMultipleArgs(
+    shared_data: *SharedData,
+    increment: i32,
+) void {
+    shared_data.updateValue(increment);
 }
 
 // 2. pass data by a single struct argument
-const ThreadFuncArgs = struct {
-    shared_data: *SharedData,
-    increment: i32,
-    max_iterations: usize,
-};
+const ThreadFuncArgs = struct { shared_data: *SharedData, increment: i32 };
 
 fn threadFunc(args: ThreadFuncArgs) void {
-    // Get current thread id
-    std.debug.print("Thread {} locked mutex, current value is: {}\n", .{ Thread.getCurrentId(), args.shared_data.value });
-
-    args.shared_data.updateValue(args.increment, args.max_iterations);
+    args.shared_data.updateValue(args.increment);
 }
 
 pub fn main() !void {
@@ -78,13 +57,11 @@ pub fn main() !void {
     const threadArgs1 = ThreadFuncArgs{
         .shared_data = &shared_data,
         .increment = 1,
-        .max_iterations = 1000,
     };
 
     const threadArgs2 = ThreadFuncArgs{
         .shared_data = &shared_data,
         .increment = 3,
-        .max_iterations = 1000,
     };
 
     const thread1 = try spawn(threadConfig, threadFunc, .{
@@ -95,8 +72,6 @@ pub fn main() !void {
 
     thread1.join();
     thread2.join();
-
-    std.debug.print("Final value: {}\n", .{shared_data.value});
 }
 
 test "test threadFunc updates shared data correctly" {
@@ -108,10 +83,9 @@ test "test threadFunc updates shared data correctly" {
     const thread = try spawn(.{}, threadFuncMultipleArgs, .{
         &shared_data,
         1,
-        50,
     });
 
     thread.join();
 
-    try std.testing.expectEqual(shared_data.value, 50);
+    try std.testing.expectEqual(shared_data.value, 1);
 }
