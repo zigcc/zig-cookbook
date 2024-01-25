@@ -33,6 +33,7 @@
 - [Concurrency]()
 
   - [Explicit Threads](./07-01-spawn.md)
+  - [Shared Data](./07-02-shared-data.md)
 
 - [Operating System]()
 
