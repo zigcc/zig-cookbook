@@ -27,6 +27,6 @@ pub fn main() !void {
         print("{d}--{s}\n", .{ line_no, line.items });
     } else |err| switch (err) {
         error.EndOfStream => {}, // Continue on
-        else => |e| return e, // Propagate error
+        else => return err, // Propagate error
     }
 }
