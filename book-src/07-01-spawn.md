@@ -5,6 +5,8 @@ The example uses [`std.Thread`] for concurrent and parallel programming.
 
 This example splits the array in half and performs the work in separate threads.
 
+> Note: In order to ensure `t1` thread is completed when spawn `t2` fails, we `defer t1.join()` immediately after spawn `t1`.
+
 ```zig
 {{#include ../src/07-01.zig }}
 ```

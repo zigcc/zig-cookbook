@@ -19,9 +19,12 @@ const SharedData = struct {
 
 pub fn main() !void {
     var shared_data = SharedData{ .mutex = Mutex{}, .value = 0 };
-    const t1 = try Thread.spawn(.{}, SharedData.updateValue, .{ &shared_data, 1 });
-    const t2 = try Thread.spawn(.{}, SharedData.updateValue, .{ &shared_data, 2 });
-    t1.join();
-    t2.join();
+    // This block is necessary to ensure that all threads are joined before proceeding.
+    {
+        const t1 = try Thread.spawn(.{}, SharedData.updateValue, .{ &shared_data, 1 });
+        defer t1.join();
+        const t2 = try Thread.spawn(.{}, SharedData.updateValue, .{ &shared_data, 2 });
+        defer t2.join();
+    }
     try std.testing.expectEqual(shared_data.value, 300);
 }

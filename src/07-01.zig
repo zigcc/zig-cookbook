@@ -24,12 +24,14 @@ fn findMax(max_value: *i32, values: []i32) !void {
     const right = values[mid..];
 
     var left_max: i32 = undefined;
-    const t1 = try std.Thread.spawn(.{}, findMax, .{ &left_max, left });
     var right_max: i32 = undefined;
-    const t2 = try std.Thread.spawn(.{}, findMax, .{ &right_max, right });
-
-    t1.join();
-    t2.join();
+    // This block is necessary to ensure that all threads are joined before proceeding.
+    {
+        const t1 = try std.Thread.spawn(.{}, findMax, .{ &left_max, left });
+        defer t1.join();
+        const t2 = try std.Thread.spawn(.{}, findMax, .{ &right_max, right });
+        defer t2.join();
+    }
 
     max_value.* = @max(left_max, right_max);
 }
