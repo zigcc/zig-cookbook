@@ -35,6 +35,21 @@ fn LinkedList(comptime T:type) type{
 				head = h.next;
 			}
 		}
+		
+		fn search(self:*Self,value:T) bool{
+			var head:?*Node = self.root;
+			var found:bool = false;
+			while(head) |h|{
+			
+				if(h.data==value){
+					found=true;
+					break;
+				}
+				     
+				head = h.next;
+			}
+			return found;
+		}
 		 
 		fn print(self:*Self,comptime printFunc:fn(object:T)void) void {
 			var node = self.root;
@@ -66,39 +81,27 @@ fn LinkedList(comptime T:type) type{
 	};
 }
 
-
-const Book = struct{
-	name:[]const u8,
-	price:f32,
-};
-
 pub fn main() !void{
 	var alc = std.heap.page_allocator;
 
+	//create linked list
 	var nos = LinkedList(u32).init(alc);
 	defer nos.deinit();
 	
+	//add nodes
 	try nos.add(32);
 	try nos.add(20);
 	try nos.add(21);
 	
-	nos.print(printNos);
+	nos.print(print_numbers);
 	
-	var list = LinkedList(Book).init(alc);
-	defer list.deinit();
-	     
-	try list.add(Book{.name="PHP",.price=232.2});
-	try list.add(Book{.name="Java",.price=82.2});
-
-	  
-	list.print(printFunction);
+	//search
+	const no_found:bool = nos.search(20);
+	std.debug.print("{}",.{no_found});
 }
 
-fn printNos(no:u32) void {
+fn print_numbers(no:u32) void {
 	std.debug.print("{d}\n",.{no});
 }
 
-fn printFunction (book:Book) void {
-		std.debug.print("{s} {d:3.2}\n",.{book.name,book.price});
-}
  
