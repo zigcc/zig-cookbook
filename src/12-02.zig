@@ -48,7 +48,7 @@ fn LinkedList(comptime T: type) type {
         }
 
         fn print(self: *Self, comptime printFunc: fn (object: T) void) void {
-            var node = self.root;
+            var head = self.root;
             while (node) |n| {
                 printFunc(n.data);
                 node = n.next;
