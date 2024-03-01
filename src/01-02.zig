@@ -1,6 +1,7 @@
 const std = @import("std");
 const fs = std.fs;
 const print = std.debug.print;
+const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 const filename = "/tmp/zig-cookbook-01-02.txt";
 const file_size = 4096;
@@ -22,21 +23,22 @@ pub fn main() !void {
     try file.setEndPos(file_size);
 
     const md = try file.metadata();
-    print("File size: {d}\n", .{md.size()});
+    try std.testing.expectEqual(md.size(), file_size);
 
     const ptr = try std.os.mmap(
         null,
         20,
         std.os.PROT.READ | std.os.PROT.WRITE,
-        std.os.MAP.PRIVATE,
+        if (is_zig_11) std.os.MAP.PRIVATE else .{ .TYPE = .PRIVATE },
         file.handle,
         0,
     );
     defer std.os.munmap(ptr);
 
     // Write file via mmap
-    std.mem.copyForwards(u8, ptr, "hello zig cookbook");
+    const body = "hello zig cookbook";
+    std.mem.copyForwards(u8, ptr, body);
 
     // Read file via mmap
-    print("File body: {s}\n", .{ptr});
+    try std.testing.expectEqualStrings(body, ptr[0..body.len]);
 }
