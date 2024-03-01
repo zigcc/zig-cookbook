@@ -9,7 +9,6 @@ fn LinkedList(comptime T: type) type {
         };
 
         root: ?*Node = null,
-
         allocator: Allocator,
         const Self = @This();
 
