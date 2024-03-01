@@ -7,7 +7,6 @@ fn LinkedList(comptime T: type) type {
             data: T,
             next: ?*Node = null,
         };
-
         root: ?*Node = null,
         allocator: Allocator,
         const Self = @This();
@@ -25,33 +24,31 @@ fn LinkedList(comptime T: type) type {
             }
 
             var head: ?*Node = self.root;
-            while (head.next) |h| {
+            while (head) |h| {
+                if (h.next == null) {
+                    h.next = node;
+                    return;
+                }
                 head = h.next;
             }
-            
-            head.next = node;
-
         }
 
         fn search(self: *Self, value: T) bool {
             var head: ?*Node = self.root;
-            var found: bool = false;
             while (head) |h| {
                 if (h.data == value) {
-                    found = true;
-                    break;
+                    return true;
                 }
-
                 head = h.next;
             }
-            return found;
+            return false;
         }
 
         fn print(self: *Self, comptime printFunc: fn (object: T) void) void {
             var head = self.root;
-            while (node) |n| {
+            while (head) |n| {
                 printFunc(n.data);
-                node = n.next;
+                head = n.next;
             }
         }
 
