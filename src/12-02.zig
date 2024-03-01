@@ -26,14 +26,12 @@ fn LinkedList(comptime T: type) type {
             }
 
             var head: ?*Node = self.root;
-            while (head) |h| {
-                if (h.next == null) {
-                    h.next = node;
-                    return;
-                }
-
+            while (head.next) |h| {
                 head = h.next;
             }
+            
+            head.next = node;
+
         }
 
         fn search(self: *Self, value: T) bool {
