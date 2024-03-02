@@ -16,7 +16,7 @@ fn LinkedList(comptime T: type) type {
         }
 
         fn add(self: *Self, value: T) !void {
-            var node = try self.allocator.create(Node);
+            const node = try self.allocator.create(Node);
             node.* = Node{ .data = value };
             if (self.root == null) {
                 self.root = node;
@@ -75,7 +75,7 @@ fn LinkedList(comptime T: type) type {
 }
 
 pub fn main() !void {
-    var alc = std.heap.page_allocator;
+    const alc = std.heap.page_allocator;
 
     //create linked list
     var nos = LinkedList(u32).init(alc);
