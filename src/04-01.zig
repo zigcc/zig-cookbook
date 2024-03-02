@@ -16,7 +16,7 @@ pub fn main() !void {
     const loopback = try net.Ip4Address.parse("127.0.0.1", 0);
     const localhost = net.Address{ .in = loopback };
     var server = if (is_zig_11) blk: {
-        const server = net.StreamServer.init(.{
+        var server = net.StreamServer.init(.{
             .reuse_port = true,
         });
         try server.listen(localhost);
