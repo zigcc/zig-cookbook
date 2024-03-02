@@ -8,32 +8,42 @@ pub fn main() !void {
     defer _ = gpa.deinit();
     const allocator = gpa.allocator();
 
-    var headers = http.Headers{ .allocator = allocator };
-    defer headers.deinit();
-
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
     const uri = try std.Uri.parse("http://httpbin.org/headers");
     var req = if (is_zig_11) blk: {
+        var headers = http.Headers{ .allocator = allocator };
+        defer headers.deinit();
+
         var req = try client.request(.GET, uri, headers, .{});
         errdefer req.deinit();
 
         try req.start();
+        try req.wait();
+        print("Headers:\n{}\n", .{req.response.headers});
         break :blk req;
     } else blk: {
-        var req = try client.open(.GET, uri, headers, .{});
+        const buf = try allocator.alloc(u8, 1024 * 1024 * 4);
+        defer allocator.free(buf);
+        var req = try client.open(.GET, uri, .{
+            .server_header_buffer = buf,
+        });
         errdefer req.deinit();
 
         try req.send(.{});
+        try req.finish();
+        try req.wait();
+
+        var iter = req.response.iterateHeaders();
+        while (iter.next()) |header| {
+            std.debug.print("Name:{s}, Value:{s}\n", .{ header.name, header.value });
+        }
         break :blk req;
     };
     defer req.deinit();
 
-    try req.wait();
-
     try std.testing.expectEqual(req.response.status, .ok);
-    print("Headers:\n{}\n", .{req.response.headers});
 
     var rdr = req.reader();
     const body = try rdr.readAllAlloc(allocator, 1024 * 1024 * 4);

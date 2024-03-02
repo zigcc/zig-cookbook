@@ -6,6 +6,7 @@
 const std = @import("std");
 const net = std.net;
 const print = std.debug.print;
+const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
@@ -14,12 +15,19 @@ pub fn main() !void {
 
     const loopback = try net.Ip4Address.parse("127.0.0.1", 0);
     const localhost = net.Address{ .in = loopback };
-    var server = net.StreamServer.init(net.StreamServer.Options{
-        .reuse_port = true,
-    });
+    var server = if (is_zig_11) blk: {
+        var server = net.StreamServer.init(.{
+            .reuse_port = true,
+        });
+        try server.listen(localhost);
+        break :blk server;
+    } else blk: {
+        const server = try localhost.listen(.{
+            .reuse_port = true,
+        });
+        break :blk server;
+    };
     defer server.deinit();
-
-    try server.listen(localhost);
 
     const addr = server.listen_address;
     print("Listening on {}, access this port to end the program\n", .{addr.getPort()});

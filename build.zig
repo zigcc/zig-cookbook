@@ -10,8 +10,8 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const gt_zig_0_11 = builtin.zig_version.minor > 11;
-    const src_dir = if (gt_zig_0_11)
+    const is_latest_zig = builtin.zig_version.minor > 11;
+    const src_dir = if (is_latest_zig)
         try fs.cwd().openDir("src", .{ .iterate = true })
     else
         try fs.cwd().openIterableDir("src", .{});
@@ -28,7 +28,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     .target = target,
                     .optimize = .Debug,
                 });
-                if (std.mem.eql(u8, "13-01", name) and gt_zig_0_11) {
+                if (std.mem.eql(u8, "13-01", name) and is_latest_zig) {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.root_module.addImport("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
@@ -44,7 +44,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                         .target = target,
                     });
                     lib.addIncludePath(.{ .path = "lib" });
-                    if (gt_zig_0_11) {
+                    if (is_latest_zig) {
                         lib.addCSourceFiles(.{
                             .files = &.{"lib/regex_slim.c"},
                             .flags = &.{"-std=c99"},
@@ -61,6 +61,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     exe.linkLibC();
                 }
 
+                b.installArtifact(exe);
                 const run_cmd = b.addRunArtifact(exe);
                 if (b.args) |args| {
                     run_cmd.addArgs(args);
