@@ -3,6 +3,7 @@
 ///
 ///
 const std = @import("std");
+const Allocator = std.mem.Allocator;
 const c = @cImport({
     @cInclude("mysql.h");
 });
@@ -19,6 +20,7 @@ pub const DB_INFO = struct {
 
 pub const DB = struct {
     conn: *c.MYSQL,
+    allocator: Allocator,
 
     fn init(db_info: DB_INFO) !DB {
         const db = c.mysql_init(null);
@@ -40,7 +42,7 @@ pub const DB = struct {
             return error.connectError;
         }
 
-        return .{ .conn = db };
+        return .{ .conn = db, .allocator = std.heap.page_allocator };
     }
 
     fn deinit(self: DB) void {
@@ -103,7 +105,7 @@ pub const DB = struct {
             },
         };
 
-        const insert_color_stmt = blk: {
+        const insert_color_stmt: *c.MYSQL_STMT = blk: {
             const stmt: ?*c.MYSQL_STMT = c.mysql_stmt_init(self.conn);
             const insert_color_query = "INSERT INTO cat_colors (name) values (?)";
 
@@ -118,9 +120,9 @@ pub const DB = struct {
             break :blk stmt.?;
         };
 
-        const insert_cat_stmt = blk: {
+        const insert_cat_stmt: *c.MYSQL_STMT = blk: {
             const stmt: ?*c.MYSQL_STMT = c.mysql_stmt_init(self.conn);
-            const insert_cat_query = "INSERT INTO cats (name) values (?)";
+            const insert_cat_query = "INSERT INTO cats (name, color_id) values (?, ?)";
 
             defer _ = c.mysql_stmt_close(stmt);
 
@@ -137,16 +139,21 @@ pub const DB = struct {
             const color = row.@"0";
             const cat_names = row.@"1";
 
-            var bind: *c.MYSQL_BIND = undefined;
-            bind.buffer = @constCast(color);
+            const bf = @as(?*anyopaque, @ptrCast(@as([*c]u8, @ptrCast(@constCast(@alignCast(color))))));
+            var bind: [*c]c.MYSQL_BIND = @as([*c]c.MYSQL_BIND, @ptrCast(@alignCast(c.malloc(@sizeOf(c.MYSQL_BIND) *% @as(c_ulong, 1)))));
 
-            if (!c.mysql_stmt_bind_param(insert_color_stmt, bind)) {
+            bind[0].buffer_type = c.MYSQL_TYPE_STRING;
+            bind[0].length = (@as(c_ulong, 1));
+            bind[0].is_null = 0;
+            bind[0].buffer = bf;
+
+            if (c.mysql_stmt_bind_param(insert_color_stmt, bind)) {
                 print("Bind param failed: {s}\n", .{c.mysql_error(self.conn)});
 
                 return error.bindParamError;
             }
 
-            if (c.mysql_stmt_execute(insert_color_stmt) != 0) {
+            if (c.mysql_stmt_execute(insert_color_stmt) == 0) {
                 print("Exec stmt failed: {s}\n", .{c.mysql_error(self.conn)});
 
                 return error.execStmtError;
@@ -154,13 +161,25 @@ pub const DB = struct {
 
             _ = c.mysql_stmt_reset(insert_color_stmt);
 
-            // const last_id = c.mysql_insert_id(self.conn);
+            const last_id = c.mysql_insert_id(self.conn);
 
             inline for (cat_names) |cat_name| {
-                var params: *c.MYSQL_BIND = undefined;
-                params.buffer = @constCast(cat_name);
+                var bindParams: [*c]c.MYSQL_BIND = @as([*c]c.MYSQL_BIND, @ptrCast(@alignCast(c.malloc(@sizeOf(c.MYSQL_BIND) *% @as(c_ulong, 2)))));
 
-                if (!c.mysql_stmt_bind_param(insert_cat_stmt, params)) {
+                const cat_name_buf = @as(?*anyopaque, @ptrCast(@as([*c]u8, @ptrCast(@constCast(@alignCast(cat_name))))));
+                const last_id_buf = @as(?*anyopaque, @ptrCast(@as([*c]u8, @ptrCast(@constCast(@alignCast(&last_id))))));
+
+                bindParams[0].buffer_type = c.MYSQL_TYPE_STRING;
+                bindParams[0].length = (@as(c_ulong, 1));
+                bindParams[0].is_null = 0;
+                bindParams[0].buffer = cat_name_buf;
+
+                bindParams[1].buffer_type = c.MYSQL_TYPE_STRING;
+                bindParams[1].length = (@as(c_ulong, 1));
+                bindParams[1].is_null = 0;
+                bindParams[1].buffer = last_id_buf;
+
+                if (c.mysql_stmt_bind_param(insert_cat_stmt, bindParams)) {
                     print("Bind param failed: {s}\n", .{c.mysql_error(self.conn)});
 
                     return error.bindParamError;
