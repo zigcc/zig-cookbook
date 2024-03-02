@@ -7,92 +7,143 @@ fn LinkedList(comptime T: type) type {
             data: T,
             next: ?*Node = null,
         };
-        root: ?*Node = null,
-        allocator: Allocator,
         const Self = @This();
 
+        head: ?*Node = null,
+        tail: ?*Node = null,
+        len: usize = 0,
+        allocator: Allocator,
+
         fn init(allocator: Allocator) Self {
-            return Self{ .allocator = allocator };
+            return .{ .allocator = allocator };
         }
 
         fn add(self: *Self, value: T) !void {
             const node = try self.allocator.create(Node);
-            node.* = Node{ .data = value };
-            if (self.root == null) {
-                self.root = node;
-                return;
+            node.* = .{ .data = value };
+
+            if (self.tail) |*tail| {
+                tail.*.next = node;
+                tail.* = node;
+            } else {
+                self.head = node;
+                self.tail = node;
             }
 
-            var head: ?*Node = self.root;
-            while (head) |h| {
-                if (h.next == null) {
-                    h.next = node;
-                    return;
-                }
-                head = h.next;
+            self.len += 1;
+        }
+
+        fn remove(self: *Self, value: T) bool {
+            if (self.head == null) {
+                return false;
             }
+
+            // In this loop, we are trying to find the node that contains the value.
+            // We need to keep track of the previous node to update the tail pointer if necessary.
+            var current = self.head;
+            var previous: ?*Node = null;
+            while (current) |cur| : (current = cur.next) {
+                if (cur.data == value) {
+                    // If the current node is the head, point head to the next node.
+                    if (self.head.? == cur) {
+                        self.head = cur.next;
+                    }
+                    // If the current node is the tail, point tail to its previous node.
+                    if (self.tail.? == cur) {
+                        self.tail = previous;
+                    }
+                    // Skip the current node and update the previous node to point to the next node.
+                    if (previous) |*prev| {
+                        prev.*.next = cur.next;
+                    }
+                    self.allocator.destroy(cur);
+                    self.len -= 1;
+                    return true;
+                }
+
+                previous = cur;
+            }
+
+            return false;
         }
 
         fn search(self: *Self, value: T) bool {
-            var head: ?*Node = self.root;
-            while (head) |h| {
+            var head: ?*Node = self.head;
+            while (head) |h| : (head = h.next) {
                 if (h.data == value) {
                     return true;
                 }
-                head = h.next;
             }
             return false;
         }
 
-        fn print(self: *Self, comptime printFunc: fn (object: T) void) void {
-            var head = self.root;
-            while (head) |n| {
-                printFunc(n.data);
+        fn visit(self: *Self, visitor: *const fn (i: usize, v: T) anyerror!void) !void {
+            var head = self.head;
+            var i: usize = 0;
+            while (head) |n| : (i += 1) {
+                try visitor(i, n.data);
                 head = n.next;
             }
         }
 
         fn deinit(self: *Self) void {
-            const alc = self.allocator;
-            var node = self.root;
-            while (node) |n| {
-                const addr = n.next;
-                alc.destroy(n);
-                node = addr;
+            var current = self.head;
+            while (current) |n| {
+                const next = n.next;
+                self.allocator.destroy(n);
+                current = next;
             }
-        }
-
-        fn count(self: *Self) usize {
-            var counter: usize = 0;
-            var node = self.root;
-            while (node) |n| {
-                counter += 1;
-                node = n.next;
-            }
-            return counter;
+            self.head = null;
+            self.tail = null;
         }
     };
 }
 
 pub fn main() !void {
-    const alc = std.heap.page_allocator;
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const allocator = gpa.allocator();
 
-    //create linked list
-    var nos = LinkedList(u32).init(alc);
-    defer nos.deinit();
+    var lst = LinkedList(u32).init(allocator);
+    defer lst.deinit();
 
-    //add nodes
-    try nos.add(32);
-    try nos.add(20);
-    try nos.add(21);
+    const values = [_]u32{ 32, 20, 21 };
+    for (values) |v| {
+        try lst.add(v);
+    }
 
-    nos.print(print_numbers);
+    try std.testing.expectEqual(lst.len, values.len);
 
-    //search
-    const no_found: bool = nos.search(20);
-    std.debug.print("{}", .{no_found});
-}
+    try lst.visit(struct {
+        fn visitor(i: usize, v: u32) !void {
+            try std.testing.expectEqual(values[i], v);
+        }
+    }.visitor);
 
-fn print_numbers(no: u32) void {
-    std.debug.print("{d}\n", .{no});
+    try std.testing.expect(lst.search(20));
+
+    // Test delete head
+    try std.testing.expect(lst.remove(32));
+    try lst.visit(struct {
+        fn visitor(i: usize, v: u32) !void {
+            try std.testing.expectEqual(([_]u32{ 20, 21 })[i], v);
+        }
+    }.visitor);
+
+    // Test delete tail
+    try std.testing.expect(lst.remove(21));
+    try lst.visit(struct {
+        fn visitor(i: usize, v: u32) !void {
+            try std.testing.expectEqual(([_]u32{20})[i], v);
+        }
+    }.visitor);
+
+    // Test delete head and tail at the same time
+    try std.testing.expect(lst.remove(20));
+    try lst.visit(struct {
+        fn visitor(_: usize, _: u32) !void {
+            unreachable;
+        }
+    }.visitor);
+    try std.testing.expectEqual(lst.len, 0);
 }

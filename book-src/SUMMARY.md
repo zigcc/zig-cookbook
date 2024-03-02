@@ -56,6 +56,7 @@
 - [Data Structures]()
 
   - [Bitfield](./12-01-bitfield.md)
+  - [Singly Linked List](./12-02-singly-linked-list.md)
 
 - [Command line]()
 
