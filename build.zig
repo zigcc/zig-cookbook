@@ -37,6 +37,9 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 } else if (std.mem.eql(u8, "14-02", name)) {
                     exe.linkSystemLibrary("libpq");
                     exe.linkLibC();
+                } else if (std.mem.eql(u8, "14-03", name)) {
+                    exe.linkSystemLibrary("mysqlclient");
+                    exe.linkLibC();
                 } else if (std.mem.eql(u8, "15-01", name)) {
                     const lib = b.addStaticLibrary(.{
                         .name = "regex_slim",
