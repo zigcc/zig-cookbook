@@ -54,10 +54,12 @@ jobs:
         run: |
           pkg-config --libs --cflags libpq
           zig fmt --check src/
+          zig build
           zig build run-all --summary all
 
       - name: Run examples(Windows)
         if: matrix.os == 'windows-latest'
         run: |
           zig.exe fmt --check src/
+          zig.exe build
           zig.exe build run-all --summary all

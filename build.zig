@@ -61,6 +61,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     exe.linkLibC();
                 }
 
+                b.installArtifact(exe);
                 const run_cmd = b.addRunArtifact(exe);
                 if (b.args) |args| {
                     run_cmd.addArgs(args);
