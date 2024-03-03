@@ -13,7 +13,7 @@ The list itself maintains:
 Operations that can be performed on doubly linked lists include:
 - Insertion at the end O(1), based on the `tail` pointer.
 - Insertion at arbitrary positions O(n), due to traversal requirements.
-- Deletion O(n), with improved efficiency compared to singly linked lists because it's easier to remove nodes without a full traversal.
+- Deletion O(n), with improved efficiency compared to singly linked lists because it could easily remove nodes in this list without a full traversal.
 - Traversal from either end O(n), providing flexibility in how the list is navigated.
 
 
