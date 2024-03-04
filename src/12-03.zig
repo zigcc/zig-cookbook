@@ -38,6 +38,55 @@ fn DoubleLinkedList(comptime T: type) type {
             self.len += 1;
         }
 
+        // Insertion at arbitrary positions O(n), due to traversal requirements.
+        fn insertAt(self: *Self, position: usize, value: T) !void {
+            const node = try self.allocator.create(Node);
+            node.* = Node{
+                .data = value,
+                .prev = null,
+                .next = null,
+            };
+
+            if (position == 0) {
+                if (self.head) |head| {
+                    node.next = head;
+                    head.prev = node;
+                } else {
+                    self.tail = node;
+                }
+                self.head = node;
+            } else {
+                var current: ?*Node = self.head;
+                var index: usize = 0;
+
+                while (current) |cur| : (current = cur.next) {
+                    if (index + 1 == position) {
+                        node.next = cur.next;
+                        node.prev = cur;
+
+                        if (cur.next) |next| {
+                            next.prev = node;
+                        } else {
+                            // if the current node is the last node
+                            self.tail = node;
+                        }
+                        cur.next = node;
+
+                        break;
+                    }
+
+                    index += 1;
+                }
+
+                if (index + 1 != position) {
+                    self.allocator.destroy(node);
+                    return error.OutOfRange;
+                }
+            }
+
+            self.len += 1;
+        }
+
         fn remove(self: *Self, value: T) bool {
             var current = self.head;
 
@@ -101,8 +150,10 @@ fn DoubleLinkedList(comptime T: type) type {
         fn deinit(self: *Self) void {
             var current: ?*Node = self.head;
 
-            while (current) |cur| : (current = cur.next) {
+            while (current) |cur| {
+                var next = cur.next;
                 self.allocator.destroy(cur);
+                current = next;
             }
 
             self.head = null;
@@ -158,7 +209,7 @@ pub fn main() !void {
         }
     }.visitor);
 
-    // delete first and last concurrently
+    // delete first and last together
     try std.testing.expect(list.remove(2));
     try std.testing.expect(list.remove(4));
     try list.visit(struct {
@@ -167,7 +218,21 @@ pub fn main() !void {
         }
     }.visitor);
 
+    // insert at the beginning, last, and middle
+    try list.insertAt(0, 1);
+    try list.insertAt(1, 2);
+    try list.insertAt(3, 4);
+
+    try list.visit(struct {
+        fn visitor(i: usize, v: u32) !void {
+            try std.testing.expectEqual(([_]u32{ 1, 2, 3, 4 })[i], v);
+        }
+    }.visitor);
+
     // delete all
+    try std.testing.expect(list.remove(1));
+    try std.testing.expect(list.remove(2));
+    try std.testing.expect(list.remove(4));
     try std.testing.expect(list.remove(3));
     try list.visit(struct {
         fn visitor(_: usize, _: u32) !void {
