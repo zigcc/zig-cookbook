@@ -59,7 +59,8 @@ jobs:
       - name: Set pkg-config(macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig:$(brew --prefix)/opt/mysql-client/lib/pkgconfig:" >> ${GITHUB_ENV}
+          prefix=$(brew --prefix)
+          echo "PKG_CONFIG_PATH=${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
       - name: Hack
         if: matrix.zig == '0.11.0'
         run: |

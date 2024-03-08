@@ -1,7 +1,6 @@
-/// MySQL API demo
-/// https://dev.mysql.com/doc/c-api/8.0/en/
-///
-///
+//! MySQL 8.0 API demo
+//! https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html
+//!
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 const c = @cImport({
