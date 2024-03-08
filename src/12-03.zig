@@ -151,8 +151,9 @@ fn DoubleLinkedList(comptime T: type) type {
             var current: ?*Node = self.head;
 
             while (current) |cur| {
-                var next = cur.next;
+                const next = cur.next;
                 self.allocator.destroy(cur);
+
                 current = next;
             }
 
