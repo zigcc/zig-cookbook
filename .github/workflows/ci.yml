@@ -36,13 +36,21 @@ jobs:
           password: postgres
           database: postgres
           port: 5432
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '8.0'
+          mysql database: 'public'
+          mysql root password: 123
+          mysql user: 'developer'
       - name: Install deps
         run: |
           make install-deps
       - name: Set pkg-config(macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig" >> ${GITHUB_ENV}
+          echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig:$(brew --prefix)/opt/mysql-client/lib/pkgconfig:" >> ${GITHUB_ENV}
       - name: Hack
         if: matrix.zig == '0.11.0'
         run: |

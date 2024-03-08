@@ -9,12 +9,13 @@ const c = @cImport({
 });
 const exit = std.os.exit;
 const print = std.debug.print;
+const err = std.log.err;
 
 pub const DB_INFO = struct {
-    host: [:0]const u8 = "localhost",
-    user: [:0]const u8 = "root",
-    password: [:0]const u8 = "password",
-    database: [:0]const u8 = "test",
+    host: [:0]const u8,
+    user: [:0]const u8,
+    password: [:0]const u8,
+    database: [:0]const u8,
     port: u32 = 3306,
 };
 
@@ -37,8 +38,9 @@ pub const DB = struct {
             db_info.database,
             db_info.port,
             null,
-            0,
+            c.CLIENT_MULTI_STATEMENTS,
         ) == null) {
+            err("Connect to database failed: {s}\n", .{c.mysql_error(db)});
             return error.connectError;
         }
 
@@ -51,13 +53,9 @@ pub const DB = struct {
         return;
     }
 
-    fn execute(self: DB, query: [:0]const u8) !void {
-        var errorMessage: [*c]const u8 = undefined;
-
-        if (c.mysql_query(self.conn, query) != 0) {
-            errorMessage = c.mysql_error(self.conn);
-            print("Exec query failed: {s}\n", .{errorMessage});
-
+    fn execute(self: DB, query: []const u8) !void {
+        if (c.mysql_real_query(self.conn, query.ptr, query.len) != 0) {
+            err("Exec query failed: {s}\n", .{c.mysql_error(self.conn)});
             return error.execError;
         }
 
@@ -106,13 +104,17 @@ pub const DB = struct {
         };
 
         const insert_color_stmt: *c.MYSQL_STMT = blk: {
-            const stmt: ?*c.MYSQL_STMT = c.mysql_stmt_init(self.conn);
+            const stmt = c.mysql_stmt_init(self.conn);
             const insert_color_query = "INSERT INTO cat_colors (name) values (?)";
+            std.debug.print("stmt is {any}\n", .{stmt.?});
 
-            defer _ = c.mysql_stmt_close(stmt);
-
-            if (c.mysql_stmt_prepare(stmt, insert_color_query, insert_color_query.len) != 0) {
-                print("Prepare stmt failed: {s}\n", .{c.mysql_error(self.conn)});
+            // errdefer _ = c.mysql_stmt_close(stmt);
+            const result = c.mysql_stmt_prepare(stmt, insert_color_query, insert_color_query.len);
+            if (result != 0) {
+                print("Prepare stmt failed: code:{d}, msg:{s}\n", .{
+                    result,
+                    c.mysql_error(self.conn),
+                });
 
                 return error.prepareStmt;
             }
@@ -123,9 +125,7 @@ pub const DB = struct {
         const insert_cat_stmt: *c.MYSQL_STMT = blk: {
             const stmt: ?*c.MYSQL_STMT = c.mysql_stmt_init(self.conn);
             const insert_cat_query = "INSERT INTO cats (name, color_id) values (?, ?)";
-
-            defer _ = c.mysql_stmt_close(stmt);
-
+            errdefer _ = c.mysql_stmt_close(stmt);
             if (c.mysql_stmt_prepare(stmt, insert_cat_query, insert_cat_query.len) != 0) {
                 print("Prepare stmt failed: {s}\n", .{c.mysql_error(self.conn)});
 
@@ -139,17 +139,14 @@ pub const DB = struct {
             const color = row.@"0";
             const cat_names = row.@"1";
 
-            const bf = @as(?*anyopaque, @ptrCast(@as([*c]u8, @ptrCast(@constCast(@alignCast(color))))));
-            var bind: [*c]c.MYSQL_BIND = @as([*c]c.MYSQL_BIND, @ptrCast(@alignCast(c.malloc(@sizeOf(c.MYSQL_BIND) *% @as(c_ulong, 1)))));
+            var color_binds = [_]c.MYSQL_BIND{std.mem.zeroes(c.MYSQL_BIND)};
+            color_binds[0].buffer_type = c.MYSQL_TYPE_STRING;
+            color_binds[0].buffer_length = color.len;
+            color_binds[0].is_null = 0;
+            color_binds[0].buffer = @constCast(@ptrCast(&color));
 
-            bind[0].buffer_type = c.MYSQL_TYPE_STRING;
-            bind[0].length = (@as(c_ulong, 1));
-            bind[0].is_null = 0;
-            bind[0].buffer = bf;
-
-            if (c.mysql_stmt_bind_param(insert_color_stmt, bind)) {
+            if (c.mysql_stmt_bind_param(insert_color_stmt, &color_binds)) {
                 print("Bind param failed: {s}\n", .{c.mysql_error(self.conn)});
-
                 return error.bindParamError;
             }
 
@@ -204,11 +201,10 @@ pub fn main() !void {
     print("mysql version is {}\n", .{version});
 
     const info: DB_INFO = .{
-        .database = "test",
-        .host = "localhost",
+        .database = "public",
+        .host = "127.0.0.1",
         .user = "root",
-        .password = "1234",
-        .port = 3306,
+        .password = "123",
     };
 
     const db = try DB.init(info);
@@ -217,21 +213,24 @@ pub fn main() !void {
     try db.execute(
         \\ CREATE TABLE IF NOT EXISTS cat_colors (
         \\  id INT AUTO_INCREMENT PRIMARY KEY,
-        \\  name VARCHAR(255) NOT NULL UNIQUE
+        \\  name VARCHAR(255) NOT NULL
         \\);
-    );
-    try db.execute(
+        \\
         \\CREATE TABLE IF NOT EXISTS cats (
         \\  id INT AUTO_INCREMENT PRIMARY KEY,
         \\  name VARCHAR(255) NOT NULL,
-        \\  color_id INT NOT NULL,
-        \\  CONSTRAINT fk_color
-        \\    FOREIGN KEY (color_id) 
-        \\    REFERENCES cat_colors(id)
-        \\    ON DELETE RESTRICT
-        \\    ON UPDATE CASCADE
-        \\);
+        \\  color_id INT NOT NULL
+        \\)
     );
+    // Since we use multi-statement, we need to consume all results.
+    // Otherwise we will get following error when we execute next query.
+    // Commands out of sync; you can't run this command now
+    //
+    // https://dev.mysql.com/doc/c-api/8.0/en/mysql-next-result.html
+    while (c.mysql_next_result(db.conn) == 0) {
+        const res = c.mysql_store_result(db.conn);
+        c.mysql_free_result(res);
+    }
 
     try db.insertTable();
     try db.queryTable();
