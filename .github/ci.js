@@ -1,5 +1,9 @@
 #!/usr/bin/env node
 
+// Fork from https://github.com/ankane/setup-mysql/blob/v1/index.js#L50
+
+// TODO: this script failed on github now, see
+// https://github.com/zigcc/zig-cookbook/issues/54
 const execSync = require("child_process").execSync;
 const fs = require('fs');
 const os = require('os');

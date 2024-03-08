@@ -22,7 +22,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        # CI cannot run on macOS, see
+        # https://github.com/zigcc/zig-cookbook/issues/54
+        # os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         zig: [0.11.0, master]
     steps:
       - uses: actions/checkout@v4
