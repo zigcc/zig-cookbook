@@ -20,10 +20,10 @@ run:
 install-deps:
 ifeq ($(uname_S), Darwin)
 	# sqlite3 is preinstalled on macOS
-	brew install pkg-config libpq
+	brew install pkg-config libpq mysql-client
 endif
 ifeq ($(uname_S), Linux)
-	sudo apt install -y pkg-config libsqlite3-dev libpq-dev
+	sudo apt install -y pkg-config libsqlite3-dev libpq-dev libmysqlclient-dev
 endif
 
 

@@ -67,6 +67,7 @@
 
   - [SQLite](./14-01-sqlite.md)
   - [Postgres](./14-02-postgres.md)
+  - [MySQL](./14-03-mysql.md)
 
 - [Text Processing]()
   - [Regex Expressions](15-01-regex.md)

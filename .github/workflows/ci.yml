@@ -22,7 +22,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        # CI cannot run on macOS, see
+        # https://github.com/zigcc/zig-cookbook/issues/54
+        # os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         zig: [0.11.0, master]
     steps:
       - uses: actions/checkout@v4
@@ -36,13 +39,28 @@ jobs:
           password: postgres
           database: postgres
           port: 5432
+      - name: mysql for ubuntu
+        uses: mirromutth/mysql-action@v1.1
+        if: matrix.os == 'ubuntu-latest'
+        with:
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '8.0'
+          mysql database: 'public'
+          mysql root password: 123
+          mysql user: 'developer'
+      - name: mysql for macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          node .github/ci.js
       - name: Install deps
         run: |
           make install-deps
       - name: Set pkg-config(macOS)
         if: matrix.os == 'macos-latest'
         run: |
-          echo "PKG_CONFIG_PATH=$(brew --prefix)/opt/libpq/lib/pkgconfig" >> ${GITHUB_ENV}
+          prefix=$(brew --prefix)
+          echo "PKG_CONFIG_PATH=${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
       - name: Hack
         if: matrix.zig == '0.11.0'
         run: |
@@ -52,7 +70,7 @@ jobs:
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          pkg-config --libs --cflags libpq
+          pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
           zig build
           zig build run-all --summary all
