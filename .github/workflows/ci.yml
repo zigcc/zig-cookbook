@@ -36,7 +36,9 @@ jobs:
           password: postgres
           database: postgres
           port: 5432
-      - uses: mirromutth/mysql-action@v1.1
+      - name: mysql for ubuntu
+        uses: mirromutth/mysql-action@v1.1
+        if: matrix.os == 'ubuntu-latest'
         with:
           character set server: 'utf8'
           collation server: 'utf8_general_ci'
@@ -44,6 +46,10 @@ jobs:
           mysql database: 'public'
           mysql root password: 123
           mysql user: 'developer'
+      - name: mysql for macOS
+        if: matrix.os == 'macos-latest'
+        run: |
+          node .github/ci.js
       - name: Install deps
         run: |
           make install-deps
@@ -60,7 +66,7 @@ jobs:
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          pkg-config --libs --cflags libpq
+          pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
           zig build
           zig build run-all --summary all
