@@ -41,8 +41,8 @@ run(`${bin}/mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost'"`);
 run(`${bin}/mysql -e "FLUSH PRIVILEGES"`);
 
 // init
-run(`${bin}/mysqladmin -proot password '${rootPass}'`);
-run(`${bin}/mysqladmin create ${database}`);
+run(`${bin}/mysql -uroot -e "CREATE DATABASE ${database}"`);
+run(`${bin}/mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${rootPass}'; FLUSH PRIVILEGES;"`)
 
 // set path
 addToPath(bin);
