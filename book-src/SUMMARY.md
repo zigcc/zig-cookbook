@@ -63,7 +63,7 @@
   - [Argument Parsing](./13-01-argparse.md)
   - [ANSI Terminal]()
 
-- [Database]()
+- [Database](database.md)
 
   - [SQLite](./14-01-sqlite.md)
   - [Postgres](./14-02-postgres.md)

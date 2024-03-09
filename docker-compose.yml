@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  pg:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: "123"
+      MYSQL_DATABASE: public
+    ports:
+      - "3306:3306"
