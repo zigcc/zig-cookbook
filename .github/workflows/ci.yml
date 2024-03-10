@@ -44,7 +44,7 @@ jobs:
           collation server: 'utf8_general_ci'
           mysql version: '8.0'
           mysql database: 'public'
-          mysql root password: 123
+          mysql root password: 'password'
           mysql user: 'developer'
       - name: mysql for macOS
         if: matrix.os == 'macos-latest'

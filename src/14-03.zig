@@ -49,7 +49,6 @@ pub const DB = struct {
 
     fn deinit(self: DB) void {
         c.mysql_close(self.conn);
-        return;
     }
 
     fn execute(self: DB, query: []const u8) !void {
@@ -57,8 +56,6 @@ pub const DB = struct {
             print("Exec query failed: {s}\n", .{c.mysql_error(self.conn)});
             return error.execError;
         }
-
-        return;
     }
 
     fn queryTable(self: DB) !void {
@@ -83,7 +80,6 @@ pub const DB = struct {
         while (c.mysql_fetch_row(result)) |row| {
             const cat_name = row[0];
             const color_name = row[1];
-
             print("Cat: {s}, Color: {s}\n", .{ cat_name, color_name });
         }
     }
@@ -177,8 +173,6 @@ pub const DB = struct {
                 _ = c.mysql_stmt_reset(insert_cat_stmt);
             }
         }
-
-        return;
     }
 };
 
@@ -188,16 +182,14 @@ pub fn main() !void {
     const allocator = gpa.allocator();
 
     const version = c.mysql_get_client_version();
-    print("mysql version is {}\n", .{version});
+    print("MySQL client version is {}\n", .{version});
 
-    const info: DBInfo = .{
+    const db = try DB.init(allocator, .{
         .database = "public",
         .host = "127.0.0.1",
         .user = "root",
-        .password = "123",
-    };
-
-    const db = try DB.init(allocator, info);
+        .password = "password",
+    });
     defer db.deinit();
 
     try db.execute(
