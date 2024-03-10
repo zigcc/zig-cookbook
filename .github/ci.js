@@ -2,8 +2,6 @@
 
 // Fork from https://github.com/ankane/setup-mysql/blob/v1/index.js#L50
 
-// TODO: this script failed on github now, see
-// https://github.com/zigcc/zig-cookbook/issues/54
 const execSync = require("child_process").execSync;
 const fs = require('fs');
 const os = require('os');
@@ -22,9 +20,9 @@ function addToPath(newPath) {
   fs.appendFileSync(process.env.GITHUB_PATH, `${newPath}\n`);
 }
 
-// install
+// config
 const mysqlVersion = '8.0';
-const rootPass = '123';
+const rootPass = 'password';
 const database = 'public';
 
 // install
@@ -41,8 +39,8 @@ run(`${bin}/mysql -e "GRANT ALL PRIVILEGES ON *.* TO '$USER'@'localhost'"`);
 run(`${bin}/mysql -e "FLUSH PRIVILEGES"`);
 
 // init
-run(`${bin}/mysqladmin -proot password '${rootPass}'`);
-run(`${bin}/mysqladmin create ${database}`);
+run(`${bin}/mysql -uroot -e "CREATE DATABASE ${database}"`);
+run(`${bin}/mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${rootPass}'; FLUSH PRIVILEGES;"`)
 
 // set path
 addToPath(bin);
