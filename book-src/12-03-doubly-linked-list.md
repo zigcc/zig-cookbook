@@ -1,6 +1,6 @@
-# Linked List (Doubly)
+# Doubly Linked List
 
-A Doubly [linked list] contains nodes that are linked together in both directions, allowing for more efficient operations in some scenarios. Each node in a doubly linked list contains:
+A [doubly linked list] contains nodes that are linked together in both directions, allowing for more efficient operations in some scenarios. Each node in a doubly linked list contains:
 - `data`, the value stored in the node.
 - `next`, a pointer to the next node in the list.
 - `prev`, a pointer to the previous node in the list.
@@ -14,7 +14,6 @@ Operations that can be performed on doubly linked lists include:
 - Insertion at the end O(1), based on the `tail` pointer.
 - Insertion at arbitrary positions O(n), due to traversal requirements.
 - Deletion O(n), with improved efficiency compared to singly linked lists it could easily find and remove nodes in this list without a full traversal.
-- Traversal from either end O(n), providing flexibility in how the list is navigated.
 
 
 ```zig

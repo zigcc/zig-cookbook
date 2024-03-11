@@ -1,7 +1,7 @@
 const std = @import("std");
 const Allocator = std.mem.Allocator;
 
-fn DoubleLinkedList(comptime T: type) type {
+fn DoublyLinkedList(comptime T: type) type {
     return struct {
         const Node = struct {
             data: T,
@@ -20,71 +20,51 @@ fn DoubleLinkedList(comptime T: type) type {
             return .{ .allocator = allocator };
         }
 
-        fn add(self: *Self, value: T) !void {
-            const node = try self.allocator.create(Node);
-            node.* = Node{
-                .data = value,
-                .prev = self.tail,
-                .next = null,
-            };
-
-            if (self.tail) |*tail| {
-                tail.*.next = node;
-            } else {
-                self.head = node;
-            }
-            self.tail = node;
-
-            self.len += 1;
+        fn add(self: *Self, value: T) void {
+            return self.insertAt(self.len, value) catch unreachable;
         }
 
-        // Insertion at arbitrary positions O(n), due to traversal requirements.
         fn insertAt(self: *Self, position: usize, value: T) !void {
+            if (position > self.len) {
+                return error.OutOfRange;
+            }
+            defer self.len += 1;
+
             const node = try self.allocator.create(Node);
-            node.* = Node{
-                .data = value,
-                .prev = null,
-                .next = null,
-            };
+            node.* = Node{ .data = value };
 
-            if (position == 0) {
-                if (self.head) |head| {
-                    node.next = head;
-                    head.prev = node;
-                } else {
-                    self.tail = node;
-                }
-                self.head = node;
-            } else {
-                var current: ?*Node = self.head;
-                var index: usize = 0;
-
-                while (current) |cur| : (current = cur.next) {
-                    if (index + 1 == position) {
-                        node.next = cur.next;
-                        node.prev = cur;
-
-                        if (cur.next) |next| {
-                            next.prev = node;
-                        } else {
-                            // if the current node is the last node
-                            self.tail = node;
-                        }
-                        cur.next = node;
-
-                        break;
-                    }
-
-                    index += 1;
-                }
-
-                if (index + 1 != position) {
-                    self.allocator.destroy(node);
-                    return error.OutOfRange;
+            var current = self.head;
+            // Find the node which is specified by the position
+            for (0..position) |_| {
+                if (current) |cur| {
+                    current = cur.next;
                 }
             }
 
-            self.len += 1;
+            // Put node in front of current
+            node.next = current;
+            if (current) |cur| {
+                node.*.prev = cur.prev;
+
+                if (cur.prev) |*prev| {
+                    prev.*.next = node;
+                } else {
+                    // When current has no prev, we are insert at head.
+                    self.head = node;
+                }
+
+                cur.*.prev = node;
+            } else { // We are insert at tail, update node to new tail.
+                if (self.tail) |tail| {
+                    node.*.prev = tail;
+                    tail.*.next = node;
+                }
+                self.tail = node;
+                // Head may also be null for an empty list
+                if (null == self.head) {
+                    self.head = node;
+                }
+            }
         }
 
         fn remove(self: *Self, value: T) bool {
@@ -137,7 +117,7 @@ fn DoubleLinkedList(comptime T: type) type {
             return false;
         }
 
-        fn visit(self: *Self, visitor: *const fn (i: usize, v: T) anyerror!void) !void {
+        fn visit(self: Self, visitor: *const fn (i: usize, v: T) anyerror!void) !usize {
             var current: ?*Node = self.head;
             var i: usize = 0;
 
@@ -145,11 +125,23 @@ fn DoubleLinkedList(comptime T: type) type {
                 try visitor(i, cur.data);
                 current = cur.next;
             }
+
+            return i;
+        }
+
+        fn visitBackwards(self: Self, visitor: *const fn (i: usize, v: T) anyerror!void) !usize {
+            var current = self.tail;
+            var i: usize = 0;
+
+            while (current) |cur| : (i += 1) {
+                try visitor(i, cur.data);
+                current = cur.prev;
+            }
+            return i;
         }
 
         fn deinit(self: *Self) void {
-            var current: ?*Node = self.head;
-
+            var current = self.head;
             while (current) |cur| {
                 const next = cur.next;
                 self.allocator.destroy(cur);
@@ -164,81 +156,58 @@ fn DoubleLinkedList(comptime T: type) type {
     };
 }
 
+fn ensureList(lst: DoublyLinkedList(u32), comptime expected: []const u32) !void {
+    const visited_times = try lst.visit(struct {
+        fn visitor(i: usize, v: u32) !void {
+            if (expected.len == 0) {
+                unreachable;
+            } else {
+                try std.testing.expectEqual(v, expected[i]);
+            }
+        }
+    }.visitor);
+    try std.testing.expectEqual(visited_times, expected.len);
+
+    const visited_times2 = try lst.visitBackwards(struct {
+        fn visitor(i: usize, v: u32) !void {
+            if (expected.len == 0) {
+                unreachable;
+            } else {
+                try std.testing.expectEqual(v, expected[expected.len - i - 1]);
+            }
+        }
+    }.visitor);
+    try std.testing.expectEqual(visited_times2, expected.len);
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer _ = gpa.deinit();
 
     const allocator = gpa.allocator();
-    var list = DoubleLinkedList(u32).init(allocator);
+    var list = DoublyLinkedList(u32).init(allocator);
     defer list.deinit();
 
-    const values = [_]u32{
-        1,
-        2,
-        3,
-        4,
-        5,
-    };
+    const values = [_]u32{ 1, 2, 3, 4, 5 };
 
     for (values) |value| {
-        try list.add(value);
+        list.add(value);
     }
+    try ensureList(list, &values);
 
-    try std.testing.expectEqual(list.len, values.len);
+    try list.insertAt(1, 100);
+    try ensureList(list, &[_]u32{ 1, 100, 2, 3, 4, 5 });
 
-    try list.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(values[i], v);
-        }
-    }.visitor);
+    try list.insertAt(0, 200);
+    try ensureList(list, &[_]u32{ 200, 1, 100, 2, 3, 4, 5 });
 
-    try std.testing.expect(list.search(2));
-
-    // delete the first element
-    try std.testing.expect(list.remove(1));
-    try list.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{ 2, 3, 4, 5 })[i], v);
-        }
-    }.visitor);
-
-    // delete the last element
-    try std.testing.expect(list.remove(5));
-    try list.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{ 2, 3, 4 })[i], v);
-        }
-    }.visitor);
-
-    // delete first and last together
-    try std.testing.expect(list.remove(2));
-    try std.testing.expect(list.remove(4));
-    try list.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{3})[i], v);
-        }
-    }.visitor);
-
-    // insert at the beginning, last, and middle
-    try list.insertAt(0, 1);
-    try list.insertAt(1, 2);
-    try list.insertAt(3, 4);
-
-    try list.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{ 1, 2, 3, 4 })[i], v);
-        }
-    }.visitor);
+    try std.testing.expect(list.remove(100));
+    try ensureList(list, &[_]u32{ 200, 1, 2, 3, 4, 5 });
 
     // delete all
-    try std.testing.expect(list.remove(1));
-    try std.testing.expect(list.remove(2));
-    try std.testing.expect(list.remove(4));
-    try std.testing.expect(list.remove(3));
-    try list.visit(struct {
-        fn visitor(_: usize, _: u32) !void {
-            unreachable;
-        }
-    }.visitor);
-    try std.testing.expectEqual(list.len, 0);
+    for (values) |value| {
+        try std.testing.expect(list.remove(value));
+    }
+    try std.testing.expect(list.remove(200));
+    try ensureList(list, &[_]u32{});
 }

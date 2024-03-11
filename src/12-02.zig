@@ -77,13 +77,15 @@ fn LinkedList(comptime T: type) type {
             return false;
         }
 
-        fn visit(self: *Self, visitor: *const fn (i: usize, v: T) anyerror!void) !void {
+        fn visit(self: *Self, visitor: *const fn (i: usize, v: T) anyerror!void) !usize {
             var head = self.head;
             var i: usize = 0;
             while (head) |n| : (i += 1) {
                 try visitor(i, n.data);
                 head = n.next;
             }
+
+            return i;
         }
 
         fn deinit(self: *Self) void {
@@ -113,37 +115,49 @@ pub fn main() !void {
     }
 
     try std.testing.expectEqual(lst.len, values.len);
-
-    try lst.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(values[i], v);
-        }
-    }.visitor);
+    try std.testing.expectEqual(
+        3,
+        try lst.visit(struct {
+            fn visitor(i: usize, v: u32) !void {
+                try std.testing.expectEqual(values[i], v);
+            }
+        }.visitor),
+    );
 
     try std.testing.expect(lst.search(20));
 
     // Test delete head
     try std.testing.expect(lst.remove(32));
-    try lst.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{ 20, 21 })[i], v);
-        }
-    }.visitor);
+    try std.testing.expectEqual(
+        2,
+        try lst.visit(struct {
+            fn visitor(i: usize, v: u32) !void {
+                try std.testing.expectEqual(([_]u32{ 20, 21 })[i], v);
+            }
+        }.visitor),
+    );
 
     // Test delete tail
     try std.testing.expect(lst.remove(21));
-    try lst.visit(struct {
-        fn visitor(i: usize, v: u32) !void {
-            try std.testing.expectEqual(([_]u32{20})[i], v);
-        }
-    }.visitor);
+    try std.testing.expectEqual(
+        1,
+        try lst.visit(struct {
+            fn visitor(i: usize, v: u32) !void {
+                try std.testing.expectEqual(([_]u32{20})[i], v);
+            }
+        }.visitor),
+    );
 
     // Test delete head and tail at the same time
     try std.testing.expect(lst.remove(20));
-    try lst.visit(struct {
-        fn visitor(_: usize, _: u32) !void {
-            unreachable;
-        }
-    }.visitor);
+    try std.testing.expectEqual(
+        0,
+        try lst.visit(struct {
+            fn visitor(_: usize, _: u32) !void {
+                unreachable;
+            }
+        }.visitor),
+    );
+
     try std.testing.expectEqual(lst.len, 0);
 }
