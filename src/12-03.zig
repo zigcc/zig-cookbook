@@ -20,8 +20,19 @@ fn DoublyLinkedList(comptime T: type) type {
             return .{ .allocator = allocator };
         }
 
-        fn add(self: *Self, value: T) void {
-            return self.insertAt(self.len, value) catch unreachable;
+        // This function is equals to self.insertAt(self.len, value)
+        // But this cost O(1), while insertAt cost O(n) .
+        fn insertLast(self: *Self, value: T) !void {
+            const node = try self.allocator.create(Node);
+            node.* = Node{ .data = value, .prev = self.tail };
+            if (self.tail) |tail| {
+                tail.*.next = node;
+            } else {
+                self.head = node;
+            }
+
+            self.tail = node;
+            self.len += 1;
         }
 
         fn insertAt(self: *Self, position: usize, value: T) !void {
@@ -191,7 +202,7 @@ pub fn main() !void {
     const values = [_]u32{ 1, 2, 3, 4, 5 };
 
     for (values) |value| {
-        list.add(value);
+        try list.insertLast(value);
     }
     try ensureList(list, &values);
 

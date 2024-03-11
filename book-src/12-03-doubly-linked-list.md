@@ -20,4 +20,4 @@ Operations that can be performed on doubly linked lists include:
 {{#include ../src/12-02.zig }}
 ```
 
-[double linked list]: https://en.wikipedia.org/wiki/Doubly_linked_list
+[doubly linked list]: https://en.wikipedia.org/wiki/Doubly_linked_list
