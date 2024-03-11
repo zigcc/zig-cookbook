@@ -116,12 +116,12 @@ pub fn main() !void {
 
     try std.testing.expectEqual(lst.len, values.len);
     try std.testing.expectEqual(
-        3,
         try lst.visit(struct {
             fn visitor(i: usize, v: u32) !void {
                 try std.testing.expectEqual(values[i], v);
             }
         }.visitor),
+        3,
     );
 
     try std.testing.expect(lst.search(20));
@@ -129,34 +129,34 @@ pub fn main() !void {
     // Test delete head
     try std.testing.expect(lst.remove(32));
     try std.testing.expectEqual(
-        2,
         try lst.visit(struct {
             fn visitor(i: usize, v: u32) !void {
                 try std.testing.expectEqual(([_]u32{ 20, 21 })[i], v);
             }
         }.visitor),
+        2,
     );
 
     // Test delete tail
     try std.testing.expect(lst.remove(21));
     try std.testing.expectEqual(
-        1,
         try lst.visit(struct {
             fn visitor(i: usize, v: u32) !void {
                 try std.testing.expectEqual(([_]u32{20})[i], v);
             }
         }.visitor),
+        1,
     );
 
     // Test delete head and tail at the same time
     try std.testing.expect(lst.remove(20));
     try std.testing.expectEqual(
-        0,
         try lst.visit(struct {
             fn visitor(_: usize, _: u32) !void {
                 unreachable;
             }
         }.visitor),
+        0,
     );
 
     try std.testing.expectEqual(lst.len, 0);
