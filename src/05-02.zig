@@ -11,7 +11,7 @@ pub fn main() !void {
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
-    var uri = try std.Uri.parse("http://httpbin.org/post");
+    const uri = try std.Uri.parse("http://httpbin.org/post");
 
     //If any payload has to be sent in the request body
     const reqData = "{\"first\":2,\"second\":4}\n";
