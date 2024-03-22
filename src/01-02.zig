@@ -25,15 +25,30 @@ pub fn main() !void {
     const md = try file.metadata();
     try std.testing.expectEqual(md.size(), file_size);
 
-    const ptr = try std.os.mmap(
-        null,
-        20,
-        std.os.PROT.READ | std.os.PROT.WRITE,
-        if (is_zig_11) std.os.MAP.PRIVATE else .{ .TYPE = .PRIVATE },
-        file.handle,
-        0,
-    );
-    defer std.os.munmap(ptr);
+    const ptr = if (is_zig_11)
+        try std.os.mmap(
+            null,
+            20,
+            std.os.PROT.READ | std.os.PROT.WRITE,
+            std.os.MAP.PRIVATE,
+            file.handle,
+            0,
+        )
+    else
+        try std.posix.mmap(
+            null,
+            20,
+            std.posix.PROT.READ | std.posix.PROT.WRITE,
+            .{ .TYPE = .PRIVATE },
+            file.handle,
+            0,
+        );
+
+    defer if (is_zig_11) {
+        std.os.munmap(ptr);
+    } else {
+        defer std.posix.munmap(ptr);
+    };
 
     // Write file via mmap
     const body = "hello zig cookbook";
