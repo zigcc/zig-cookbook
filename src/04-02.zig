@@ -8,7 +8,7 @@ pub fn main() !void {
     _ = args.skip();
     const port_value = args.next() orelse {
         print("expect port as command line argument\n", .{});
-        std.os.exit(1);
+        return error.NoPort;
     };
     const port = try std.fmt.parseInt(u16, port_value, 10);
 
