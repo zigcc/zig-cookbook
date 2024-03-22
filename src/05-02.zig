@@ -11,55 +11,44 @@ pub fn main() !void {
     var client = http.Client{ .allocator = allocator };
     defer client.deinit();
 
-    const uri = try std.Uri.parse("http://httpbin.org/post");
+    const uri = try std.Uri.parse("http://httpbin.org/anything");
 
-    //If any payload has to be sent in the request body
-    const reqData = "{\"first\":2,\"second\":4}\n";
+    const payload =
+        \\ {
+        \\  "name": "zig-cookbook",
+        \\  "author": "John"
+        \\ }
+    ;
 
     var req = if (is_zig_11) blk: {
         var headers = http.Headers{ .allocator = allocator };
         defer headers.deinit();
 
-        //additional header required to get content as JSON
-        try headers.append("accept", "application/json");
-        try headers.append("Content-Type", "application/json");
-
         var req = try client.request(.POST, uri, headers, .{});
         errdefer req.deinit();
 
-        req.transfer_encoding = .chunked;
+        req.transfer_encoding = .{ .content_length = payload.len };
 
         try req.start();
-
-        var wrtr = req.writer();
-        try wrtr.writeAll(reqData);
-
+        var wtr = req.writer();
+        try wtr.writeAll(payload);
         try req.finish();
         try req.wait();
-        print("Headers:\n{}\n", .{req.response.headers});
+
         break :blk req;
     } else blk: {
-        const buf = try allocator.alloc(u8, 1024 * 1024 * 4);
-        defer allocator.free(buf);
-        var req = try client.open(.POST, uri, .{
-            .server_header_buffer = buf,
-        });
+        var buf: [1024]u8 = undefined;
+        var req = try client.open(.POST, uri, .{ .server_header_buffer = &buf });
         errdefer req.deinit();
 
-        req.transfer_encoding = .chunked;
+        req.transfer_encoding = .{ .content_length = payload.len };
 
         try req.send(.{});
-
-        var wrtr = req.writer();
-        try wrtr.writeAll(reqData);
-
+        var wtr = req.writer();
+        try wtr.writeAll(payload);
         try req.finish();
         try req.wait();
 
-        var iter = req.response.iterateHeaders();
-        while (iter.next()) |header| {
-            std.debug.print("Name:{s}, Value:{s}\n", .{ header.name, header.value });
-        }
         break :blk req;
     };
     defer req.deinit();

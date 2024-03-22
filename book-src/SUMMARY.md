@@ -24,7 +24,8 @@
 
 - [Web Programming]()
 
-  - [Make HTTP requests](./05-01-http-requests.md)
+  - [HTTP Get](./05-01-http-get.md)
+  - [HTTP Post](./05-02-http-post.md)
 
 - [Algorithms]()
 
