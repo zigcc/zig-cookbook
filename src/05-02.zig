@@ -43,7 +43,7 @@ pub fn main() !void {
 
         req.transfer_encoding = .{ .content_length = payload.len };
 
-        try req.send(.{});
+        try req.send();
         var wtr = req.writer();
         try wtr.writeAll(payload);
         try req.finish();

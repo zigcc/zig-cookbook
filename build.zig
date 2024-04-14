@@ -46,7 +46,6 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                         .optimize = .Debug,
                         .target = target,
                     });
-                    lib.addIncludePath(.{ .path = "lib" });
                     if (is_latest_zig) {
                         lib.addCSourceFiles(.{
                             .files = &.{"lib/regex_slim.c"},

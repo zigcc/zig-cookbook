@@ -31,7 +31,7 @@ pub fn main() !void {
         });
         errdefer req.deinit();
 
-        try req.send(.{});
+        try req.send();
         try req.finish();
         try req.wait();
 
