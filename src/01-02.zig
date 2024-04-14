@@ -4,7 +4,6 @@ const print = std.debug.print;
 const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 const filename = "/tmp/zig-cookbook-01-02.txt";
-const file_size = 4096;
 
 pub fn main() !void {
     if (.windows == @import("builtin").os.tag) {
@@ -18,28 +17,29 @@ pub fn main() !void {
         .exclusive = false, // Set to true will ensure this file is created by us
     });
     defer file.close();
+    const content_to_write = "hello zig cookbook";
 
     // Before mmap, we need to ensure file isn't empty
-    try file.setEndPos(file_size);
+    try file.setEndPos(content_to_write.len);
 
     const md = try file.metadata();
-    try std.testing.expectEqual(md.size(), file_size);
+    try std.testing.expectEqual(md.size(), content_to_write.len);
 
     const ptr = if (is_zig_11)
         try std.os.mmap(
             null,
-            20,
+            content_to_write.len,
             std.os.PROT.READ | std.os.PROT.WRITE,
-            std.os.MAP.PRIVATE,
+            std.os.MAP.SHARED,
             file.handle,
             0,
         )
     else
         try std.posix.mmap(
             null,
-            20,
+            content_to_write.len,
             std.posix.PROT.READ | std.posix.PROT.WRITE,
-            .{ .TYPE = .PRIVATE },
+            .{ .TYPE = .SHARED },
             file.handle,
             0,
         );
@@ -47,13 +47,12 @@ pub fn main() !void {
     defer if (is_zig_11) {
         std.os.munmap(ptr);
     } else {
-        defer std.posix.munmap(ptr);
+        std.posix.munmap(ptr);
     };
 
     // Write file via mmap
-    const body = "hello zig cookbook";
-    std.mem.copyForwards(u8, ptr, body);
+    std.mem.copyForwards(u8, ptr, content_to_write);
 
     // Read file via mmap
-    try std.testing.expectEqualStrings(body, ptr[0..body.len]);
+    try std.testing.expectEqualStrings(content_to_write, ptr);
 }
