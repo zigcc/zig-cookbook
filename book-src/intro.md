@@ -7,8 +7,8 @@
 
 [Zig cookbook](https://github.com/zigcc/zig-cookbook) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
 
-> Main branch support Zig 0.12.0 and master, and ensured on Linux and macOS via GitHub actions.
-> Zig 0.11.0 support can be found in [here](https://github.com/zigcc/zig-cookbook/tree/0.11.0).
+> - Main branch tracks Zig 0.12.0 and master, and ensured on Linux and macOS via GitHub actions.
+> - Zig 0.11.0 support can be found in [here](https://github.com/zigcc/zig-cookbook/tree/0.11.0).
 
 # How to use
 
