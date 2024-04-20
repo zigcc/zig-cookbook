@@ -1,7 +1,6 @@
 const std = @import("std");
 const fs = std.fs;
 const print = std.debug.print;
-const is_zig_11 = @import("builtin").zig_version.minor == 11;
 
 const filename = "/tmp/zig-cookbook-01-02.txt";
 
@@ -25,30 +24,15 @@ pub fn main() !void {
     const md = try file.metadata();
     try std.testing.expectEqual(md.size(), content_to_write.len);
 
-    const ptr = if (is_zig_11)
-        try std.os.mmap(
-            null,
-            content_to_write.len,
-            std.os.PROT.READ | std.os.PROT.WRITE,
-            std.os.MAP.SHARED,
-            file.handle,
-            0,
-        )
-    else
-        try std.posix.mmap(
-            null,
-            content_to_write.len,
-            std.posix.PROT.READ | std.posix.PROT.WRITE,
-            .{ .TYPE = .SHARED },
-            file.handle,
-            0,
-        );
-
-    defer if (is_zig_11) {
-        std.os.munmap(ptr);
-    } else {
-        std.posix.munmap(ptr);
-    };
+    const ptr = try std.posix.mmap(
+        null,
+        content_to_write.len,
+        std.posix.PROT.READ | std.posix.PROT.WRITE,
+        .{ .TYPE = .SHARED },
+        file.handle,
+        0,
+    );
+    defer std.posix.munmap(ptr);
 
     // Write file via mmap
     std.mem.copyForwards(u8, ptr, content_to_write);

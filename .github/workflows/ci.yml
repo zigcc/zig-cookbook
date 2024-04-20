@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        zig: [0.11.0, master]
+        zig: [0.12.0, master]
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
@@ -58,12 +58,6 @@ jobs:
         run: |
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
-      - name: Hack
-        if: matrix.zig == '0.11.0'
-        run: |
-          # 0.11.0 will report following error with zon file, so delete now.
-          # error: TarUnsupportedFileType
-          rm build.zig.zon
       - name: Run examples(Unix)
         if: matrix.os != 'windows-latest'
         run: |

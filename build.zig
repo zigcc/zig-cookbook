@@ -10,11 +10,8 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const is_latest_zig = builtin.zig_version.minor > 11;
-    const src_dir = if (is_latest_zig)
-        try fs.cwd().openDir("src", .{ .iterate = true })
-    else
-        try fs.cwd().openIterableDir("src", .{});
+    const is_latest_zig = builtin.zig_version.minor > 12;
+    const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
@@ -24,11 +21,14 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
-                    .root_source_file = .{ .path = try allocPrint(b.allocator, "src/{s}.zig", .{name}) },
+                    .root_source_file = b.path(try allocPrint(b.allocator, "src/{s}.zig", .{name})),
                     .target = target,
                     .optimize = .Debug,
                 });
-                if (std.mem.eql(u8, "13-01", name) and is_latest_zig) {
+                var opts = b.addOptions();
+                opts.addOption(bool, "is_latest_zig", is_latest_zig);
+                exe.root_module.addOptions("build-info", opts);
+                if (std.mem.eql(u8, "13-01", name)) {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.root_module.addImport("simargs", zigcli.module("simargs"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
@@ -46,20 +46,14 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                         .optimize = .Debug,
                         .target = target,
                     });
-                    if (is_latest_zig) {
-                        lib.addCSourceFiles(.{
-                            .files = &.{"lib/regex_slim.c"},
-                            .flags = &.{"-std=c99"},
-                        });
-                    } else {
-                        lib.addCSourceFiles(
-                            &.{"lib/regex_slim.c"},
-                            &.{"-std=c99"},
-                        );
-                    }
+
+                    lib.addCSourceFiles(.{
+                        .files = &.{"lib/regex_slim.c"},
+                        .flags = &.{"-std=c99"},
+                    });
                     lib.linkLibC();
                     exe.linkLibrary(lib);
-                    exe.addIncludePath(.{ .path = "lib" });
+                    exe.addIncludePath(b.path("lib"));
                     exe.linkLibC();
                 }
 
