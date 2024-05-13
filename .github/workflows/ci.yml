@@ -30,7 +30,7 @@ jobs:
         with:
           version: ${{ matrix.zig }}
       - name: Start services
-        uses: ikalnytskyi/action-setup-postgres@v4
+        uses: ikalnytskyi/action-setup-postgres@v6
         with:
           username: postgres
           password: postgres
