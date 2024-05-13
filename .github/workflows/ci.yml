@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-13] # macos-14 is arm runner
+        os: [ubuntu-latest, macos-latest] # macos-latest is macos-14, which is arm runner
         zig: [0.12.0, master]
     steps:
       - uses: actions/checkout@v4
@@ -42,29 +42,38 @@ jobs:
         with:
           character set server: 'utf8'
           collation server: 'utf8_general_ci'
-          mysql version: '8.0'
+          mysql version: '8.3'
           mysql database: 'public'
           mysql root password: 'password'
           mysql user: 'developer'
       - name: mysql for macOS
-        if: startsWith(matrix.os, 'macos')
+        if: matrix.os == 'macos-latest'
         run: |
           node .github/ci.js
       - name: Install deps
         run: |
           make install-deps
       - name: Set pkg-config(macOS)
-        if: startsWith(matrix.os, 'macos')
+        if: matrix.os == 'macos-latest'
         run: |
           prefix=$(brew --prefix)
-          echo "PKG_CONFIG_PATH=${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+          echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+
       - name: Run examples(Unix)
-        if: matrix.os != 'windows-latest'
+        if: matrix.os == 'ubuntu-latest'
         run: |
           pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
           zig build
           zig build run-all --summary all
+
+      - name: Run examples(macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          pkg-config --libs --cflags libpq mysqlclient
+          zig fmt --check src/
+          zig build -Dtarget=aarch64-macos
+          zig build run-all -Dtarget=aarch64-macos --summary all
 
       - name: Run examples(Windows)
         if: matrix.os == 'windows-latest'
