@@ -47,14 +47,14 @@ jobs:
           mysql root password: 'password'
           mysql user: 'developer'
       - name: mysql for macOS
-        if: matrix.os == 'macos-latest'
+        if: startsWith(matrix.os, 'macos')
         run: |
           node .github/ci.js
       - name: Install deps
         run: |
           make install-deps
       - name: Set pkg-config(macOS)
-        if: matrix.os == 'macos-latest'
+        if: startsWith(matrix.os, 'macos')
         run: |
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
