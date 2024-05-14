@@ -2,7 +2,8 @@
 
 [![](https://img.shields.io/discord/1155469703846834187?label=Chat%20on%20Discord)](https://discord.gg/bAehMGPb2R)
 [![](https://img.shields.io/github/stars/zigcc/zig-cookbook?style=square&color=#30a14e)](https://github.com/zigcc/zig-cookbook/stargazers)
-[![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
+[![CI (linux)](https://github.com/zigcc/zig-cookbook/actions/workflows/linux.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/linux.yml)
+[![CI (macOS)](https://github.com/zigcc/zig-cookbook/actions/workflows/macos.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/macos.yml)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml)
 
 [Zig cookbook](https://github.com/zigcc/zig-cookbook) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
