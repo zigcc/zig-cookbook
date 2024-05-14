@@ -1,0 +1,59 @@
+name: CI (macOS)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '10 20 * * *'
+  pull_request:
+    paths:
+      - "**.zig"
+      - ".github/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "**.zig"
+      - ".github/**"
+
+jobs:
+  macos:
+    timeout-minutes: 10
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        zig: [0.12.0, master]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: ${{ matrix.zig }}
+
+      - name: Start services
+        uses: ikalnytskyi/action-setup-postgres@v6
+        with:
+          username: postgres
+          password: postgres
+          database: postgres
+          port: 5432
+
+      - name: Setup MySQL
+        run: |
+          node .github/ci.js
+
+      - name: Install deps
+        run: |
+          make install-deps
+
+      - name: Set pkg-config
+        run: |
+          prefix=$(brew --prefix)
+          echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+
+      - name: Run examples
+        run: |
+          pkg-config --libs --cflags libpq mysqlclient
+          zig fmt --check src/
+          zig build -Dtarget=aarch64-macos
+          zig build run-all -Dtarget=aarch64-macos --summary all
