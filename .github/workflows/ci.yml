@@ -57,18 +57,13 @@ jobs:
           echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
       - name: Run examples(Unix)
         run: |
-          TARGET="aarch64-macos"
-          if [ `uname -s` = "Linux" ]; then
-            TARGET="x86_64-linux"
-          fi
           pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
-          zig build -Dtarget="${TARGET}"
-          zig build run-all -Dtarget="${TARGET}" --summary all
-
-      - name: Run examples(Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          zig.exe fmt --check src/
-          zig.exe build
-          zig.exe build run-all --summary all
+          if [ `uname -s` = "Linux" ]; then
+            zig build
+            zig build run-all --summary all
+          else
+            TARGET="aarch64-macos"
+            zig build -Dtarget="${TARGET}"
+            zig build run-all -Dtarget="${TARGET}" --summary all
+          fi
