@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest] # macos-latest is macos-14, which is arm runner
+        os: [ubuntu-latest, macos-latest]
         zig: [0.12.0, master]
     steps:
       - uses: actions/checkout@v4
@@ -46,38 +46,24 @@ jobs:
           mysql database: 'public'
           mysql root password: 'password'
           mysql user: 'developer'
+      - name: Install deps
+        run: |
+          make install-deps
       - name: mysql for macOS
         if: matrix.os == 'macos-latest'
         run: |
           node .github/ci.js
-      - name: Install deps
-        run: |
-          make install-deps
-      - name: Set pkg-config(macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
-
       - name: Run examples(Unix)
-        if: matrix.os == 'ubuntu-latest'
         run: |
           pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
-          zig build
-          zig build run-all --summary all
-
-      - name: Run examples(macOS)
-        if: matrix.os == 'macos-latest'
-        run: |
-          pkg-config --libs --cflags libpq mysqlclient
-          zig fmt --check src/
-          zig build -Dtarget=aarch64-macos
-          zig build run-all -Dtarget=aarch64-macos --summary all
-
-      - name: Run examples(Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          zig.exe fmt --check src/
-          zig.exe build
-          zig.exe build run-all --summary all
+          if [ `uname -s` = "Linux" ]; then
+            zig build
+            zig build run-all --summary all
+          else
+            TARGET="aarch64-macos"
+            zig build -Dtarget="${TARGET}"
+            zig build run-all -Dtarget="${TARGET}" --summary all
+          fi
