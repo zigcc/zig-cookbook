@@ -60,17 +60,21 @@ jobs:
         run: |
           choco install mysqlclient
       - name: Run examples(Unix)
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: |
           pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
           if [ `uname -s` = "Linux" ]; then
             zig build
             zig build run-all --summary all
-          else if [ `uname -s` = "Darwin" ]; then
+          else
             TARGET="aarch64-macos"
             zig build -Dtarget="${TARGET}"
             zig build run-all -Dtarget="${TARGET}" --summary all
-          else if [ `uname -s` = "Windows_NT" ]; then
-            zig build
-            zig build run-all --summary all
           fi
+      - name: Run examples(Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          zig fmt --check src/
+          zig build
+          zig build run-all --summary all
