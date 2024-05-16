@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         zig: [0.12.0, master]
     steps:
       - uses: actions/checkout@v4
@@ -49,12 +49,16 @@ jobs:
       - name: Install deps
         run: |
           make install-deps
-      - name: mysql for macOS
+      - name: MySQL for macOS
         if: matrix.os == 'macos-latest'
         run: |
           node .github/ci.js
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+      - name: MySQL for Windows
+        if : matrix.os == 'windows-latest'
+        run: |
+          choco install mysqlclient
       - name: Run examples(Unix)
         run: |
           pkg-config --libs --cflags libpq mysqlclient
@@ -62,8 +66,11 @@ jobs:
           if [ `uname -s` = "Linux" ]; then
             zig build
             zig build run-all --summary all
-          else
+          else if [ `uname -s` = "Darwin" ]; then
             TARGET="aarch64-macos"
             zig build -Dtarget="${TARGET}"
             zig build run-all -Dtarget="${TARGET}" --summary all
+          else if [ `uname -s` = "Windows_NT" ]; then
+            zig build
+            zig build run-all --summary all
           fi
