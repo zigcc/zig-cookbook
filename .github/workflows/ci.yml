@@ -55,6 +55,10 @@ jobs:
           node .github/ci.js
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+
+      - name: Setup tmate session
+        if: matrix.zig == '0.12.0'
+        uses: mxschmitt/action-tmate@v3
       - name: MySQL for Windows
         if : matrix.os == 'windows-latest'
         run: |
