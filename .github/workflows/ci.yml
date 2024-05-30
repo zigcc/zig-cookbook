@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest]
-        zig: [0.12.0, master]
+        zig: [0.12.0]
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
@@ -56,10 +56,6 @@ jobs:
           prefix=$(brew --prefix)
           echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
 
-      - name: Setup tmate session
-        if: matrix.zig == '0.12.0'
-        uses: mxschmitt/action-tmate@v3
-
       - name: Setup PostgreSQL & MySQL & SQLite (for windows)
         if: matrix.os == 'windows-latest'
         shell: cmd
@@ -79,6 +75,10 @@ jobs:
           dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+
+      - name: Setup tmate session
+        if: matrix.zig == '0.12.0'
+        uses: mxschmitt/action-tmate@v3
 
       - name: Run examples(Unix)
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
