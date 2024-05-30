@@ -25,9 +25,6 @@ endif
 ifeq ($(uname_S), Linux)
 	sudo apt install -y pkg-config libsqlite3-dev libpq-dev libmysqlclient-dev
 endif
-ifeq ($(uname_S), Windows)
-	choco install sqlite postgresql mysql
-endif
 
 
 .PHONY: clean

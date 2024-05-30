@@ -59,10 +59,27 @@ jobs:
       - name: Setup tmate session
         if: matrix.zig == '0.12.0'
         uses: mxschmitt/action-tmate@v3
-      - name: MySQL for Windows
-        if : matrix.os == 'windows-latest'
+
+      - name: Setup PostgreSQL & MySQL & SQLite (for windows)
+        if: matrix.os == 'windows-latest'
+        shell: cmd
         run: |
-          choco install mysqlclient
+          choco install postgresql16 --force --params '/Password:root'
+          choco install mysql sqlite
+          "C:\Program Files\PostgreSQL\16\bin\createuser" casbin_rs
+          "C:\Program Files\PostgreSQL\16\bin\createdb" casbin
+          "C:\Program Files\PostgreSQL\16\bin\psql" -c "alter user casbin_rs with encrypted password 'casbin_rs'; grant all privileges on database casbin to casbin_rs;"
+          "C:\tools\mysql\current\bin\mysql" -e "create user 'casbin_rs'@'localhost' identified by 'casbin_rs'; create database casbin; grant all on `casbin`.* to 'casbin_rs'@'localhost';" -uroot
+          cd /D C:\ProgramData\chocolatey\lib\SQLite\tools
+          dir "C:\Program Files\Microsoft Visual Studio"
+          dir "C:\Program Files\Microsoft Visual Studio\2022"
+          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise"
+          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC"
+          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary"
+          dir "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build"
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          lib /machine:x64 /def:sqlite3.def /out:sqlite3.lib
+
       - name: Run examples(Unix)
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: |
