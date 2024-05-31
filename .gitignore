@@ -1,5 +1,6 @@
 book
 zig-out/
 zig-cache/
+.zig-cache/
 .DS_Store
 .tool-versions
