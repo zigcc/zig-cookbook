@@ -20,13 +20,15 @@ pub fn main() !void {
 
     const writer = line.writer();
     var line_no: usize = 1;
-    while (reader.streamUntilDelimiter(writer, '\n', null)) : (line_no += 1) {
+    var eof = false;
+    while (!eof) : (line_no += 1) {
+        reader.streamUntilDelimiter(writer, '\n', null) catch |err| switch (err) {
+            error.EndOfStream => eof = true, // One last pass before we exit the while loop
+            else => return err, // Propagate error
+        };
         // Clear the line so we can reuse it.
         defer line.clearRetainingCapacity();
 
         print("{d}--{s}\n", .{ line_no, line.items });
-    } else |err| switch (err) {
-        error.EndOfStream => {}, // Continue on
-        else => return err, // Propagate error
     }
 }
