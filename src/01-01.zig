@@ -19,14 +19,22 @@ pub fn main() !void {
     defer line.deinit();
 
     const writer = line.writer();
-    var line_no: usize = 1;
-    while (reader.streamUntilDelimiter(writer, '\n', null)) : (line_no += 1) {
+    var line_no: usize = 0;
+    while (reader.streamUntilDelimiter(writer, '\n', null)) {
         // Clear the line so we can reuse it.
         defer line.clearRetainingCapacity();
+        line_no += 1;
 
         print("{d}--{s}\n", .{ line_no, line.items });
     } else |err| switch (err) {
-        error.EndOfStream => {}, // Continue on
+        error.EndOfStream => { // end of file
+            if (line.items.len > 0) {
+                line_no += 1;
+                print("{d}--{s}\n", .{ line_no, line.items });
+            }
+        },
         else => return err, // Propagate error
     }
+
+    print("Total lines: {d}\n", .{line_no});
 }
