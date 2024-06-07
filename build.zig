@@ -10,7 +10,7 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const is_latest_zig = builtin.zig_version.minor > 12;
+    const is_latest_zig = builtin.zig_version.minor > 13;
     const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
 
     const target = b.standardTargetOptions(.{});

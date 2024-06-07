@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        zig: [0.12.0, master]
+        zig: [0.13.0, master]
     steps:
       - uses: actions/checkout@v4
       - uses: goto-bus-stop/setup-zig@v2
