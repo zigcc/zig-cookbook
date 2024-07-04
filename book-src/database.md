@@ -2,10 +2,10 @@
 
 This section will demonstrate how to connect to popular databases from Zig.
 
-Data model used are as follows:
+Data model used is as follows:
 
 1. Create two tables: `cat_colors`, `cats`, `cats` has a reference in `cat_colors`.
-2. Create prepare statement for each table, and insert data.
+2. Create a prepare statement for each table, and insert data.
 3. Execute a join query to get `cat_name` and `color_name` at the same time.
 
 ## cat_colors

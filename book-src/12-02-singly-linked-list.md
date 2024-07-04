@@ -1,13 +1,13 @@
 # Singly Linked List
 
-[Singly linked list] contains nodes linked together, the list contains:
+[Singly linked list] contains nodes linked together. The list contains:
 - `head`, head of the list, used for traversal.
 - `tail`, tail of the list, used for fast add.
 - `len`, length of the list
 
 Operations that can be performed on singly linked lists include:
 - Insertion O(1)
-- Deletion O(n), which is the most complex since it need to maintain head/tail pointer.
+- Deletion O(n), which is the most complex since it needs to maintain head/tail pointer.
 - Traversal O(n)
 
 ```zig

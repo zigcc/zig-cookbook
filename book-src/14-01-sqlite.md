@@ -1,6 +1,6 @@
 # SQLite
 
-Although there are some [wrapper package](https://github.com/vrischmann/zig-sqlite) for SQLite in Zig, they are unstable. So here we will introduce the [C API interface](https://www.sqlite.org/cintro.html).
+Although there are some [wrapper package](https://github.com/vrischmann/zig-sqlite) options for SQLite in Zig, they are unstable. So here we will introduce the [C API interface](https://www.sqlite.org/cintro.html).
 
 Data models are introduced [here](database.md).
 

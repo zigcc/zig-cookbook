@@ -4,7 +4,7 @@ As with [sqlite section](./14-01-sqlite.md), here we introduce [libmysqlclient](
 
 Data models are introduced [here](database.md).
 
-> Note: After execute a query with `mysql_real_query` like functions, if there are returning results, we must consume the result, Otherwise we will get following error when we execute next query.
+> Note: After executing a query with `mysql_real_query` like functions, if there are returning results, we must consume the result, otherwise we will get following error when we execute next query.
 
 ```
 Commands out of sync; you can't run this command now

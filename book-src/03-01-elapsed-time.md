@@ -1,10 +1,10 @@
 ### Measure the elapsed time between two code sections
 
-[`Instant`] represents a timestamp with respect to the currently executing program that ticks during suspend and can be used to record elapsed time.
+[`Instant`] represents a timestamp with respect to the currently executing program that ticks while the program is suspended and can be used to record elapsed time.
 
 Calling [`std.time.Instant.since`] returns a u64 representing nanoseconds elapsed.
 
-This task is common, that there is a [`Timer`] for convenience.
+This is such a common task, that there is a [`Timer`] for convenience.
 
 ```zig
 {{#include ../src/03-01.zig }}

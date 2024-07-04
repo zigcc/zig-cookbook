@@ -22,4 +22,4 @@ instead of `127.0.0.1`, replace `net.Ip4Address.parse` by
 (And connect to something like `ip6-localhost`, depending on the way
 your machine is set up.)
 
-The next section will show how to connect this server using Zig code.
+The next section will show how to connect to this server using Zig code.

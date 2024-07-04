@@ -1,6 +1,6 @@
 ## Check number of logical cpu cores
 
-Shows the number of logical CPU cores in current machine using [`std.Thread.getCpuCount`].
+Shows the number of logical CPU cores in the current machine using [`std.Thread.getCpuCount`].
 
 ```zig
 {{#include ../src/08-01.zig }}
