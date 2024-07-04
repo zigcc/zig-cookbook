@@ -1,6 +1,6 @@
 ## Share data between two threads
 
-When we want to mutate data shared in different threads, [`Mutex`](**Mut**ually **ex**clusive flag) must be used to synchronize threads, otherwise the result maybe unexpected.
+When we want to mutate data shared between threads, [`Mutex`](**Mut**ually **ex**clusive flag) must be used to synchronize threads, otherwise the result maybe unexpected.
 
 ```zig
 {{#include ../src/07-02.zig}}
