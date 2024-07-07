@@ -15,6 +15,8 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
+    const check = b.step("check", "Check if it compiles");
+
     while (try it.next()) |entry| {
         switch (entry.kind) {
             .file => {
@@ -25,6 +27,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     .target = target,
                     .optimize = .Debug,
                 });
+                check.dependOn(&exe.step);
                 var opts = b.addOptions();
                 opts.addOption(bool, "is_latest_zig", is_latest_zig);
                 exe.root_module.addOptions("build-info", opts);
