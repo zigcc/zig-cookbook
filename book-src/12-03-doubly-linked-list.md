@@ -17,7 +17,7 @@ Operations that can be performed on doubly linked lists include:
 
 
 ```zig
-{{#include ../src/12-02.zig }}
+{{#include ../src/12-03.zig }}
 ```
 
 [doubly linked list]: https://en.wikipedia.org/wiki/Doubly_linked_list
