@@ -1,4 +1,4 @@
-# Regex Expressions
+# Regular Expressions
 
 Currently there is no regex support in Zig, so the best way to go is binding with Posix's [regex.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/regex.h.html).
 
