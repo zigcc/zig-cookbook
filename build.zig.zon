@@ -9,8 +9,8 @@
     },
     .dependencies = .{
         .zigcli = .{
-            .url = "https://github.com/jiacai2050/zigcli/archive/c5e98846758f78083ca3648b841ef67f472ae9b4.tar.gz",
-            .hash = "12200ac6f2432658825c5b3e5ef004a62821ed6e910bbc3a971b98516de9d1783d90",
+            .url = "https://github.com/jiacai2050/zigcli/archive/d48eba82af25c16f01faf759fb9c11aacfe58a99.tar.gz",
+            .hash = "1220e18590afc407a9e947f7c724a4be509adbbab916a5253efc0bb07457de955bf1",
         },
     },
 }

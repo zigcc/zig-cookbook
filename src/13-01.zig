@@ -46,12 +46,12 @@ pub fn main() !void {
     }
 
     print("\n{s}Positionals{s}\n", .{ sep, sep });
-    for (opt.positional_args.items, 0..) |arg, idx| {
+    for (opt.positional_args, 0..) |arg, idx| {
         print("{d}: {s}\n", .{ idx + 1, arg });
     }
 
     // Provide a print_help util method
     print("\n{s}print_help{s}\n", .{ sep, sep });
     const stdout = std.io.getStdOut();
-    try opt.print_help(stdout.writer());
+    try opt.printHelp(stdout.writer());
 }

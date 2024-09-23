@@ -112,10 +112,6 @@ fn DoublyLinkedList(comptime T: type) type {
             return false;
         }
 
-        fn len(self: *Self) usize {
-            return self.len;
-        }
-
         fn search(self: *Self, value: T) bool {
             var current: ?*Node = self.head;
 
