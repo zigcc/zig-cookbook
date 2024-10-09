@@ -4,7 +4,7 @@ Parsing arguments is common in command line programs and there are some packages
 
 - [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
 - [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
-- [simargs](https://zigcli.liujiacai.net/docs/modules/simargs/)
+- [simargs](https://zigcli.liujiacai.net/modules/simargs/)
 
 Here we will give an example using `simargs`.
 
