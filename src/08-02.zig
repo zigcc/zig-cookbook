@@ -4,9 +4,9 @@ const Child = std.process.Child;
 const ArrayList = std.ArrayList;
 
 pub fn main() !void {
-    var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-    defer arena.deinit();
-    const allocator = arena.allocator();
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer if (gpa.deinit() != .ok) @panic("leak");
+    const allocator = gpa.allocator();
 
     const argv = [_][]const u8{
         "echo",
