@@ -7,6 +7,7 @@
   - [Read file line by line](./01-01-read-file-line-by-line.md)
   - [Mmap file](./01-02-mmap-file.md)
   - [Find Files modified in the last 24 hours](./01-03-file-modified-24h-ago.md)
+  - [Check file existence](./01-04-file-exists.md)
 
 - [Cryptography]()
 
@@ -36,6 +37,7 @@
 
   - [Explicit Threads](./07-01-spawn.md)
   - [Shared Data](./07-02-shared-data.md)
+  - [Thread pool](./07-03-threadpool.md)
 
 - [Operating System]()
 
