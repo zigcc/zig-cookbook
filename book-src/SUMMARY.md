@@ -8,6 +8,7 @@
   - [Mmap file](./01-02-mmap-file.md)
   - [Find Files modified in the last 24 hours](./01-03-file-modified-24h-ago.md)
   - [Check file existence](./01-04-file-exists.md)
+  - [Iterate directory](./01-05-iterate-dir.md)
 
 - [Cryptography]()
 
