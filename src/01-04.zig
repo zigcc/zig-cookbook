@@ -1,13 +1,15 @@
-//! Check file existence
+//! Test file/directory existence
 
 const std = @import("std");
 const fs = std.fs;
 
-pub fn main() void {
+pub fn main() !void {
     const filename = "build.zig";
-    fs.cwd().access(filename, .{}) catch {
-        std.debug.panic("{s} not exists", .{filename});
+    var found = true;
+    fs.cwd().access(filename, .{}) catch |e| switch (e) {
+        error.FileNotFound => found = false,
+        else => return e,
     };
 
-    std.debug.print("{s} exists", .{filename});
+    std.debug.assert(found);
 }
