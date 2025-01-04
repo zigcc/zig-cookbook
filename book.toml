@@ -1,5 +1,6 @@
 [book]
-authors = ["ZigCC"]
+authors = ["ZigCC <hello@ziglang.cc>"]
+description = "Zig cookbook is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks."
 language = "en"
 multilingual = false
 src = "book-src"
@@ -8,10 +9,14 @@ title = "Zig cookbook"
 [output.html]
 git-repository-url = "https://github.com/zigcc/zig-cookbook"
 edit-url-template = "https://github.com/zigcc/zig-cookbook/edit/main/{path}"
-additional-js = ["static/zig-hl.js"]
+additional-js = ["static/zig-hl.js", "static/giscus.js"]
 additional-css = ["static/last-changed.css"]
 # site-url = "zig-cookbook"
 
 [preprocessor.last-changed]
 command = "mdbook-last-changed"
 renderer = ["html"]
+
+
+[build]
+create-missing = false
