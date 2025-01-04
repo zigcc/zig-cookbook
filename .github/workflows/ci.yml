@@ -15,6 +15,10 @@ on:
       - "**.zig"
       - ".github/**"
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   examples:
     timeout-minutes: 10
