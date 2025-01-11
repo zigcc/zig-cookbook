@@ -5,6 +5,6 @@ When we want to mutate data shared between threads, [`Mutex`](**Mut**ually **ex*
 ```zig
 {{#include ../src/07-02.zig}}
 ```
-If we remove Mutex protection, the result will most like be less than 300.
+If we remove Mutex protection, the result will most like be less than 30,000.
 
 [`Mutex`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.Mutex

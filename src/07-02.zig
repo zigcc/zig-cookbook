@@ -11,7 +11,7 @@ const SharedData = struct {
         self.mutex.lock();
         defer self.mutex.unlock();
 
-        for (0..100) |_| {
+        for (0..10000) |_| {
             self.value += increment;
         }
     }
@@ -26,5 +26,5 @@ pub fn main() !void {
         const t2 = try Thread.spawn(.{}, SharedData.updateValue, .{ &shared_data, 2 });
         defer t2.join();
     }
-    try std.testing.expectEqual(shared_data.value, 300);
+    try std.testing.expectEqual(shared_data.value, 30_000);
 }
