@@ -39,6 +39,7 @@
   - [Explicit Threads](./07-01-spawn.md)
   - [Shared Data](./07-02-shared-data.md)
   - [Thread pool](./07-03-threadpool.md)
+  - [Run Once](./07-04-run-once.md)
 
 - [Operating System]()
 
