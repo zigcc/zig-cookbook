@@ -188,7 +188,7 @@ pub fn main() !void {
         .database = "public",
         .host = "127.0.0.1",
         .user = "root",
-        .password = "password",
+        .password = "root",
     });
     defer db.deinit();
 

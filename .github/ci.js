@@ -22,7 +22,7 @@ function addToPath(newPath) {
 
 // config
 const mysqlVersion = '8.0';
-const rootPass = 'password';
+const rootPass = 'root';
 const database = 'public';
 
 // install

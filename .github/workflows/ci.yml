@@ -41,15 +41,11 @@ jobs:
           database: postgres
           port: 5432
       - name: mysql for ubuntu
-        uses: mirromutth/mysql-action@v1.1
         if: matrix.os == 'ubuntu-latest'
-        with:
-          character set server: 'utf8'
-          collation server: 'utf8_general_ci'
-          mysql version: '8.3'
-          mysql database: 'public'
-          mysql root password: 'password'
-          mysql user: 'developer'
+        run: |
+          # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#mysql
+          sudo systemctl start mysql.service
+          mysql -uroot -proot -e "create database public"
       - name: Install deps
         run: |
           make install-deps
