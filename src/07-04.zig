@@ -1,5 +1,4 @@
 const std = @import("std");
-const builtin = @import("builtin");
 
 var n: u8 = 0;
 
@@ -8,7 +7,9 @@ fn incr() void {
 }
 
 var once_incr = std.once(incr);
+
 fn onceIncr() void {
+    // The invocations of `call` are thread-safe.
     once_incr.call();
     once_incr.call();
 }
