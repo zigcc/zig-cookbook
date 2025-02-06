@@ -43,6 +43,7 @@ jobs:
       - name: mysql for ubuntu
         if: matrix.os == 'ubuntu-latest'
         run: |
+          # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#mysql
           sudo systemctl start mysql.service
           mysql -uroot -proot -e "create database public"
       - name: Install deps
