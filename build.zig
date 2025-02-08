@@ -75,9 +75,11 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 // 04-01 start tcp server, and won't stop so we skip it here
                 // 04-02 is the server's client.
                 // 04-03 starts udp listener.
+                // 05-03 starts http server.
                 if (std.mem.eql(u8, "04-01", name) or
                     std.mem.eql(u8, "04-02", name) or
-                    std.mem.eql(u8, "04-03", name))
+                    std.mem.eql(u8, "04-03", name) or
+                    std.mem.eql(u8, "05-03", name))
                 {
                     continue;
                 }
