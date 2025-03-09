@@ -10,8 +10,7 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const is_latest_zig = builtin.zig_version.minor > 13;
-    const src_dir = try fs.cwd().openDir("src", .{ .iterate = true });
+    const src_dir = try fs.cwd().openDir(b.path("src").getPath(b), .{ .iterate = true });
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
@@ -28,9 +27,6 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     .optimize = .Debug,
                 });
                 check.dependOn(&exe.step);
-                var opts = b.addOptions();
-                opts.addOption(bool, "is_latest_zig", is_latest_zig);
-                exe.root_module.addOptions("build-info", opts);
                 if (std.mem.eql(u8, "13-01", name)) {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.root_module.addImport("simargs", zigcli.module("simargs"));

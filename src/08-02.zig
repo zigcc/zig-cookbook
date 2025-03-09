@@ -21,15 +21,14 @@ pub fn main() !void {
     var child = Child.init(&argv, allocator);
     child.stdout_behavior = .Pipe;
     child.stderr_behavior = .Pipe;
-    var stdout = ArrayList(u8).init(allocator);
-    var stderr = ArrayList(u8).init(allocator);
-    defer {
-        stdout.deinit();
-        stderr.deinit();
-    }
+
+    var stdout: std.ArrayListUnmanaged(u8) = .empty;
+    defer stdout.deinit(allocator);
+    var stderr: std.ArrayListUnmanaged(u8) = .empty;
+    defer stderr.deinit(allocator);
 
     try child.spawn();
-    try child.collectOutput(&stdout, &stderr, 1024);
+    try child.collectOutput(allocator, &stdout, &stderr, 1024);
     const term = try child.wait();
 
     try std.testing.expectEqual(term.Exited, 0);
