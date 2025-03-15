@@ -6,4 +6,4 @@ There is a [`Reader`] type in Zig, which provides various methods to read file, 
 {{#include ../src/01-01.zig }}
 ```
 
-[`reader`]: https://ziglang.org/documentation/0.11.0/std/#A;std:io.Reader
+[`reader`]: https://ziglang.org/documentation/0.14.0/std/#std.io.Reader
