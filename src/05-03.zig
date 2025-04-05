@@ -5,7 +5,7 @@ pub fn main() !void {
     const addr = try std.net.Address.parseIp("127.0.0.1", 8080);
     var server = try std.net.Address.listen(addr, .{ .reuse_address = true });
 
-    var buf: [65535]u8 = undefined;
+    var buf: [1024]u8 = undefined;
     const conn = try server.accept();
 
     var client = std.http.Server.init(conn, &buf);
