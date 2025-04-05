@@ -16,7 +16,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
     var it = src_dir.iterate();
     const check = b.step("check", "Check if it compiles");
 
-    while (try it.next()) |entry| {
+    Entry: while (try it.next()) |entry| {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
@@ -72,12 +72,18 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 // 04-02 is the server's client.
                 // 04-03 starts udp listener.
                 // 05-03 starts http server.
-                if (std.mem.eql(u8, "04-01", name) or
-                    std.mem.eql(u8, "04-02", name) or
-                    std.mem.eql(u8, "04-03", name) or
-                    std.mem.eql(u8, "05-03", name))
-                {
-                    continue;
+                // 05-04 starts websocket server.
+                const skip_list = [_][]const u8{
+                    "04-01",
+                    "04-02",
+                    "04-03",
+                    "05-03",
+                    "05-04",
+                };
+                for (skip_list) |skip| {
+                    if (std.mem.eql(u8, skip, name)) {
+                        continue :Entry;
+                    }
                 }
                 run_all.dependOn(run_step);
             },
