@@ -53,8 +53,9 @@
 
 - [Encoding]()
 
-  - [Deserialize JSON](./10-01-json.md)
-  - [Encode and decode base64](./10-02-base64.md)
+  - [(De)serialize JSON](./10-01-json.md)
+  - [(De)serialize Zon](./10-02-zon.md)
+  - [Encode and decode base64](./10-03-base64.md)
 
 - [Mathematics]()
 

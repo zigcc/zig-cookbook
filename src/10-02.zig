@@ -1,28 +1,62 @@
 const std = @import("std");
-const print = std.debug.print;
-const Encoder = std.base64.standard.Encoder;
-const Decoder = std.base64.standard.Decoder;
+const zon = std.zon;
+const Allocator = std.mem.Allocator;
+
+const Student = struct {
+    name: []const u8,
+    age: u16,
+    favourites: []const []const u8,
+
+    fn deinit(self: *Student, allocator: Allocator) void {
+        allocator.free(self.name);
+        for (self.favourites) |item| {
+            allocator.free(item);
+        }
+        allocator.free(self.favourites);
+    }
+};
 
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
+    defer if (gpa.deinit() != .ok) @panic("leak");
     const allocator = gpa.allocator();
 
-    const src = "hello zig";
+    const source = Student{
+        .name = "John",
+        .age = 20,
+        .favourites = &.{ "swimming", "running" },
+    };
 
-    // Encode
-    const encoded_length = Encoder.calcSize(src.len);
-    const encoded_buffer = try allocator.alloc(u8, encoded_length);
-    defer allocator.free(encoded_buffer);
+    var dst = std.ArrayList(u8).init(allocator);
+    defer dst.deinit();
+    try zon.stringify.serialize(source, .{}, dst.writer());
 
-    _ = Encoder.encode(encoded_buffer, src);
-    try std.testing.expectEqualStrings("aGVsbG8gemln", encoded_buffer);
+    const expected =
+        \\.{
+        \\    .name = "John",
+        \\    .age = 20,
+        \\    .favourites = .{ "swimming", "running" },
+        \\}
+    ;
+    try std.testing.expectEqualStrings(expected, dst.items);
 
-    // Decode
-    const decoded_length = try Decoder.calcSizeForSlice(encoded_buffer);
-    const decoded_buffer = try allocator.alloc(u8, decoded_length);
-    defer allocator.free(decoded_buffer);
+    // Make it 0-sentinel
+    try dst.append(0);
+    const input = dst.items[0 .. dst.items.len - 1 :0];
 
-    try Decoder.decode(decoded_buffer, encoded_buffer);
-    try std.testing.expectEqualStrings(src, decoded_buffer);
+    var status: zon.parse.Status = .{};
+    defer status.deinit(allocator);
+    var parsed = zon.parse.fromSlice(
+        Student,
+        allocator,
+        input,
+        &status,
+        .{ .free_on_error = true },
+    ) catch |err| {
+        std.debug.print("Parse status: {any}\n", .{status});
+        return err;
+    };
+    defer parsed.deinit(allocator);
+
+    try std.testing.expectEqualDeep(source, parsed);
 }
