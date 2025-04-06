@@ -2,7 +2,7 @@
 
 A basic implementation of `http.Server` has been introduced since Zig 0.12.0.
 
-For each connection we spawn a new thread to handle it, in `accept` in will:
+For each connection we spawn a new thread to handle it, in `accept` it will:
 1. First it use `defer` to ensure the connection is closed when returned.
 2. Then init a HTTP server to begin parse request
 3. For each request, we first check if it could upgrade to WebSocket.
@@ -39,6 +39,8 @@ webSocket.send('abc')
 ```
 
 ![](/images/websocket-client.webp)
+
+See [Writing WebSocket client applications - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) for details.
 
 ## Note
 The std implementation exhibits extremely poor performance. If you're planning beyond basic experimentation, consider utilizing alternative libraries such as:

@@ -68,13 +68,12 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     .{name},
                 )).dependOn(run_step);
 
-                // Those examples won't stop so we skip it here
+                // Those examples won't stop so we don't add them to run_all step.
                 const skip_list = [_][]const u8{
                     "04-01", // start tcp server
                     "04-02", // client of tcp server
                     "04-03", // udp listener
                     "05-03", // http server
-                    "05-04", // websocket server
                 };
                 for (skip_list) |example| {
                     if (std.mem.eql(u8, example, name)) {

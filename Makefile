@@ -31,7 +31,7 @@ endif
 clean:
 	rm -rf zig-out zig-cache
 
-EXCLUDE = --exclude "*webp" --exclude "*svg" --exclude "*gif" --exclude "saved-imgs"
+EXCLUDE = --exclude "*webp" --exclude "*svg" --exclude "*gif"
 
 .PHONY: webp
 webp:
