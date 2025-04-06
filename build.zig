@@ -16,7 +16,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
     var it = src_dir.iterate();
     const check = b.step("check", "Check if it compiles");
 
-    Entry: while (try it.next()) |entry| {
+    LoopExample: while (try it.next()) |entry| {
         switch (entry.kind) {
             .file => {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
@@ -68,21 +68,17 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     .{name},
                 )).dependOn(run_step);
 
-                // 04-01 start tcp server, and won't stop so we skip it here
-                // 04-02 is the server's client.
-                // 04-03 starts udp listener.
-                // 05-03 starts http server.
-                // 05-04 starts websocket server.
+                // Those examples won't stop so we skip it here
                 const skip_list = [_][]const u8{
-                    "04-01",
-                    "04-02",
-                    "04-03",
-                    "05-03",
-                    "05-04",
+                    "04-01", // start tcp server
+                    "04-02", // client of tcp server
+                    "04-03", // udp listener
+                    "05-03", // http server
+                    "05-04", // websocket server
                 };
-                for (skip_list) |skip| {
-                    if (std.mem.eql(u8, skip, name)) {
-                        continue :Entry;
+                for (skip_list) |example| {
+                    if (std.mem.eql(u8, example, name)) {
+                        continue :LoopExample;
                     }
                 }
                 run_all.dependOn(run_step);
