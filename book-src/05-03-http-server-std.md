@@ -38,7 +38,7 @@ Then we could send message like this:
 webSocket.send('abc')
 ```
 
-![](/images/websocket-client.webp)
+![](./images/websocket-client.webp)
 
 See [Writing WebSocket client applications - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) for details.
 
