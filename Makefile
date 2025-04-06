@@ -30,3 +30,10 @@ endif
 .PHONY: clean
 clean:
 	rm -rf zig-out zig-cache
+
+EXCLUDE = --exclude "*webp" --exclude "*svg" --exclude "*gif"
+
+.PHONY: webp
+webp:
+	fd -t f $(EXCLUDE) --full-path './static/images' --exec convert {} {.}.webp \;
+	fd -t f $(EXCLUDE) --full-path './static/images' --exec rm {} \;
