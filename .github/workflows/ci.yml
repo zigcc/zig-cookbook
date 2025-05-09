@@ -45,7 +45,13 @@ jobs:
         run: |
           # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#mysql
           sudo systemctl start mysql.service
-          mysql -uroot -proot -e "create database public"
+          echo "Waiting for MySQL to start..."
+          while ! mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot --silent --wait=5; do
+            echo "Waiting for MySQL to be ready..."
+            sleep 2
+          done
+          echo "MySQL is ready!"
+          mysql -uroot -proot -e "create database public; show databases;"
       - name: Install deps
         run: |
           make install-deps
@@ -60,6 +66,7 @@ jobs:
           pkg-config --libs --cflags libpq mysqlclient
           zig fmt --check src/
           if [ `uname -s` = "Linux" ]; then
+            sudo systemctl start mysql.service
             zig build
             zig build run-all --summary all
           else
