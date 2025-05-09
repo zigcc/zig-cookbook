@@ -45,7 +45,7 @@ jobs:
         run: |
           # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#mysql
           sudo systemctl start mysql.service
-          mysql -uroot -proot -e "create database public"
+          mysql -uroot -proot -e "create database public; show databases;"
           echo "Waiting for MySQL to start..."
           while ! mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot --silent --wait=5; do
             echo "Wait MySQL ready..."
