@@ -6,15 +6,17 @@ pub fn main() !void {
     defer if (gpa.deinit() != .ok) @panic("leak");
     const allocator = gpa.allocator();
 
+    const cpu_count = try std.Thread.getCpuCount();
+
     var pool: std.Thread.Pool = undefined;
     try pool.init(.{
         .allocator = allocator,
-        .n_jobs = 4,
+        .n_jobs = cpu_count,
     });
     defer pool.deinit();
 
     var wg: std.Thread.WaitGroup = .{};
-    for (0..10) |i| {
+    for (0..cpu_count) |i| {
         pool.spawnWg(&wg, struct {
             fn run(id: usize) void {
                 print("I'm from {d}\n", .{id});
