@@ -47,7 +47,7 @@ jobs:
           sudo systemctl start mysql.service
           mysql -uroot -proot -e "create database public"
           echo "Waiting for MySQL to start..."
-          while ! mysqladmin ping -h 127.0.0.1 -P 3306 --silent --wait=5; do
+          while ! mysqladmin ping -h 127.0.0.1 -P 3306 -uroot -proot --silent --wait=5; do
             echo "Wait MySQL ready..."
             sleep 2
           done
