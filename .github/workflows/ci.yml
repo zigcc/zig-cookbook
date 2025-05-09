@@ -64,6 +64,7 @@ jobs:
       - name: Run examples(Unix)
         run: |
           pkg-config --libs --cflags libpq mysqlclient
+          mysql -uroot -proot -e "show databases;"
           zig fmt --check src/
           if [ `uname -s` = "Linux" ]; then
             zig build
