@@ -46,6 +46,12 @@ jobs:
           # https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#mysql
           sudo systemctl start mysql.service
           mysql -uroot -proot -e "create database public"
+          echo "Waiting for MySQL to start..."
+          while ! mysqladmin ping -h 127.0.0.1 -P 3306 --silent --wait=5; do
+            echo "Wait MySQL ready..."
+            sleep 2
+          done
+          echo "MySQL is ready!"
       - name: Install deps
         run: |
           make install-deps
