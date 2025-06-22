@@ -2,6 +2,7 @@
     .name = .zig_cookbook,
     .fingerprint = 0xde9a8a438b394bd0,
     .version = "0.1.0",
+    .minimum_zig_version = "0.14.0",
     .paths = .{
         "src",
         "lib",
@@ -10,8 +11,8 @@
     },
     .dependencies = .{
         .zigcli = .{
-            .url = "https://github.com/jiacai2050/zigcli/archive/refs/tags/v0.2.0.tar.gz",
-            .hash = "1220d88560a67e3044f6358f03b0aa3102a53134f745c69d7e0cefac21e7febbd8b5",
+            .url = "https://github.com/jiacai2050/zigcli/archive/refs/tags/v0.2.3.tar.gz",
+            .hash = "zigcli-0.2.3-ORC7jGKRAgAYW8y8hO3S4v2DsqbnyOrgximDYNgfB_Bw",
         },
     },
 }

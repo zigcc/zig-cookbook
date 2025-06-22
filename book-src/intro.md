@@ -5,6 +5,8 @@
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml)
 
+![Zig Cookbook Logo](./images/logo.webp)
+
 [Zig cookbook](https://github.com/zigcc/zig-cookbook) is a collection of simple Zig programs that demonstrate good practices to accomplish common programming tasks.
 
 > - Main branch tracks Zig 0.14.0 and master, and are tested on Linux and macOS via GitHub actions.
