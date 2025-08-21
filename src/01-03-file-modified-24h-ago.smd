@@ -1,0 +1,12 @@
+---
+.title = "Find files that have been modified in the last 24 hours",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Gets the current working directory by calling `fs.cwd()`, and then iterates files using `walk()`, which will recursively iterate entries in the directory.
+
+For each entry, we check if it's a file, and use `statFile()` to retrieve the file's metadata.
+
+[]($code.siteAsset('src/01-03.zig').language('zig'))

@@ -1,20 +1,25 @@
-name: Pages
+name: Deploy the website to Github Pages
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: ["zine", "main"]
+  pull_request:
+  workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
 
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -22,26 +27,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
-      - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@v1
+          fetch-depth: 0 # Change if you need git info
+      - name: Setup Zine
+        uses: kristoff-it/setup-zine@v1
         with:
-          mdbook-version: "latest"
-      - name: Cache Cargo
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.cargo/bin
-          key: pages-${{ runner.os }}
-      - run: |
-          if ! command -v mdbook-last-changed; then
-            cargo install mdbook-last-changed
-          fi
-          mdbook build
+          version: v0.10.2
+
+      - name: Build
+        run: zine release
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./book
+          path: "public"
+
 
   deploy:
     environment:
@@ -49,7 +48,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name != 'pull_request'
     steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

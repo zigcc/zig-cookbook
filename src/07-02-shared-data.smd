@@ -1,0 +1,13 @@
+---
+.title = "Share data between two threads",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+When we want to mutate data shared between threads, [`Mutex`](**Mut**ually **ex**clusive flag) must be used to synchronize threads, otherwise the result maybe unexpected.
+
+[]($code.siteAsset('src/07-02.zig').language('zig'))
+If we remove Mutex protection, the result will most like be less than 30,000.
+
+[`Mutex`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.Mutex

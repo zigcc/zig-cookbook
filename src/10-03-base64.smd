@@ -1,0 +1,16 @@
+---
+.title = "Encode and decode base64",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Encodes a byte slice into `base64` string using [`std.base64.standard`] [`encode`]
+and decodes it with [`standard`] [`decode`].
+
+[]($code.siteAsset('src/10-02.zig').language('zig'))
+
+[`std.base64.standard`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.standard
+[`standard`]: https://ziglang.org/documentation/0.11.0/std/src/std/base64.zig.html#L29
+[`encode`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.Base64Encoder.encode
+[`decode`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.Base64Decoder.decode

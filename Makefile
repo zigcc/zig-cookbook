@@ -6,11 +6,11 @@ endif
 
 .PHONY: serve
 serve:
-	mdbook serve
+	zine
 
 .PHONY: lint
 lint:
-	npx prettier@2.7.1 --write book-src
+	npx prettier@2.7.1 --write src
 
 .PHONY: run
 run:
@@ -35,5 +35,5 @@ EXCLUDE = --exclude "*webp" --exclude "*svg" --exclude "*gif"
 
 .PHONY: webp
 webp:
-	fd -t f $(EXCLUDE) --full-path './book-src/images' --exec convert {} {.}.webp \;
-	fd -t f $(EXCLUDE) --full-path './book-src/images' --exec rm {} \;
+	fd -t f $(EXCLUDE) --full-path './assets/images' --exec convert {} {.}.webp \;
+	fd -t f $(EXCLUDE) --full-path './assets/images' --exec rm {} \;

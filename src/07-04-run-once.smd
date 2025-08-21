@@ -1,0 +1,11 @@
+---
+.title = "Run Once",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+
+`std.once` ensures a function executes exactly one time, regardless of how many threads attempt to call it or how many times it's invoked. This thread-safe initialization is particularly useful for singleton patterns and one-time setup operations.
+
+[]($code.siteAsset('src/07-04.zig').language('zig'))

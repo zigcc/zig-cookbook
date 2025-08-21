@@ -1,0 +1,115 @@
+<extend template="base.shtml">
+<head id="head">
+  <script defer src="$site.asset('toc.js').link()"></script>
+</head>
+<body id="body">
+  <div class="mobile-header">
+    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="Toggle table of contents">☰</button>
+    <a class="brand" href="/" :text="$site.title"></a>
+  </div>
+  <div class="toc" id="toc">
+    <ul>
+      <li><a href="$site.page('').link()" :text="$site.page('').title"></a></li>
+      <li><strong>File System</strong>
+        <ul>
+          <li><a href="$site.page('01-01-read-file-line-by-line').link()" :text="$site.page('01-01-read-file-line-by-line').title"></a></li>
+          <li><a href="$site.page('01-02-mmap-file').link()" :text="$site.page('01-02-mmap-file').title"></a></li>
+          <li><a href="$site.page('01-03-file-modified-24h-ago').link()" :text="$site.page('01-03-file-modified-24h-ago').title"></a></li>
+          <li><a href="$site.page('01-04-file-exists').link()" :text="$site.page('01-04-file-exists').title"></a></li>
+          <li><a href="$site.page('01-05-iterate-dir').link()" :text="$site.page('01-05-iterate-dir').title"></a></li>
+        </ul></li>
+      <li><strong>Cryptography</strong>
+        <ul>
+          <li><a href="$site.page('02-01-sha-digest').link()" :text="$site.page('02-01-sha-digest').title"></a></li>
+          <li><a href="$site.page('02-02-pbkdf2').link()" :text="$site.page('02-02-pbkdf2').title"></a></li>
+        </ul></li>
+      <li><strong>Date and Time</strong>
+        <ul>
+          <li><a href="$site.page('03-01-elapsed-time').link()" :text="$site.page('03-01-elapsed-time').title"></a></li>
+        </ul></li>
+      <li><strong>Network</strong>
+        <ul>
+          <li><a href="$site.page('04-01-tcp-server').link()" :text="$site.page('04-01-tcp-server').title"></a></li>
+          <li><a href="$site.page('04-02-tcp-client').link()" :text="$site.page('04-02-tcp-client').title"></a></li>
+          <li><a href="$site.page('04-03-udp-echo').link()" :text="$site.page('04-03-udp-echo').title"></a></li>
+        </ul></li>
+      <li><strong>Web Programming</strong>
+        <ul>
+          <li><a href="$site.page('05-01-http-get').link()" :text="$site.page('05-01-http-get').title"></a></li>
+          <li><a href="$site.page('05-02-http-post').link()" :text="$site.page('05-02-http-post').title"></a></li>
+          <li><a href="$site.page('05-03-http-server-std').link()" :text="$site.page('05-03-http-server-std').title"></a></li>
+        </ul></li>
+      <li><strong>Algorithms</strong>
+        <ul>
+          <li><a href="$site.page('06-01-rand').link()" :text="$site.page('06-01-rand').title"></a></li>
+        </ul></li>
+      <li><strong>Concurrency</strong>
+        <ul>
+          <li><a href="$site.page('07-01-spawn').link()" :text="$site.page('07-01-spawn').title"></a></li>
+          <li><a href="$site.page('07-02-shared-data').link()" :text="$site.page('07-02-shared-data').title"></a></li>
+          <li><a href="$site.page('07-03-threadpool').link()" :text="$site.page('07-03-threadpool').title"></a></li>
+          <li><a href="$site.page('07-04-run-once').link()" :text="$site.page('07-04-run-once').title"></a></li>
+        </ul></li>
+      <li><strong>Operating System</strong>
+        <ul>
+          <li><a href="$site.page('08-01-cpu-count').link()" :text="$site.page('08-01-cpu-count').title"></a></li>
+          <li><a href="$site.page('08-02-external').link()" :text="$site.page('08-02-external').title"></a></li>
+        </ul></li>
+      <li><strong>Development Tools</strong>
+        <ul>
+          <li><a href="$site.page('09-01-semver').link()" :text="$site.page('09-01-semver').title"></a></li>
+        </ul></li>
+      <li><strong>Encoding</strong>
+        <ul>
+          <li><a href="$site.page('10-01-json').link()" :text="$site.page('10-01-json').title"></a></li>
+          <li><a href="$site.page('10-02-zon').link()" :text="$site.page('10-02-zon').title"></a></li>
+          <li><a href="$site.page('10-03-base64').link()" :text="$site.page('10-03-base64').title"></a></li>
+        </ul></li>
+      <li><strong>Mathematics</strong>
+        <ul>
+          <li><a href="$site.page('11-01-complex-numbers').link()" :text="$site.page('11-01-complex-numbers').title"></a></li>
+        </ul></li>
+      <li><strong>Data Structures</strong>
+        <ul>
+          <li><a href="$site.page('12-01-bitfield').link()" :text="$site.page('12-01-bitfield').title"></a></li>
+          <li><a href="$site.page('12-02-singly-linked-list').link()" :text="$site.page('12-02-singly-linked-list').title"></a></li>
+          <li><a href="$site.page('12-03-doubly-linked-list').link()" :text="$site.page('12-03-doubly-linked-list').title"></a></li>
+        </ul></li>
+      <li><strong>Command line</strong>
+        <ul>
+          <li><a href="$site.page('13-01-argparse').link()" :text="$site.page('13-01-argparse').title"></a></li>
+        </ul></li>
+      <li><strong>Database</strong>
+        <ul>
+          <li><a href="$site.page('14-01-sqlite').link()" :text="$site.page('14-01-sqlite').title"></a></li>
+          <li><a href="$site.page('14-02-postgres').link()" :text="$site.page('14-02-postgres').title"></a></li>
+          <li><a href="$site.page('14-03-mysql').link()" :text="$site.page('14-03-mysql').title"></a></li>
+        </ul></li>
+      <li><strong>Text Processing</strong>
+        <ul>
+          <li><a href="$site.page('15-01-regex').link()" :text="$site.page('15-01-regex').title"></a></li>
+          <li><a href="$site.page('15-02-string').link()" :text="$site.page('15-02-string').title"></a></li>
+        </ul></li>
+    </ul>
+  </div>
+  <div class="body">
+    <div class="content">
+      <article>
+        <h1 :text="$page.title"></h1>
+        <div :html="$page.content()"></div>
+      </article>
+      <div id="prev-next" :if="$page.isSection().not()">
+        <div :if="$page.prevPage?()">
+          <a href="$if.link()">
+            <span :text="$if.title"></span>
+          </a>
+        </div>
+        <div :if="$page.nextPage?()">
+          <a href="$if.link()">
+            <span :text="$if.title"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

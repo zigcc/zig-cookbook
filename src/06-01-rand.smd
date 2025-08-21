@@ -1,0 +1,12 @@
+---
+.title = "Generate random numbers",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Generates random numbers with the help of a thread-local, cryptographically secure pseudo random number generator [`std.crypto.random`].
+
+[]($code.siteAsset('src/06-01.zig').language('zig'))
+
+[`std.crypto.random`]: https://ziglang.org/documentation/0.11.0/std/#A;std:crypto.random

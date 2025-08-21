@@ -1,4 +1,4 @@
-book
+public/
 zig-out/
 zig-cache/
 .zig-cache/

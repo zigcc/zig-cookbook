@@ -1,0 +1,11 @@
+---
+.title = "Calculate SHA-256 digest of a file",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+Calculate SHA-256 digest of a file
+
+There are many crypto algorithm implementations in std, `sha256`, `md5` are supported out of box.
+
+[]($code.siteAsset('src/02-01.zig').language('zig'))
