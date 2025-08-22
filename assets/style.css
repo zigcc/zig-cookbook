@@ -189,6 +189,31 @@ html {
   font-weight: bold;
 }
 
+.toc > ul {
+  padding-inline-start: 0;
+  counter-reset: cate;
+}
+
+.toc > ul ul{
+  padding-inline-start: 2rem;
+  counter-reset: sec;
+  counter-increment: cate;
+}
+
+.toc > ul ul li {
+  list-style: none;
+  counter-increment: sec;
+}
+
+.toc > ul ul li a::before {
+  content: counter(cate) "." counter(sec) ". ";
+}
+
+.toc li {
+  list-style: none;
+  padding-inline-start: 0;
+}
+
 @media screen and (max-width: 800px) {
   .toc {
     display: none;
