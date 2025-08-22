@@ -25,6 +25,7 @@ pre {
   overflow: auto;
   padding: 4px 5px;
   background: #8888880a;
+  line-height: 1;
 }
 
 pre:has(+ pre) {
