@@ -21,15 +21,15 @@ p:has(+ pre) {
   margin-bottom: 0;
 }
 
-p + pre {
-  margin-top: 5px;
-}
-
 pre {
   overflow: auto;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 4px 0;
+  padding: 4px 5px;
+  font-size: smaller;
+  background: #8888880A;
+}
+
+pre:has(+pre){
+  margin-bottom: 10px;
 }
 
 pre code {
@@ -37,9 +37,7 @@ pre code {
   -moz-tab-size: 4;
 }
 code {
-  font-variant-ligatures: none;
-  font-feature-settings: "liga" 0;
-  font-family: "JetBrains Mono", monospace;
+  font-family: monospace;
 }
 
 .center {
