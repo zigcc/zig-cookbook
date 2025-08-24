@@ -4,3 +4,10 @@ zig-cache/
 .zig-cache/
 .DS_Store
 .tool-versions
+
+# Node.js
+node_modules/
+npm-debug.log*
+
+# Backup files
+*.bak

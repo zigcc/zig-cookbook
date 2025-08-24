@@ -1,0 +1,12 @@
+{
+  "name": "zig-cookbook-scripts",
+  "version": "1.0.0",
+  "description": "Build scripts for Zig Cookbook",
+  "main": "generate-summary.js",
+  "scripts": {
+    "generate-summary": "node generate-summary.js",
+    "test-toc": "node test-toc.js",
+    "prebuild": "npm run generate-summary"
+  },
+  "private": true
+}
