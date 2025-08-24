@@ -37,6 +37,7 @@ jobs:
           if ! command -v mdbook-last-changed; then
             cargo install mdbook-last-changed
           fi
+          node generate-summary.js
           mdbook build
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

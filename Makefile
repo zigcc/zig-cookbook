@@ -5,8 +5,12 @@ else
 endif
 
 .PHONY: serve
-serve:
+serve: generate-summary
 	mdbook serve
+
+.PHONY: generate-summary
+generate-summary:
+	node generate-summary.js
 
 .PHONY: lint
 lint:
