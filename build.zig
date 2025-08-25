@@ -10,7 +10,7 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const src_dir = try fs.cwd().openDir(b.path("src").getPath(b), .{ .iterate = true });
+    const src_dir = try fs.cwd().openDir(b.path("assets/src").getPath(b), .{ .iterate = true });
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
@@ -22,7 +22,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
-                    .root_source_file = b.path(try allocPrint(b.allocator, "src/{s}.zig", .{name})),
+                    .root_source_file = b.path(try allocPrint(b.allocator, "assets/src/{s}.zig", .{name})),
                     .target = target,
                     .optimize = .Debug,
                 });

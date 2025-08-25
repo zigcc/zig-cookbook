@@ -1,0 +1,33 @@
+<extend template="base.shtml">
+<head id="head">
+  <script defer src="$site.asset('toc.js').link()"></script>
+</head>
+<body id="body">
+  <div class="mobile-header">
+    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="Toggle table of contents">☰</button>
+    <a class="brand" href="/" :text="$site.title"></a>
+  </div>
+  <div class="toc" id="toc">
+    <ctx :html="$site.page('toc').content()"></ctx>
+  </div>
+  <div class="body">
+    <div class="content">
+      <article>
+        <h1 :text="$page.title"></h1>
+        <div :html="$page.content()"></div>
+      </article>
+      <div id="prev-next" :if="$page.isSection().not()">
+        <div :if="$page.prevPage?()">
+          <a href="$if.link()">
+            <span :text="$if.title"></span>
+          </a>
+        </div>
+        <div :if="$page.nextPage?()">
+          <a href="$if.link()">
+            <span :text="$if.title"></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

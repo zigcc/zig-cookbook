@@ -1,0 +1,14 @@
+---
+.title = "Parse a version string.",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Constructs a [`std.SemanticVersion`] from a string literal using [`SemanticVersion.parse`].
+
+[]($code.siteAsset('src/09-01.zig').language('zig'))
+
+[`std.semanticversion`]: https://ziglang.org/documentation/0.11.0/std/#A;std:SemanticVersion
+[`semanticversion.parse`]: https://ziglang.org/documentation/0.11.0/std/#A;std:SemanticVersion.parse
+[semantic versioning specification]: http://semver.org/

@@ -1,0 +1,23 @@
+---
+.title = "Serialize and deserialize Zon",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+ZON ("Zig Object Notation") is a textual file format. Outside of `nan` and `inf` literals, ZON's grammar is a subset of Zig's.
+
+Supported Zig primitives:
+* boolean literals
+* number literals (including `nan` and `inf`)
+* character literals
+* enum literals
+* `null` literals
+* string literals
+* multiline string literals
+
+ Supported Zig container types:
+ * anonymous struct literals
+ * anonymous tuple literals
+
+[]($code.siteAsset('src/10-02.zig').language('zig'))

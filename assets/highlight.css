@@ -1,0 +1,103 @@
+:root {
+  --code-fg: #BD976A;
+  --keyword: #4D9375;
+  --variable: #BD976A;
+  --comment: #758575DD;
+  --operator: #666666;
+  --string: #C98A7D;
+  --number: #4C9A91;
+  --function: #CB7676;
+  --bracket: #93aa9e;
+}
+
+code {
+  color: var(--code-fg);
+}
+
+code.zig, code.javascript, code.c, code.cpp, code.zon, code.go{
+  color: var(--code-fg);
+  .keyword, .keyword_modifier, .type_builtin, .keyword_type, .keyword_return, .keyword_conditional, .keyword_repeat, .keyword_operator, .constant_builtin, .keyword_exception, .type{
+    color: var(--keyword);
+  }
+  .variable, .function_builtin{
+    color: var(--variable);
+  }
+  .comment{
+    color: var(--comment);
+  }
+  .operator, .punctuation{
+    color: var(--operator);
+  }
+  .string, .character{
+    color: var(--string);
+  }
+  .number{
+    color: var(--number);
+  }
+  .keyword_function, .punctuation_delimiter, .function{
+    color: var(--function);
+  }
+  .punctuation_bracket{
+    color: var(--bracket);
+  }
+}
+
+code.conf{
+  color: var(--code-fg);
+  .function{
+    color: var(--function);
+  }
+  .punctuation_bracket{
+    color: var(--bracket);
+  }
+}
+
+code.diff{
+  color: var(--code-fg);
+  .addition, .string{
+    color: #4D9375;
+  }
+  .deletion, .keyword{
+    color: #CB7676;
+  }
+}
+
+/* TODO 分词器太烂了 */
+code.bash {
+  color: var(--code-fg);
+  .comment {
+    color: var(--comment);
+    font-style: italic;
+  }
+  span.operator {
+    color: var(--operator);
+  }
+  .constant {
+    color: var(--number);
+  }
+  .string {
+    color: var(--string);
+  }
+  .function {
+    color: var(--function);
+  }
+}
+
+code.json{
+  color: var(--code-fg);
+  .constant_builtin{
+    color: var(--keyword);
+  }
+  span.string_special_key{
+    color: var(--string)
+  }
+  .string{
+    color: var(--function)
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  code{
+    filter: brightness(0.8) contrast(1.5);
+  }
+}

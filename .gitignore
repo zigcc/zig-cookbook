@@ -1,6 +1,7 @@
-book
+public/
 zig-out/
 zig-cache/
 .zig-cache/
 .DS_Store
 .tool-versions
+.vscode

@@ -1,0 +1,12 @@
+---
+.title = "Check number of logical cpu cores",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Shows the number of logical CPU cores in the current machine using [`std.Thread.getCpuCount`].
+
+[]($code.siteAsset('src/08-01.zig').language('zig'))
+
+[`std.thread.getcpucount`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.getCpuCount
