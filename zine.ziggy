@@ -1,6 +1,6 @@
 Site {
     .title = "Zig cookbook",
-    .host_url = "https://example.com",
+    .host_url = "https://cookbook.ziglang.cc/",
     .content_dir_path = "src",
     .layouts_dir_path = "layouts",
     .assets_dir_path = "assets",

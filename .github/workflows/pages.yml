@@ -1,4 +1,4 @@
-name: Deploy the website to Github Pages
+name: Github Pages
 
 on:
   push:
@@ -18,7 +18,7 @@ defaults:
 
 # Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
 concurrency:
-  group: "pages"
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
