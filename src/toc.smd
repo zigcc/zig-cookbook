@@ -1,0 +1,90 @@
+---
+.title = "introduction",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+# Summary
+
+[Introduction](/)
+
+- File System
+
+  - [Read file line by line](01-01-read-file-line-by-line)
+  - [Mmap file](01-02-mmap-file)
+  - [Find Files modified in the last 24 hours](01-03-file-modified-24h-ago)
+  - [Check file existence](01-04-file-exists)
+  - [Iterate directory](01-05-iterate-dir)
+
+- Cryptography
+
+  - [Calculate SHA-256 digest of a file](02-01-sha-digest)
+  - [Salt and hash a password with PBKDF2](02-02-pbkdf2)
+
+- Date and Time
+
+  - [Measure the elapsed time between two code sections](03-01-elapsed-time)
+
+- Network
+
+  - [Listen on unused port TCP/IP](04-01-tcp-server)
+  - [TCP Client](04-02-tcp-client)
+  - [UDP Echo](04-03-udp-echo)
+
+- Web Programming
+
+  - [HTTP Get](05-01-http-get)
+  - [HTTP Post](05-02-http-post)
+  - [HTTP Server(std)](05-03-http-server-std)
+
+- Algorithms
+
+  - [Generate Random Values](06-01-rand)
+
+- Concurrency
+
+  - [Explicit Threads](07-01-spawn)
+  - [Shared Data](07-02-shared-data)
+  - [Thread pool](07-03-threadpool)
+  - [Run Once](07-04-run-once)
+
+- Operating System
+
+  - [Processor](08-01-cpu-count)
+  - [External Command](08-02-external)
+
+- Development Tools
+
+  - [Versioning](09-01-semver)
+
+- Encoding
+
+  - [(De)serialize JSON](10-01-json)
+  - [(De)serialize Zon](10-02-zon)
+  - [Encode and decode base64](10-03-base64)
+
+- Mathematics
+
+  - [Complex Numbers](11-01-complex-numbers)
+
+- Data Structures
+
+  - [Bitfield](12-01-bitfield)
+  - [Singly Linked List](12-02-singly-linked-list)
+  - [Doubly Linked List](12-03-doubly-linked-list)
+
+- Command line
+
+  - [Argument Parsing](13-01-argparse)
+  - ANSI Terminal
+
+- [Database](database)
+
+  - [SQLite](14-01-sqlite)
+  - [Postgres](14-02-postgres)
+  - [MySQL](14-03-mysql)
+
+- Text Processing
+  - [Regex Expressions](15-01-regex)
+  - [String Parsing](15-02-string)
