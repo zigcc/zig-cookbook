@@ -1,11 +1,9 @@
 ---
-.title = "introduction",
+.title = "toc",
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
-
-# Summary
 
 [Introduction](/)
 

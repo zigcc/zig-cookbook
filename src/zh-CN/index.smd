@@ -1,0 +1,70 @@
+---
+.title = "介绍",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+.translation_key = "introduction",
+---
+
+```=html
+<a href="https://discord.gg/bAehMGPb2R">
+  <img src="https://img.shields.io/discord/1155469703846834187?label=在Discord上聊天" alt="在Discord上聊天">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/stargazers">
+  <img src="https://img.shields.io/github/stars/zigcc/zig-cookbook?style=square&color=#30a14e" alt="星标数量">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml">
+  <img src="https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg" alt="CI">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml">
+  <img src="https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg" alt="Pages">
+</a>
+```
+
+![](/images/logo.webp)
+
+[Zig Cookbook](https://github.com/zigcc/zig-cookbook) 是一系列简单的 Zig 程序集合，用于展示完成常见编程任务的最佳实践。
+
+> - 主分支跟踪 Zig 0.14.0 及 master 版本，并通过 GitHub Actions 在 Linux 和 macOS 上进行测试。
+> - 更早版本的 Zig 支持可在 [其他分支](https://github.com/zigcc/zig-cookbook/branches) 中找到。
+
+# 如何使用
+
+[网站](https://cookbook.ziglang.cc/) 由 [zine-ssg](https://zine-ssg.io) 生成，这是一个 Zig 编写的静态网站生成器。运行 `zine` 将在 `http://localhost:1990` 启动一个预览服务器。
+
+每个示例都附带一个以对应序号命名的示例程序。可以使用命令 `zig build run-{章节号}-{序号}` 来运行单个示例，或使用 `zig build run-all` 运行所有示例。
+
+> ## 注意
+> 某些示例可能依赖系统库：
+> - 使用 `make install-deps` 安装客户端库；
+> - 使用 `docker-compose up -d` 启动所需的数据库。
+
+# 贡献
+
+本 cookbook 仍在持续完善中，我们欢迎社区贡献。如果你有想要分享的示例，请 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls)。
+
+## 翻译
+
+在对应语言目录下创建相应的要翻译的示例，翻译后 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls) 即可（请确保 `frontmatter` 中有相应的 `translation_key`）。
+
+# 联系我们
+
+# 致谢
+
+**初始版本**的 Zig Cookbook 受到多个类似项目的启发。我们向以下项目致以诚挚感谢，感谢它们的杰出工作：
+
+- [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
+
+**当前版本**的 Zig Cookbook 基于 [zine-ssg](https://zine-ssg.io)，在此感谢其卓越的贡献！
+
+# 星标历史
+
+```=html
+<a href="https://star-history.com/#zigcc/zig-cookbook&Date">
+  <img src="https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date" alt="星标历史">
+</a>
+```
+
+# 许可证
+
+Markdown 文件采用 [CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可，Zig 源码文件采用 MIT 许可。
