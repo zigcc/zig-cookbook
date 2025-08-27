@@ -1,10 +1,11 @@
 {
     "site_title": "Zig Cookbook",
-    "introduction": "引入",
+    "introduction": "介绍",
     "contributing": "贡献",
-    "license": "License",
+    "license": "许可证",
     "toggle_toc": "切换目录",
-    "language_switcher": "English",
+    "prev": "上一示例：",
+    "next": "下一示例：",
     "languages_menu": "此页面提供以下语言的版本",
     "footer_copyright": "许可证： 文字：CC BY-NC-SA 4.0；代码：MIT",
 }
