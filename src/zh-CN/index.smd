@@ -47,8 +47,6 @@
 
 在对应语言目录下创建相应的要翻译的示例，翻译后 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls) 即可（请确保 `frontmatter` 中有相应的 `translation_key`）。
 
-# 联系我们
-
 # 致谢
 
 **初始版本**的 Zig Cookbook 受到多个类似项目的启发。我们向以下项目致以诚挚感谢，感谢它们的杰出工作：
