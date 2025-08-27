@@ -4,8 +4,8 @@
 </head>
 <body id="body">
   <div class="mobile-header">
-    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="Toggle table of contents">☰</button>
-    <a class="brand" href="/" :text="$site.title"></a>
+    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="$i18n.get('toggle_toc')">☰</button>
+    <a class="brand" href="/" :text="$i18n.get('site_title')"></a>
   </div>
   <div class="toc" id="toc">
     <ctx :html="$site.page('toc').content()"></ctx>
@@ -13,18 +13,27 @@
   <div class="body">
     <div class="content">
       <article>
-        <h1 :text="$page.title"></h1>
+        <div id="content-header">
+          <h1 :text="$page.title"></h1>
+        </div>
         <div :html="$page.content()"></div>
       </article>
-      <div id="prev-next" :if="$page.isSection().not()">
-        <div :if="$page.prevPage?()">
-          <a href="$if.link()">
-            <span :text="$if.title"></span>
-          </a>
+      <ctx :if="$page.isSection().not()">
+        <div id="prev-next">
+          <div :if="$page.prevPage?()">
+            <span :text="$i18n.get('prev')"></span><a href="$if.link()" :text="$if.title"></a>
+          </div>
+          <div :if="$page.nextPage?()">
+            <span :text="$i18n.get('next')"></span><a href="$if.link()" :text="$if.title"></a>
+          </div>
         </div>
-        <div :if="$page.nextPage?()">
-          <a href="$if.link()">
-            <span :text="$if.title"></span>
+      </ctx>
+      <div id="footer">
+        <div>&copy; 2025. All rights reserved.</div>
+        <div :text="$i18n.get('languages_menu')"></div>
+        <div class="langs" :loop="$page.locales()">
+          <a href="$loop.it.link()">
+            <ctx :text="$loop.it.site().localeName()"></ctx><ctx :if="$loop.it.site().localeName().eql('English')">(Original)</ctx>
           </a>
         </div>
       </div>
