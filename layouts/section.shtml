@@ -15,27 +15,30 @@
       <article>
         <div id="content-header">
           <h1 :text="$page.title"></h1>
-          <ctx :if="$page.locales().len.gt(1)">
-            <span :text="$i18n.get('multilang_info')"></span>
-            <ctx :loop="$page.locales()">
-              <a :if="$loop.it.isCurrent().not()" href="$loop.it.link()" :text="$loop.it.title"></a>
-            </ctx>
-          </ctx>
         </div>
         <div :html="$page.content()"></div>
       </article>
-      <div id="prev-next" :if="$page.isSection().not()">
-        <div :if="$page.prevPage?()">
-          <a href="$if.link()">
-            <span :text="$if.title"></span>
-          </a>
+      <ctx :if="$page.isSection().not()">
+        <div id="prev-next">
+          <div :if="$page.prevPage?()">
+            <span :text="$i18n.get('prev')"></span><a href="$if.link()" :text="$if.title"></a>
+          </div>
+          <div :if="$page.nextPage?()">
+            <span :text="$i18n.get('next')"></span><a href="$if.link()" :text="$if.title"></a>
+          </div>
         </div>
-        <div :if="$page.nextPage?()">
-          <a href="$if.link()">
-            <span :text="$if.title"></span>
-          </a>
-        </div>
-      </div>
+      </ctx>
+      <footer>
+        <div>&copy; 2025. All rights reserved.</div>
+        <div :text="$i18n.get('footer_copyright')"></div>
+        <span :text="$i18n.get('languages_menu')"></span>
+          <ctx :loop="$page.locales()">
+            <a
+              href="$loop.it.link()"
+              :text="$loop.it.site().localeName()"
+            ></a>
+          </ctx>
+      </footer>
     </div>
   </div>
 </body>

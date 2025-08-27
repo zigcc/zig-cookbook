@@ -70,28 +70,8 @@ body {
 }
 
 #prev-next {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-top: 20px;
-  padding-top: 5px;
-  border-top: 2px solid var(--border);
-}
-
-#prev-next a {
-  text-decoration: none;
-}
-#prev-next > :last-child {
-  margin-left: auto;
-  text-align: right;
-}
-#prev-next > :first-child span::before {
-  content: "←";
-}
-
-#prev-next > :last-child span::after {
-  content: "→";
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
 }
 
 a {
@@ -165,6 +145,14 @@ html {
   max-width: 50rem;
 }
 
+article {
+  border-bottom: 1px solid var(--border);
+}
+
+footer {
+  margin: 15px 0;
+}
+
 .toc {
   width: var(--toc-width);
   min-width: var(--toc-width);
@@ -176,12 +164,11 @@ html {
   /* word-break: normal; */
 }
 .toc a {
-  text-decoration: none;
   line-break: auto;
 }
 
 .toc a:hover {
-  text-decoration: underline;
+  color: #5eafcd;
 }
 
 .toc a[aria-current="page"] {

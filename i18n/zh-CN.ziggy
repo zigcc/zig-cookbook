@@ -5,5 +5,6 @@
     "license": "License",
     "toggle_toc": "切换目录",
     "language_switcher": "English",
-    "multilang_info": "alternative lang: ",
-} 
+    "languages_menu": "此页面提供以下语言的版本：",
+    "footer_copyright": "许可证： 文字：CC BY-NC-SA 4.0；代码：MIT",
+}

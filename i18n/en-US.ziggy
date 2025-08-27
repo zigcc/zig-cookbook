@@ -5,5 +5,8 @@
     "license": "License",
     "toggle_toc": "Toggle Table of Contents",
     "language_switcher": "zh-CN",
-    "multilang_info": "其他语言: ",
-} 
+    "prev": "Previous: ",
+    "next": "Next:     ",
+    "languages_menu": "This page is available in the following languages:",
+    "footer_copyright": "License: text: CC BY-SA 4.0; code: MIT",
+}
