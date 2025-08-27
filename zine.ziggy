@@ -1,9 +1,23 @@
-Site {
-    .title = "Zig cookbook",
+Multilingual {
     .host_url = "https://cookbook.ziglang.cc",
-    .content_dir_path = "src",
+    .i18n_dir_path = "i18n",
     .layouts_dir_path = "layouts",
     .assets_dir_path = "assets",
     .static_assets = [
+    ],
+    .locales = [
+        {
+            .code = "en-US",
+            .name = "English",
+            .site_title = "Zig Cookbook",
+            .content_dir_path = "src/en-US",
+            .output_prefix_override = "",
+        },
+        {
+            .code = "zh-CN",
+            .name = "中文",
+            .site_title = "Zig Cookbook",
+            .content_dir_path = "src/zh-CN",
+        },
     ],
 }

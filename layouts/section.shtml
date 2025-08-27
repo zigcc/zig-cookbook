@@ -4,8 +4,8 @@
 </head>
 <body id="body">
   <div class="mobile-header">
-    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="Toggle table of contents">☰</button>
-    <a class="brand" href="/" :text="$site.title"></a>
+    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="$i18n.get('toggle_toc')">☰</button>
+    <a class="brand" href="/" :text="$i18n.get('site_title')"></a>
   </div>
   <div class="toc" id="toc">
     <ctx :html="$site.page('toc').content()"></ctx>
@@ -13,7 +13,15 @@
   <div class="body">
     <div class="content">
       <article>
-        <h1 :text="$page.title"></h1>
+        <div id="content-header">
+          <h1 :text="$page.title"></h1>
+          <ctx :if="$page.locales().len.gt(1)">
+            <span :text="$i18n.get('multilang_info')"></span>
+            <ctx :loop="$page.locales()">
+              <a :if="$loop.it.isCurrent().not()" href="$loop.it.link()" :text="$loop.it.title"></a>
+            </ctx>
+          </ctx>
+        </div>
         <div :html="$page.content()"></div>
       </article>
       <div id="prev-next" :if="$page.isSection().not()">

@@ -292,3 +292,8 @@ html {
 h1{
   margin-bottom: 0;
 }
+#content-header{
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border)
+}
