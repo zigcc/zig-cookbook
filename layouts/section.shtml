@@ -28,17 +28,16 @@
           </div>
         </div>
       </ctx>
-      <footer>
+      <div id="footer">
         <div>&copy; 2025. All rights reserved.</div>
-        <div :text="$i18n.get('footer_copyright')"></div>
-        <span :text="$i18n.get('languages_menu')"></span>
-          <ctx :loop="$page.locales()">
-            <a
-              href="$loop.it.link()"
-              :text="$loop.it.site().localeName()"
-            ></a>
-          </ctx>
-      </footer>
+        <div :text="$i18n.get('languages_menu')"></div>
+        <ctx :loop="$page.locales()">
+          <a
+            href="$loop.it.link()"
+            :text="$loop.it.site().localeName()"
+          ></a>
+        </ctx>
+      </div>
     </div>
   </div>
 </body>

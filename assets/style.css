@@ -149,8 +149,9 @@ article {
   border-bottom: 1px solid var(--border);
 }
 
-footer {
+#footer {
   margin: 15px 0;
+  text-align: center;
 }
 
 .toc {
