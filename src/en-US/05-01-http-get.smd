@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "05-01",
 ---
 
 Parses the supplied URL and makes a synchronous HTTP GET request

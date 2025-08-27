@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "01-04",
 ---
 
 In this example, `access` is utilized to verify file existence; however, for it to function correctly, one must specifically check for the `FileNotFound` error type.

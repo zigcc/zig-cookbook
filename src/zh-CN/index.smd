@@ -43,6 +43,9 @@
 
 本 cookbook 仍在持续完善中，我们欢迎社区贡献。如果你有想要分享的示例，请 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls)。
 
+>## 注意
+> 请确保 `frontmatter` 中有相应的 `translation_key`。
+
 ## 翻译
 
 在对应语言目录下创建相应的要翻译的示例，翻译后 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls) 即可（请确保 `frontmatter` 中有相应的 `translation_key`）。

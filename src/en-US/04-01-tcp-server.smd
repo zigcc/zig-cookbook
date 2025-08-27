@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "04-01",
 ---
 
 In this example, the port is displayed on the console, and the program will

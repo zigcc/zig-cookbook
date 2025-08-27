@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "13-01",
 ---
 
 Parsing arguments is common in command line programs and there are some packages in Zig to make this task easier. To name a few:

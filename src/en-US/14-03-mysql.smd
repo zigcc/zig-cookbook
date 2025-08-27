@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "14-03",
 ---
 
 As with [sqlite section](14-01-sqlite), here we introduce [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html) interface directly.

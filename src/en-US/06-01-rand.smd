@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "06-01",
 ---
 
 Generates random numbers with the help of a thread-local, cryptographically secure pseudo random number generator [`std.crypto.random`].

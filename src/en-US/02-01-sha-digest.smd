@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "02-01",
 ---
 Calculate SHA-256 digest of a file
 

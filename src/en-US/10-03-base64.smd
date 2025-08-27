@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "10-03",
 ---
 
 Encodes a byte slice into `base64` string using [`std.base64.standard`] [`encode`]

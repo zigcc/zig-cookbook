@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "08-01",
 ---
 
 Shows the number of logical CPU cores in the current machine using [`std.Thread.getCpuCount`].

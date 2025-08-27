@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "03-01",
 ---
 
 [`Instant`] represents a timestamp with respect to the currently executing program that ticks while the program is suspended and can be used to record elapsed time.
