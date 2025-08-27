@@ -43,6 +43,9 @@ Each recipe is accompanied by an illustrative example named after its correspond
 
 This cookbook is a work in progress, and we welcome contributions from the community. If you have a favorite recipe that you'd like to share, please submit a [pull request](https://github.com/zigcc/zig-cookbook/pulls).
 
+> ## Note
+> Make sure translation_key is present in the frontmatter.
+
 ## Localization
 
 Create corresponding recipe in the language you want to localize, localize it(make sure there is a `translation_key` in the frontmatter), and submit a pull request.

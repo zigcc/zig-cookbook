@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "05-03",
 ---
 
 A basic implementation of `http.Server` has been introduced since Zig 0.12.0.

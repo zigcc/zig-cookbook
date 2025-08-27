@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "12-01",
 ---
 
 The fields of a [packed struct](https://ziglang.org/documentation/master/#packed-struct) are always laid out in memory in the order they are written, with no padding, so they are very nice to represent a bitfield.

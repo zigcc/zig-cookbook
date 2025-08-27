@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "10-01",
 ---
 
 The [`std.json`] provides a set of functions such as [`stringify`] and [`stringifyAlloc`] for serializing JSON.

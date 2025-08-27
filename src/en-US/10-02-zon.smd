@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "10-02",
 ---
 
 ZON ("Zig Object Notation") is a textual file format. Outside of `nan` and `inf` literals, ZON's grammar is a subset of Zig's.

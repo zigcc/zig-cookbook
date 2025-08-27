@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "15-01",
 ---
 
 Currently there is no regex support in Zig, so the best way to go is binding with Posix's [regex.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/regex.h.html).

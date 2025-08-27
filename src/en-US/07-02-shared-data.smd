@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "07-02",
 ---
 
 When we want to mutate data shared between threads, [`Mutex`](**Mut**ually **ex**clusive flag) must be used to synchronize threads, otherwise the result maybe unexpected.

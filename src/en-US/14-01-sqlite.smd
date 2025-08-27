@@ -3,6 +3,7 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
+.translation_key = "14-01",
 ---
 
 Although there are some [wrapper package](https://github.com/vrischmann/zig-sqlite) options for SQLite in Zig, they are unstable. So here we will introduce the [C API interface](https://www.sqlite.org/cintro.html).
