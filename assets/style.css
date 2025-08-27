@@ -152,6 +152,11 @@ article {
 #footer {
   margin: 15px 0;
   text-align: center;
+  font-size: 0.85rem;
+}
+
+#footer .langs * {
+  margin: 0 5px;
 }
 
 .toc {

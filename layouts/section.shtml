@@ -31,12 +31,11 @@
       <div id="footer">
         <div>&copy; 2025. All rights reserved.</div>
         <div :text="$i18n.get('languages_menu')"></div>
-        <ctx :loop="$page.locales()">
-          <a
-            href="$loop.it.link()"
-            :text="$loop.it.site().localeName()"
-          ></a>
-        </ctx>
+        <div class="langs" :loop="$page.locales()">
+          <a href="$loop.it.link()">
+            <ctx :text="$loop.it.site().localeName()"></ctx><ctx :if="$loop.it.site().localeName().eql('English')">(Original)</ctx>
+          </a>
+        </div>
       </div>
     </div>
   </div>
