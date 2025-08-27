@@ -3,7 +3,6 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
-.translation_key = "introduction",
 ---
 
 ```=html
@@ -45,7 +44,7 @@
 
 ## 翻译
 
-在对应语言目录下创建相应的要翻译的示例，翻译后 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls) 即可（请确保 `frontmatter` 中有相应的 `translation_key`）。
+在对应语言目录下创建相应的要翻译的示例，翻译后 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls) 即可。
 
 # 致谢
 

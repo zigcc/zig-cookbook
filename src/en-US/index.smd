@@ -3,7 +3,6 @@
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
-.translation_key = "introduction",
 ---
 
 ```=html
@@ -45,7 +44,7 @@ This cookbook is a work in progress, and we welcome contributions from the commu
 
 ## Localization
 
-Create corresponding recipe in the language you want to localize, localize it(make sure there is a `translation_key` in the frontmatter), and submit a pull request.
+Create corresponding recipe in the language you want to localize, localize it, and submit a pull request.
 
 # Acknowledgment
 
