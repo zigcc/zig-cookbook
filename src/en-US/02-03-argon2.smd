@@ -1,0 +1,14 @@
+---
+.title = "Argon2 Password Hash",
+.date = "2024-08-0",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+Argon2 Password Hash
+
+This Zig program derives a cryptographic key from a password and salt using the Argon2id password hashing algorithm. It uses [std.crypto.pwhash.argon2] to hash a salted password, where the salt is generated using [std.rand.DefaultPrng] to ensure randomness.
+
+[]($code.siteAsset('src/02-03.zig').language('zig'))
+
+[`std.crypto.pwhash.argon2`]: https://ziglang.org/documentation/0.14.0/std/#std.crypto.pwhash.argon2
+[`std.rand.defaultprng`]: https://ziglang.org/documentation/0.11.0/std/#A;std:rand.DefaultPrng
