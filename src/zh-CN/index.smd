@@ -1,6 +1,6 @@
 ---
 .title = "介绍",
-.date = "2024-01-01",
+.date = "2025-08-28T11:19:53+0800",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
@@ -40,7 +40,7 @@
 
 # 贡献
 
-本 cookbook 仍在持续完善中，我们欢迎社区贡献。如果你有想要分享的示例，请 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls)。
+本 cookbook 仍在持续完善中，我们欢迎社区贡献。如果你有想要分享的示例，欢迎提 [Pull Request](https://github.com/zigcc/zig-cookbook/pulls)。
 
 ## 翻译
 
@@ -48,13 +48,12 @@
 
 # 致谢
 
-**初始版本**的 Zig Cookbook 受到多个类似项目的启发。我们向以下项目致以诚挚感谢，感谢它们的杰出工作：
+Zig Cookbook 受到多个类似项目的启发。我们向以下项目致以诚挚感谢，感谢它们的杰出工作：
 
 - [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
+- [zine-ssg](https://zine-ssg.io)，感谢 [Loris Cro](https://github.com/kristoff-it) 创建了这个出色的 Zig 静态网站生成器。
 
-**当前版本**的 Zig Cookbook 基于 [zine-ssg](https://zine-ssg.io)，在此感谢其卓越的贡献！
-
-# 星标历史
+# Star 历史
 
 ```=html
 <a href="https://star-history.com/#zigcc/zig-cookbook&Date">

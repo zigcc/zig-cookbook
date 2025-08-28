@@ -1,0 +1,12 @@
+---
+.title = "查找过去 24 小时修改过的文件",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+通过 Zig 的标准库 `std.fs`，我们可以轻松地遍历目录并检查文件的元数据。以下示例展示了如何查找在过去24小时内修改过的文件。
+
+对于每个文件，我们使用 `statFile()` 函数获取其元数据，并检查 `mtime`（修改时间）字段是否在过去24小时内。
+
+[]($code.siteAsset('src/01-03.zig').language('zig'))

@@ -1,5 +1,5 @@
 ---
-.title = "introduction",
+.title = "Introduction",
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
@@ -48,11 +48,10 @@ Create corresponding recipe in the language you want to localize, localize it, a
 
 # Acknowledgment
 
-The **initial** version of the Zig Cookbook was inspired by several other similar projects. We would like to thank the following projects, thanks for their awesome work.
+Zig Cookbook was inspired by several other similar projects. We would like to thank the following projects, thanks for their awesome work.
 
 - [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
-
-The **current** version of the Zig Cookbook is based on [zine-ssg](https://zine-ssg.io), thanks for their awesome work.
+- [zine-ssg](https://zine-ssg.io), thanks to [Loris Cro](https://github.com/kristoff-it) for creating this awesome static site generator for Zig.
 
 # Star History
 

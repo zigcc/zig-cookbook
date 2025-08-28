@@ -1,0 +1,16 @@
+---
+.title = "检查文件是否存在",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在 Zig 中检查文件是否存在，可以使用标准库中的 `std.fs` 模块。具体来说，可以使用 `Dir.access` 方法来检查文件的存在性和权限。
+
+[]($code.siteAsset('src/01-04.zig').language('zig'))
+
+`Dir.access` 方法接受两个参数：文件路径和访问模式（如读取、写入等）。如果文件存在且具有指定的权限，函数将返回 `true`，否则返回 `false`。
+
+但是，有一点需要注意的是，`Dir.access` 方法可能会受到 [Time-Of-Check-Time-Of-Use](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use)（TOCTOU）竞态条件的影响。
+
+例如，在检查文件存在性和实际使用文件之间，文件的状态可能会发生变化。因此，更推荐的做法是直接尝试打开文件，并处理可能出现的错误。
