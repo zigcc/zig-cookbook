@@ -1,5 +1,4 @@
 const std = @import("std");
-const testing = std.testing;
 
 pub fn main() !void {
     var dbg = std.heap.DebugAllocator(.{}){};
@@ -7,9 +6,14 @@ pub fn main() !void {
     const allocator = dbg.allocator();
 
     const password = "happy";
-    const salt = "salt1234"; // Must be at least 8 bytes, recommended 16+
 
-    // Parameters for Argon2id
+    //Random salt (Must be at least 8 bytes, recommended 16+)
+    var raw: [8]u8 = undefined;
+    std.crypto.random.bytes(&raw);
+    const salt = try std.fmt.allocPrint(allocator, "{s}", .{std.fmt.bytesToHex(raw, .lower)});
+    defer allocator.free(salt);
+
+    //Parameters for Argon2id
     const params = std.crypto.pwhash.argon2.Params{
         .t = 3, // Iterations (time cost)
         .m = 16, // Memory cost in KiB (here 16 MiB)
@@ -27,8 +31,7 @@ pub fn main() !void {
         params,
         .argon2id, //argon2i, argon2d and argon2id
     );
-    const hex_digest = try std.fmt.allocPrint(allocator, "{s}", .{std.fmt.bytesToHex(derived, .lower)});
-    defer allocator.free(hex_digest);
 
-    try testing.expectEqualStrings("84594570e92044a3546416ec973b8f7f", hex_digest);
+    const stdout = std.io.getStdOut().writer();
+    try stdout.print("Argon2id derived key: {s}\n", .{std.fmt.bytesToHex(derived, .lower)});
 }
