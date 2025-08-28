@@ -19,6 +19,7 @@
 
   - [Calculate SHA-256 digest of a file](02-01-sha-digest)
   - [Salt and hash a password with PBKDF2](02-02-pbkdf2)
+  - [Argon2 Password Hash](02-03-argon2)
 
 - Date and Time
 

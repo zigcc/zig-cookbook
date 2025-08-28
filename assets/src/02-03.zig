@@ -1,6 +1,7 @@
 const std = @import("std");
 const testing = std.testing;
-test "Argon2id Password Hash" {
+
+pub fn main() !void {
     var dbg = std.heap.DebugAllocator(.{}){};
     defer _ = dbg.deinit();
     const allocator = dbg.allocator();
@@ -24,7 +25,7 @@ test "Argon2id Password Hash" {
         password,
         salt,
         params,
-        .argon2id,  //argon2i, argon2d and argon2id
+        .argon2id, //argon2i, argon2d and argon2id
     );
     const hex_digest = try std.fmt.allocPrint(allocator, "{s}", .{std.fmt.bytesToHex(derived, .lower)});
     defer allocator.free(hex_digest);
