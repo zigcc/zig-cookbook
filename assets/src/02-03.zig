@@ -32,6 +32,5 @@ pub fn main() !void {
         .argon2id, //argon2i, argon2d and argon2id
     );
 
-    const stdout = std.io.getStdOut().writer();
-    try stdout.print("Argon2id derived key: {s}\n", .{std.fmt.bytesToHex(derived, .lower)});
+    std.debug.print("Argon2id derived key: {s}\n", .{std.fmt.bytesToHex(derived, .lower)});
 }
