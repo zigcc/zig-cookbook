@@ -31,7 +31,10 @@ pub fn main() !void {
 
     // Serialize JSON
     value.verified = false;
-    const new_json_str = try json.stringifyAlloc(allocator, value, .{ .whitespace = .indent_2 });
+    var list = std.ArrayList(u8).init(allocator);
+    defer list.deinit();
+    try json.stringify(value, .{ .whitespace = .indent_2 }, list.writer());
+    const new_json_str = try list.toOwnedSlice();
     defer allocator.free(new_json_str);
 
     try testing.expectEqualStrings(

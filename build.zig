@@ -22,9 +22,11 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                 const name = std.mem.trimRight(u8, entry.name, ".zig");
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
-                    .root_source_file = b.path(try allocPrint(b.allocator, "assets/src/{s}.zig", .{name})),
-                    .target = target,
-                    .optimize = .Debug,
+                    .root_module = b.createModule(.{
+                        .root_source_file = b.path(try allocPrint(b.allocator, "assets/src/{s}.zig", .{name})),
+                        .target = target,
+                        .optimize = .Debug,
+                    }),
                 });
                 check.dependOn(&exe.step);
                 if (std.mem.eql(u8, "13-01", name)) {
@@ -40,10 +42,13 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     exe.linkSystemLibrary("mysqlclient");
                     exe.linkLibC();
                 } else if (std.mem.eql(u8, "15-01", name)) {
-                    const lib = b.addStaticLibrary(.{
+                    const lib = b.addLibrary(.{
                         .name = "regex_slim",
-                        .optimize = .Debug,
-                        .target = target,
+                        .root_module = b.createModule(.{
+                            .target = target,
+                            .optimize = .Debug,
+                        }),
+                        .linkage = .static,
                     });
 
                     lib.addCSourceFiles(.{

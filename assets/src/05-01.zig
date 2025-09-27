@@ -13,7 +13,9 @@ pub fn main() !void {
     const uri = try std.Uri.parse("http://httpbin.org/headers");
     const buf = try allocator.alloc(u8, 1024 * 8);
     defer allocator.free(buf);
-    var req = try client.open(.GET, uri, .{
+    var headers = std.http.Headers.init(allocator);
+    defer headers.deinit();
+    var req = try client.request(.GET, uri, &headers, .{
         .server_header_buffer = buf,
     });
     defer req.deinit();

@@ -11,8 +11,8 @@
     },
     .dependencies = .{
         .zigcli = .{
-            .url = "https://github.com/jiacai2050/zigcli/archive/refs/tags/v0.2.3.tar.gz",
-            .hash = "zigcli-0.2.3-ORC7jGKRAgAYW8y8hO3S4v2DsqbnyOrgximDYNgfB_Bw",
+            .url = "https://github.com/jiacai2050/zigcli/archive/refs/tags/v0.3.0.tar.gz",
+            .hash = "zigcli-0.3.0-ORC7jPyeAgDTOZWL3mxwG3zAklOApYehg9-7v-Ri3u31",
         },
     },
 }

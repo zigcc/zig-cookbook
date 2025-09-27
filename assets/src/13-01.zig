@@ -52,6 +52,6 @@ pub fn main() !void {
 
     // Provide a print_help util method
     print("\n{s}print_help{s}\n", .{ sep, sep });
-    const stdout = std.io.getStdOut();
+    const stdout = @import("std").io.getStdOut();
     try opt.printHelp(stdout.writer());
 }

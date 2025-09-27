@@ -30,7 +30,7 @@ pub fn main() !void {
 
     var buf: [1024]u8 = undefined;
 
-    print("Listen on {any}...\n", .{addr});
+    print("Listen on {f}\n", .{addr});
 
     // we did not set the NONBLOCK flag (socket type flag),
     // so the program will wait until data is received

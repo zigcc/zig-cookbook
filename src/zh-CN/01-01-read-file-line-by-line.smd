@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-在 Zig 中逐行读取文件，可以使用标准库中的 [`Reader`] 类型。它提供了多种方法来读取文件内容，例如 `readAll`、`readInt` 等。这里我们将使用 `streamUntilDelimiter` 方法来按行分割读取。
+在 Zig 中逐行读取文件，可以使用标准库中的 [`Reader`] 类型。它提供了多种方法来读取文件内容，例如 `readAll`、`readInt` 等。这里我们将使用 `takeDelimiterExclusive` 方法来按行分割读取。
 
 []($code.siteAsset('src/01-01.zig').language('zig'))
 
