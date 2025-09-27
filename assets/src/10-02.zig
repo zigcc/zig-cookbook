@@ -43,7 +43,8 @@ pub fn main() !void {
 
     // Make it 0-sentinel
     try writer.writer.writeByte(0);
-    const input = actual[0 .. actual.len - 1 :0];
+    const buffer = writer.writer.buffered();
+    const input = buffer[0 .. buffer.len - 1 :0];
 
     var diag: zon.parse.Diagnostics = .{};
     defer diag.deinit(allocator);

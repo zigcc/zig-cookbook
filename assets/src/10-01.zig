@@ -31,11 +31,15 @@ pub fn main() !void {
 
     // Serialize JSON
     value.verified = false;
-    var list = std.ArrayList(u8).init(allocator);
-    defer list.deinit();
-    try json.stringify(value, .{ .whitespace = .indent_2 }, list.writer());
-    const new_json_str = try list.toOwnedSlice();
-    defer allocator.free(new_json_str);
+    var out = std.Io.Writer.Allocating.init(allocator);
+    defer out.deinit();
+    var stringifier = json.Stringify{
+        .writer = &out.writer,
+        .options = .{
+            .whitespace = .indent_2,
+        },
+    };
+    try stringifier.write(value);
 
     try testing.expectEqualStrings(
         \\{
@@ -46,7 +50,5 @@ pub fn main() !void {
         \\    "admin"
         \\  ]
         \\}
-    ,
-        new_json_str,
-    );
+    , out.writer.buffered());
 }
