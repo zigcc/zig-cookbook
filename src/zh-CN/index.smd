@@ -24,7 +24,7 @@
 
 [Zig Cookbook](https://github.com/zigcc/zig-cookbook) 是一系列简单的 Zig 程序集合，用于展示完成常见编程任务的最佳实践。
 
-> - 主分支跟踪 Zig 0.14.0 及 master 版本，并通过 GitHub Actions 在 Linux 和 macOS 上进行测试。
+> - 主分支跟踪 Zig 0.15.x 版本，并通过 GitHub Actions 在 Linux 和 macOS 上进行测试。
 > - 更早版本的 Zig 支持可在 [其他分支](https://github.com/zigcc/zig-cookbook/branches) 中找到。
 
 # 如何使用

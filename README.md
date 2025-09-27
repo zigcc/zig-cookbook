@@ -43,11 +43,9 @@ The **current** version of the Zig Cookbook is based on [zine-ssg](https://zine-
 
 # Star History
 
-```=html
-<a href="https://star-history.com/#zigcc/zig-cookbook&Date">
-  <img src="https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date" alt="Star History">
-</a>
-```
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
 
 # License
 
