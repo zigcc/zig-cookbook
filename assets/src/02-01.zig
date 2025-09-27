@@ -9,13 +9,13 @@ fn sha256_digest(
     file: fs.File,
 ) ![Sha256.digest_length]u8 {
     var sha256 = Sha256.init(.{});
-    const rdr = file.reader();
-
-    var buf: [BUF_SIZE]u8 = undefined;
-    var n = try rdr.read(&buf);
+    var file_buf: [BUF_SIZE]u8 = undefined;
+    var reader = file.reader(&file_buf);
+    var read_buf: [BUF_SIZE]u8 = undefined;
+    var n = try reader.interface.readSliceShort(&read_buf);
     while (n != 0) {
-        sha256.update(buf[0..n]);
-        n = try rdr.read(&buf);
+        sha256.update(read_buf[0..n]);
+        n = try reader.interface.readSliceShort(&read_buf);
     }
 
     return sha256.finalResult();
@@ -32,8 +32,8 @@ pub fn main() !void {
     const digest = try sha256_digest(file);
     const hex_digest = try std.fmt.allocPrint(
         allocator,
-        "{s}",
-        .{std.fmt.fmtSliceHexLower(&digest)},
+        "{x}",
+        .{&digest},
     );
     defer allocator.free(hex_digest);
 

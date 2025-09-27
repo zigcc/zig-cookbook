@@ -1,6 +1,5 @@
 const std = @import("std");
 const log = std.log;
-const WebSocket = std.http.WebSocket;
 const Request = std.http.Server.Request;
 const Connection = std.net.Server.Connection;
 
@@ -11,7 +10,7 @@ pub fn main() !void {
     var server = try std.net.Address.listen(addr, .{ .reuse_address = true });
     defer server.deinit();
 
-    log.info("Start HTTP server at {any}", .{addr});
+    log.info("Start HTTP server at {f}", .{addr});
 
     while (true) {
         const conn = server.accept() catch |err| {
@@ -29,31 +28,31 @@ pub fn main() !void {
 fn accept(conn: Connection) !void {
     defer conn.stream.close();
 
-    log.info("Got new client({any})!", .{conn.address});
+    log.info("Got new client({f})!", .{conn.address});
 
-    var read_buffer: [MAX_BUF]u8 = undefined;
-    var server = std.http.Server.init(conn, &read_buffer);
-    while (server.state == .ready) {
+    var recv_buffer: [1024]u8 = undefined;
+    var send_buffer: [100]u8 = undefined;
+    var connection_br = conn.stream.reader(&recv_buffer);
+    var connection_bw = conn.stream.writer(&send_buffer);
+    var server = std.http.Server.init(connection_br.interface(), &connection_bw.interface);
+    while (server.reader.state == .ready) {
         var request = server.receiveHead() catch |err| switch (err) {
             error.HttpConnectionClosing => return,
             else => return err,
         };
 
-        var ws: WebSocket = undefined;
-        var send_buf: [MAX_BUF]u8 = undefined;
-        var recv_buf: [MAX_BUF]u8 align(4) = undefined;
-
-        if (try ws.init(&request, &send_buf, &recv_buf)) {
-            // Upgrade to web socket successfully.
-            serveWebSocket(&ws) catch |err| switch (err) {
-                error.ConnectionClose => {
-                    log.info("Client({any}) closed!", .{conn.address});
-                    break;
-                },
-                else => return err,
-            };
-        } else {
-            try serveHTTP(&request);
+        switch (request.upgradeRequested()) {
+            .other => |other_protocol| {
+                log.err("Not supported protocol, {s}", .{other_protocol});
+                return;
+            },
+            .websocket => |key| {
+                var ws = try request.respondWebSocket(.{ .key = key orelse "" });
+                try serveWebSocket(&ws);
+            },
+            .none => {
+                try serveHTTP(&request);
+            },
         }
     }
 }
@@ -63,16 +62,20 @@ fn serveHTTP(request: *Request) !void {
         "Hello World from Zig HTTP server",
         .{
             .extra_headers = &.{
-                .{ .name = "custom header", .value = "custom value" },
+                .{ .name = "custom-header", .value = "custom value" },
             },
         },
     );
 }
 
-fn serveWebSocket(ws: *WebSocket) !void {
-    try ws.writeMessage("Message from zig", .text);
+fn serveWebSocket(ws: *std.http.Server.WebSocket) !void {
+    try ws.writeMessage("Hello from Zig WebSocket server", .text);
     while (true) {
         const msg = try ws.readSmallMessage();
+        if (msg.opcode == .connection_close) {
+            log.info("Client closed the WebSocket", .{});
+            return;
+        }
         try ws.writeMessage(msg.data, msg.opcode);
     }
 }

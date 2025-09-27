@@ -21,8 +21,8 @@ pub fn main() !void {
     // Before mmap, we need to ensure file isn't empty
     try file.setEndPos(content_to_write.len);
 
-    const md = try file.metadata();
-    try std.testing.expectEqual(md.size(), content_to_write.len);
+    const md = try file.stat();
+    try std.testing.expectEqual(md.size, content_to_write.len);
 
     const ptr = try std.posix.mmap(
         null,

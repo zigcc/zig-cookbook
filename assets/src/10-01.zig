@@ -31,8 +31,15 @@ pub fn main() !void {
 
     // Serialize JSON
     value.verified = false;
-    const new_json_str = try json.stringifyAlloc(allocator, value, .{ .whitespace = .indent_2 });
-    defer allocator.free(new_json_str);
+    var out = std.Io.Writer.Allocating.init(allocator);
+    defer out.deinit();
+    var stringifier = json.Stringify{
+        .writer = &out.writer,
+        .options = .{
+            .whitespace = .indent_2,
+        },
+    };
+    try stringifier.write(value);
 
     try testing.expectEqualStrings(
         \\{
@@ -43,7 +50,5 @@ pub fn main() !void {
         \\    "admin"
         \\  ]
         \\}
-    ,
-        new_json_str,
-    );
+    , out.writer.buffered());
 }

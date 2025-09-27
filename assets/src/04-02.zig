@@ -16,13 +16,13 @@ pub fn main() !void {
     // Connect to peer
     const stream = try net.tcpConnectToAddress(peer);
     defer stream.close();
-    print("Connecting to {}\n", .{peer});
+    print("Connecting to {f}\n", .{peer});
 
     // Sending data to peer
     const data = "hello zig";
-    var writer = stream.writer();
-    const size = try writer.write(data);
-    print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, size });
-    // Or just using `writer.writeAll`
-    // try writer.writeAll("hello zig");
+    var buffer: [1024]u8 = undefined;
+    var writer = stream.writer(buffer[0..]);
+    try writer.interface.writeAll(data);
+    try writer.interface.flush();
+    print("Sending '{s}' to peer, total written: {d} bytes\n", .{ data, data.len });
 }

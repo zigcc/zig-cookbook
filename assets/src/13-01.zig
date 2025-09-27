@@ -52,6 +52,8 @@ pub fn main() !void {
 
     // Provide a print_help util method
     print("\n{s}print_help{s}\n", .{ sep, sep });
-    const stdout = std.io.getStdOut();
-    try opt.printHelp(stdout.writer());
+    const stdout = std.fs.File.stdout();
+    var buf: [1024]u8 = undefined;
+    var writer = stdout.writer(&buf);
+    try opt.printHelp(&writer.interface);
 }

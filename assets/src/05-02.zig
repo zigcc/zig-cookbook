@@ -12,33 +12,23 @@ pub fn main() !void {
 
     const uri = try std.Uri.parse("https://httpbin.org/anything");
 
-    const payload =
-        \\ {
-        \\  "name": "zig-cookbook",
-        \\  "author": "John"
-        \\ }
-    ;
-
-    var buf: [1024]u8 = undefined;
-    var req = try client.open(.POST, uri, .{ .server_header_buffer = &buf });
+    var req = try client.request(.POST, uri, .{
+        .extra_headers = &.{.{ .name = "Content-Type", .value = "application/json" }},
+    });
     defer req.deinit();
 
-    req.transfer_encoding = .{ .content_length = payload.len };
-    try req.send();
-    var wtr = req.writer();
-    try wtr.writeAll(payload);
-    try req.finish();
-    try req.wait();
+    var payload: [7]u8 = "[1,2,3]".*;
+    try req.sendBodyComplete(&payload);
+    var buf: [1024]u8 = undefined;
+    var response = try req.receiveHead(&buf);
 
     // Occasionally, httpbin might time out, so we disregard cases
     // where the response status is not okay.
-    if (req.response.status != .ok) {
+    if (response.head.status != .ok) {
         return;
     }
 
-    var rdr = req.reader();
-    const body = try rdr.readAllAlloc(allocator, 1024 * 1024 * 4);
+    const body = try response.reader(&.{}).allocRemaining(allocator, .unlimited);
     defer allocator.free(body);
-
     print("Body:\n{s}\n", .{body});
 }

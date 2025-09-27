@@ -27,9 +27,9 @@ pub fn main() !void {
         .favourites = &.{ "swimming", "running" },
     };
 
-    var dst = std.ArrayList(u8).init(allocator);
-    defer dst.deinit();
-    try zon.stringify.serialize(source, .{}, dst.writer());
+    var writer = std.Io.Writer.Allocating.init(allocator);
+    defer writer.deinit();
+    try zon.stringify.serialize(source, .{}, &writer.writer);
 
     const expected =
         \\.{
@@ -38,22 +38,24 @@ pub fn main() !void {
         \\    .favourites = .{ "swimming", "running" },
         \\}
     ;
-    try std.testing.expectEqualStrings(expected, dst.items);
+    const actual = writer.writer.buffered();
+    try std.testing.expectEqualStrings(expected, actual);
 
     // Make it 0-sentinel
-    try dst.append(0);
-    const input = dst.items[0 .. dst.items.len - 1 :0];
+    try writer.writer.writeByte(0);
+    const buffer = writer.writer.buffered();
+    const input = buffer[0 .. buffer.len - 1 :0];
 
-    var status: zon.parse.Status = .{};
-    defer status.deinit(allocator);
+    var diag: zon.parse.Diagnostics = .{};
+    defer diag.deinit(allocator);
     var parsed = zon.parse.fromSlice(
         Student,
         allocator,
         input,
-        &status,
+        &diag,
         .{ .free_on_error = true },
     ) catch |err| {
-        std.debug.print("Parse status: {any}\n", .{status});
+        std.debug.print("Parse status: {any}\n", .{diag});
         return err;
     };
     defer parsed.deinit(allocator);

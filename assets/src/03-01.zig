@@ -6,7 +6,7 @@ const print = std.debug.print;
 
 fn expensive_function() void {
     // sleep 500ms
-    time.sleep(time.ns_per_ms * 500);
+    std.Thread.sleep(time.ns_per_ms * 500);
 }
 
 pub fn main() !void {
