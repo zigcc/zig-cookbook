@@ -35,15 +35,12 @@ Create corresponding recipe in the language folder, localize it, and submit a [p
 
 # Acknowledgment
 
-The **initial** version of the Zig Cookbook was inspired by several other similar projects. We would like to thank the following projects, thanks for their awesome work.
+Zig Cookbook was inspired by several other similar projects. We would like to thank the following projects, thanks for their awesome work.
 
 - [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
-
-The **current** version of the Zig Cookbook is based on [zine-ssg](https://zine-ssg.io), thanks for their awesome work.
+- [zine-ssg](https://zine-ssg.io), thanks to [Loris Cro](https://github.com/kristoff-it) for creating this awesome static site generator for Zig.
 
 # Star History
-
-## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
 

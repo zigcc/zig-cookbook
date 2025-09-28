@@ -6,7 +6,7 @@ endif
 
 .PHONY: serve
 serve:
-	zine
+	zine --port 1313
 
 .PHONY: lint
 lint:

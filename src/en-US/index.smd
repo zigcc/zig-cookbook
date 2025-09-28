@@ -44,7 +44,7 @@ This cookbook is a work in progress, and we welcome contributions from the commu
 
 ## Localization
 
-Create corresponding recipe in the language you want to localize, localize it, and submit a pull request.
+Create corresponding recipe in the language folder, localize it, and submit a [pull request](https://github.com/zigcc/zig-cookbook/pulls).
 
 # Acknowledgment
 

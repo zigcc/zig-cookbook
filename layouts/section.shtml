@@ -1,6 +1,7 @@
 <extend template="base.shtml">
 <head id="head">
   <script defer src="$site.asset('toc.js').link()"></script>
+  <script defer src="$site.asset('giscus.js').link()"></script>
 </head>
 <body id="body">
   <div class="mobile-header">
@@ -29,7 +30,14 @@
         </div>
       </ctx>
       <div id="footer">
-        <div>&copy; 2023 - 2025 <a href="https://github.com/zigcc/zig-cookbook/graphs/contributors">ZigCC and contributors</a></div>
+        <div>&copy; 2023 - 2025
+          | <a href="https://github.com/zigcc/zig-cookbook">GitHub</a>
+          | <a href="http://ziglang.cc">Zig 中文社区</a>
+          | <a href="http://course.ziglang.cc">Zig 圣经</a>
+          | <a href="http://ask.ziglang.cc/discord">Discord</a>
+          | <a href="http://ask.ziglang.cc/telegram">Telegram</a>
+          | <a href="http://ask.ziglang.cc/weixin">微信群</a>
+        </div>
         <div :text="$i18n.get('languages_menu')"></div>
         <div class="langs" :loop="$page.locales()">
           <a href="$loop.it.link()">
