@@ -9,13 +9,11 @@ pub fn main() !void {
     var file_buffer: [4096]u8 = undefined;
     var reader = file.reader(&file_buffer);
     var line_no: usize = 0;
-    while (reader.interface.takeDelimiterExclusive('\n')) |line| {
+    while (try reader.interface.takeDelimiter('\n')) |line| {
         line_no += 1;
         print("{d}--{s}\n", .{ line_no, line });
-    } else |err| switch (err) {
-        error.EndOfStream => {}, // Normal termination
-        else => return err, // Propagate error
     }
 
+    try std.testing.expectEqual(13, line_no);
     print("Total lines: {d}\n", .{line_no});
 }

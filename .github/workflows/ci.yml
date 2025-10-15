@@ -2,8 +2,6 @@ name: CI
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '10 20 * * *'
   pull_request:
     paths:
       - "**.zig"
@@ -27,12 +25,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        zig-version: [0.15.1]
     steps:
       - uses: actions/checkout@v4
       - uses: mlugg/setup-zig@v2
-        with:
-          version: ${{ matrix.zig-version }}
       - name: Start services
         uses: ikalnytskyi/action-setup-postgres@v7
         with:
