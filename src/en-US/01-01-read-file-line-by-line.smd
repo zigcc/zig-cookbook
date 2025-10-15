@@ -5,8 +5,6 @@
 .layout = "section.shtml",
 ---
 
-There is a [`Reader`] type in Zig, which provides various methods to read file, such as `readAll`, `readInt`. Here we will use `takeDelimiterExclusive` to split lines.
+There is a `Reader` type in Zig, which provides various methods to read file, such as `readAll`, `readInt`. Here we will use `takeDelimiter` to split lines.
 
 []($code.siteAsset('src/01-01.zig').language('zig'))
-
-[`reader`]: https://ziglang.org/documentation/0.14.0/std/#std.io.Reader
