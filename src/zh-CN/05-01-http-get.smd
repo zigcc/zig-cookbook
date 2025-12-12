@@ -1,0 +1,16 @@
+---
+.title = "GET",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+解析提供的 URL 并使用 [`request`] 发出同步 HTTP GET 请求。打印获取到的 [`Response`] 状态和标头。
+
+> 注意：由于 HTTP 支持尚处于早期阶段，对于任何复杂的任务，建议使用 [libcurl](https://curl.se/libcurl/c/)。
+> 并且如果缓冲区不足，它将返回 `error.HttpHeadersOverSize`
+
+[]($code.siteAsset('src/05-01.zig').language('zig'))
+
+[`request`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L992
+[`response`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L322

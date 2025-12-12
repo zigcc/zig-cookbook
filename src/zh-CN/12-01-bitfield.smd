@@ -1,0 +1,17 @@
+---
+.title = "位域",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[packed struct](https://ziglang.org/documentation/master/#packed-struct)（压缩结构体）的字段总是按照它们写入的顺序在内存中布局，没有填充，因此它们非常适合表示位域。
+
+在压缩结构体中，布尔值表示为 1 位，Zig 还有任意位宽的整数，如 u28、u1 等。
+
+[]($code.siteAsset('src/12-01.zig').language('zig'))
+
+## 参考
+
+- [Packed structs in Zig make bit/flag sets trivial | Hexops' devlog](https://devlog.hexops.com/2022/packed-structs-in-zig/)
+- [A Better Way to Implement Bit Fields](https://andrewkelley.me/post/a-better-way-to-implement-bit-fields.html)

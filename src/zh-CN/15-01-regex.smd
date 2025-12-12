@@ -1,0 +1,25 @@
+---
+.title = "正则表达式",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+目前 Zig 中没有正则表达式支持，因此最好的方法是绑定 Posix 的 [regex.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/regex.h.html)。
+
+在 Zig 中与 C 互操作很容易，但是由于 translate-c 不支持位域，我们不能直接使用 `regex_t`。所以这里我们首先创建一个 [静态 C 库](https://github.com/zigcc/zig-cookbook/blob/460dea1f2f9937ab512a70683aacab79e34c723a/build.zig#L50)，提供两个函数：
+
+```c
+regex_t* alloc_regex_t(void);
+void free_regex_t(regex_t* ptr);
+```
+
+`regex_t*` 是一个指针，它具有固定大小，所以我们可以直接在 Zig 中使用它。
+
+[]($code.siteAsset('src/15-01.zig').language('zig'))
+
+## 参考
+
+- [regex(3) — Linux manual page](https://man7.org/linux/man-pages/man3/regex.3.html)
+- [How to allocate a struct of incomplete type in Zig?](https://stackoverflow.com/a/73095054)
+- [Regular Expressions in Zig](https://www.openmymind.net/Regular-Expressions-in-Zig/)

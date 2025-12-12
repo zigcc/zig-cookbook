@@ -1,0 +1,14 @@
+---
+.title = "创建和相加复数",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+创建 [`std.math.Complex`] 类型的复数。复数的实部和虚部必须是相同的类型。
+
+对复数执行数学运算与对内置类型执行数学运算相同：相关数字必须是相同的类型（即浮点数或整数）。
+
+[]($code.siteAsset('src/11-01.zig').language('zig'))
+
+[`std.math.complex`]: https://ziglang.org/documentation/0.11.0/std/#A;std:math.Complex

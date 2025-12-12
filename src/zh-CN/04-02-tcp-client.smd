@@ -1,0 +1,13 @@
+---
+.title = "TCP 客户端",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在此示例中，我们要创建一个 TCP 客户端来连接上一节中的服务器。
+您可以使用 `zig build run-04-02 -- <port>` 运行它。
+
+[]($code.siteAsset('src/04-02.zig').language('zig'))
+
+默认情况下，程序使用 IPv4 连接。如果您想要 IPv6，请使用 `::1` 代替 `127.0.0.1`，将 `net.Address.parseIp4` 替换为 `net.Address.parseIp6`。

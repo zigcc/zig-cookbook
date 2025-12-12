@@ -1,0 +1,23 @@
+---
+.title = "序列化和反序列化 ZON",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+ZON（"Zig Object Notation"）是一种文本文件格式。除了 `nan` 和 `inf` 字面量外，ZON 的语法是 Zig 语法的子集。
+
+支持的 Zig 原语：
+* 布尔字面量
+* 数字字面量（包括 `nan` 和 `inf`）
+* 字符字面量
+* 枚举字面量
+* `null` 字面量
+* 字符串字面量
+* 多行字符串字面量
+
+支持的 Zig 容器类型：
+ * 匿名结构体字面量
+ * 匿名元组字面量
+
+[]($code.siteAsset('src/10-02.zig').language('zig'))

@@ -1,0 +1,13 @@
+---
+.title = "在两个线程之间共享数据",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+当我们要修改线程之间共享的数据时，必须使用 [`Mutex`] (互斥锁) 来同步线程，否则结果可能出乎意料。
+
+[]($code.siteAsset('src/07-02.zig').language('zig'))
+如果我们移除互斥锁保护，结果很可能小于 30,000。
+
+[`Mutex`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.Mutex

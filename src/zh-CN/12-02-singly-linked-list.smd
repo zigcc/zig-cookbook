@@ -1,0 +1,20 @@
+---
+.title = "单向链表",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[单向链表] 包含链接在一起的节点。该链表包含：
+- `head`，链表头，用于遍历。
+- `tail`，链表尾，用于快速添加。
+- `len`，链表长度。
+
+可以在单向链表上执行的操作包括：
+- 插入 O(1)
+- 删除 O(n)，这是最复杂的，因为它需要维护头/尾指针。
+- 遍历 O(n)
+
+[]($code.siteAsset('src/12-02.zig').language('zig'))
+
+[单向链表]: https://en.wikipedia.org/wiki/Linked_list

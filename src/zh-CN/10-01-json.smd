@@ -1,0 +1,19 @@
+---
+.title = "序列化和反序列化 JSON",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[`std.json`] 提供了一组函数，如 [`stringify`] 和 [`stringifyAlloc`]，用于序列化 JSON。
+此外，我们可以使用 [`parseFromSlice`] 函数来解析 JSON 的 `[]u8`。
+
+下面的示例显示了解析 JSON 的 `[]u8`。逐个比较每个成员。
+然后，我们将 `verified` 字段修改为 `false`，并将其序列化回 JSON 字符串。
+
+[]($code.siteAsset('src/10-01.zig').language('zig'))
+
+[`std.json`]: https://ziglang.org/documentation/0.11.0/std/#A;std:json
+[`stringify`]: https://ziglang.org/documentation/0.11.0/std/#A;std:json.stringify
+[`stringifyalloc`]: https://ziglang.org/documentation/0.11.0/std/#A;std:json.stringifyAlloc
+[`parsefromslice`]: https://ziglang.org/documentation/0.11.0/std/#A;std:json.parseFromSlice
