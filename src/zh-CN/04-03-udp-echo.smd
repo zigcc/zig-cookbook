@@ -1,0 +1,18 @@
+---
+.title = "UDP 回显",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+与 TCP 服务器示例类似，此程序将侦听指定的 IP 地址和端口，但这次是侦听 UDP 数据报。如果接收到数据，它将被回显到发送者的地址。
+
+尽管 `std.net` 主要侧重于 TCP 的抽象（目前为止），我们仍然可以利用套接字编程通过 UDP 进行通信。
+
+[]($code.siteAsset('src/04-03.zig').language('zig'))
+
+启动程序后，使用 `nc` 进行如下测试，使用 `-u` 标志表示 UDP：
+
+```bash
+echo "hello zig" | nc -u localhost <port>
+```

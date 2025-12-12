@@ -1,0 +1,14 @@
+---
+.title = "使用 Argon2 对密码进行加盐和哈希",
+.date = "2025-08-28",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+使用 Argon2 对密码进行加盐和哈希
+
+此 Zig 程序使用 Argon2id 密码哈希算法从密码和盐值派生加密密钥。它使用 [std.crypto.pwhash.argon2] 对加盐后的密码进行哈希处理，其中盐值是使用 [`std.crypto.random`] 生成的。
+
+[]($code.siteAsset('src/02-03.zig').language('zig'))
+
+[`std.crypto.pwhash.argon2`]: https://ziglang.org/documentation/0.14.0/std/#std.crypto.pwhash.argon2
+[`std.crypto.random`]: https://ziglang.org/documentation/0.14.0/std/#std.crypto.tlcsprng.interface

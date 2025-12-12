@@ -1,0 +1,12 @@
+---
+.title = "生成随机数",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+借助线程局部、加密安全的伪随机数生成器 [`std.crypto.random`] 生成随机数。
+
+[]($code.siteAsset('src/06-01.zig').language('zig'))
+
+[`std.crypto.random`]: https://ziglang.org/documentation/0.11.0/std/#A;std:crypto.random

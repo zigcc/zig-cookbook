@@ -1,0 +1,16 @@
+---
+.title = "参数解析",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+解析参数在命令行程序中很常见，Zig 中有一些包可以使这项任务更容易。仅举几例：
+
+- [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
+- [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
+- [simargs](https://zigcli.liujiacai.net/modules/simargs/)
+
+这里我们将给出一个使用 `simargs` 的示例。
+
+[]($code.siteAsset('src/13-01.zig').language('zig'))

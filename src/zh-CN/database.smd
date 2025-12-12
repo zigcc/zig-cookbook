@@ -1,0 +1,31 @@
+---
+.title = "数据库",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+
+本节将演示如何从 Zig 连接到流行的数据库。
+
+使用的数据模型如下：
+
+1. 创建两个表：`cat_colors`，`cats`，`cats` 在 `cat_colors` 中有一个引用。
+2. 为每个表创建一个预处理语句，并插入数据。
+3. 执行连接查询以同时获取 `cat_name` 和 `color_name`。
+
+## cat_colors
+
+| id  | name  |
+| --- | ----- |
+| 1   | Blue  |
+| 2   | Black |
+
+## cats
+
+| id  | name    | color_id |
+| --- | ------- | -------- |
+| 1   | Tigger  | 1        |
+| 2   | Sammy   | 1        |
+| 3   | Oreo    | 2        |
+| 4   | Biscuit | 2        |

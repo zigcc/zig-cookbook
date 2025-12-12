@@ -1,0 +1,15 @@
+---
+.title = "Base64 编码和解码",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+使用 [`std.base64.standard`] [`encode`] 将字节切片编码为 `base64` 字符串，并使用 [`standard`] [`decode`] 对其进行解码。
+
+[]($code.siteAsset('src/10-02.zig').language('zig'))
+
+[`std.base64.standard`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.standard
+[`standard`]: https://ziglang.org/documentation/0.11.0/std/src/std/base64.zig.html#L29
+[`encode`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.Base64Encoder.encode
+[`decode`]: https://ziglang.org/documentation/0.11.0/std/#A;std:base64.Base64Decoder.decode

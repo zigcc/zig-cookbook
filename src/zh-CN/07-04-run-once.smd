@@ -1,0 +1,11 @@
+---
+.title = "运行一次",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+
+`std.once` 确保一个函数只执行一次，无论有多少个线程尝试调用它或它被调用多少次。这种线程安全的初始化对于单例模式和一次性设置操作特别有用。
+
+[]($code.siteAsset('src/07-04.zig').language('zig'))

@@ -1,0 +1,11 @@
+---
+.title = "计算文件的 SHA-256 摘要",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+计算文件的 SHA-256 摘要
+
+标准库中实现了许多加密算法，`sha256` 和 `md5` 都是开箱即用的。
+
+[]($code.siteAsset('src/02-01.zig').language('zig'))

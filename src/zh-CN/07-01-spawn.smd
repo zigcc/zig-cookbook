@@ -1,0 +1,18 @@
+---
+.title = "启动短期线程",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+本示例使用 [`std.Thread`] 进行并发和并行编程。
+[`std.Thread.spawn`] 启动一个新线程来计算结果。
+
+此示例将数组分成两半，并在单独的线程中执行工作。
+
+> 注意：为了确保当 `t2` 启动失败时 `t1` 线程已完成，我们在启动 `t1` 后立即 `defer t1.join()`。
+
+[]($code.siteAsset('src/07-01.zig').language('zig'))
+
+[`std.thread`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread
+[`std.thread.spawn`]: https://ziglang.org/documentation/0.11.0/std/#A;std:Thread.spawn

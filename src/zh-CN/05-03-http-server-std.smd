@@ -1,0 +1,52 @@
+---
+.title = "http.Server - std",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+自 Zig 0.12.0 起引入了 `http.Server` 的基本实现。
+
+对于每个连接，我们生成一个新线程来处理它，在 `accept` 中它将：
+1. 首先，它使用 `defer` 确保返回时关闭连接。
+2. 然后初始化 HTTP 服务器以开始解析请求
+3. 对于每个请求，我们首先检查它是否可以升级到 WebSocket。
+   - 如果成功，则调用 `serveWebSocket`，否则调用 `serverHTTP`
+
+[]($code.siteAsset('src/05-03.zig').language('zig'))
+
+## 测试
+
+对于 HTTP，我们可以使用 `curl`：
+```bash
+curl -v localhost:8080
+```
+它将输出：
+```bash
+< HTTP/1.1 200 OK
+< content-length: 32
+< custom header: custom value
+<
+Hello World from Zig HTTP server
+```
+
+对于 WebSocket，我们可以使用浏览器 `开发者工具` 中的控制台：
+
+```js
+var webSocket = new WebSocket('ws://localhost:8080');
+webSocket.onmessage = function(data) { console.log(data); }
+```
+然后我们可以像这样发送消息：
+```js
+webSocket.send('abc')
+```
+
+[websocket-client]($image.siteAsset('images/websocket-client.webp'))
+
+有关详细信息，请参阅 [Writing WebSocket client applications - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications)。
+
+## 注意
+标准库实现的性能极差。如果您计划不仅仅是进行基本的实验，请考虑使用替代库，例如：
+- <https://github.com/karlseguin/http.zig>
+- <https://github.com/zigzap/zap>
+- <https://github.com/mookums/zzz>

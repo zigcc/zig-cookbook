@@ -8,8 +8,82 @@
 [介绍](/)
 
 - 文件系统
+
   - [逐行读取文件](01-01-read-file-line-by-line)
   - [内存映射文件](01-02-mmap-file)
   - [查找最近24小时内修改的文件](01-03-file-modified-24h-ago)
   - [检查文件是否存在](01-04-file-exists)
   - [遍历目录](01-05-iterate-dir)
+
+- 加密
+
+  - [计算文件的 SHA-256 摘要](02-01-sha-digest)
+  - [使用 PBKDF2 对密码进行加盐和哈希](02-02-pbkdf2)
+  - [使用 Argon2 对密码进行加盐和哈希](02-03-argon2)
+
+- 日期和时间
+
+  - [测量两个代码段之间的经过时间](03-01-elapsed-time)
+
+- 网络
+
+  - [监听未使用的 TCP/IP 端口](04-01-tcp-server)
+  - [TCP 客户端](04-02-tcp-client)
+  - [UDP 回显](04-03-udp-echo)
+
+- Web 编程
+
+  - [HTTP Get](05-01-http-get)
+  - [HTTP Post](05-02-http-post)
+  - [HTTP Server(std)](05-03-http-server-std)
+
+- 算法
+
+  - [生成随机数](06-01-rand)
+
+- 并发
+
+  - [显式线程](07-01-spawn)
+  - [共享数据](07-02-shared-data)
+  - [线程池](07-03-threadpool)
+  - [运行一次](07-04-run-once)
+
+- 操作系统
+
+  - [处理器](08-01-cpu-count)
+  - [外部命令](08-02-external)
+
+- 开发工具
+
+  - [版本控制](09-01-semver)
+
+- 编码
+
+  - [JSON 序列化/反序列化](10-01-json)
+  - [Zon 序列化/反序列化](10-02-zon)
+  - [Base64 编码和解码](10-03-base64)
+
+- 数学
+
+  - [复数](11-01-complex-numbers)
+
+- 数据结构
+
+  - [位域](12-01-bitfield)
+  - [单向链表](12-02-singly-linked-list)
+  - [双向链表](12-03-doubly-linked-list)
+
+- 命令行
+
+  - [参数解析](13-01-argparse)
+  - ANSI 终端
+
+- [数据库](database)
+
+  - [SQLite](14-01-sqlite)
+  - [Postgres](14-02-postgres)
+  - [MySQL](14-03-mysql)
+
+- 文本处理
+  - [正则表达式](15-01-regex)
+  - [字符串解析](15-02-string)

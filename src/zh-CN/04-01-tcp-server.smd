@@ -1,0 +1,22 @@
+---
+.title = "监听未使用的 TCP/IP 端口",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在此示例中，端口显示在控制台上，程序将监听直到收到请求。将端口设置为 0 时，`Ip4Address` 会分配一个随机端口。
+
+[]($code.siteAsset('src/04-01.zig').language('zig'))
+
+启动后，请尝试像这样进行测试：
+
+```bash
+echo "hello zig" | nc localhost <port>
+```
+
+默认情况下，程序使用 IPv4 进行监听。如果您想要 IPv6，请使用 `::1` 代替 `127.0.0.1`，将 `net.Ip4Address.parse` 替换为 `net.Ip6Address.parse`，并在创建 `net.Address` 时将字段 `.in` 替换为 `.in6`。
+
+（并连接到像 `ip6-localhost` 之类的地址，具体取决于您的机器设置。）
+
+下一节将演示如何使用 Zig 代码连接到此服务器。
