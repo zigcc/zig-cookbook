@@ -17,11 +17,12 @@ pub fn main() !void {
             log.err("failed to accept connection: {s}", .{@errorName(err)});
             continue;
         };
-        _ = std.Thread.spawn(.{}, accept, .{conn}) catch |err| {
+        const thread = std.Thread.spawn(.{}, accept, .{conn}) catch |err| {
             log.err("unable to spawn connection thread: {s}", .{@errorName(err)});
             conn.stream.close();
             continue;
         };
+        thread.detach();
     }
 }
 
