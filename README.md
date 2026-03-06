@@ -1,5 +1,7 @@
 # Zig Cookbook
 
+[中文](./README-zh.md)
+
 [![](https://img.shields.io/discord/1155469703846834187?label=Chat%20on%20Discord)](https://discord.gg/bAehMGPb2R)
 [![](https://img.shields.io/github/stars/zigcc/zig-cookbook?style=square&color=#30a14e)](https://github.com/zigcc/zig-cookbook/stargazers)
 [![](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg)](https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml)
