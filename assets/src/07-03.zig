@@ -1,27 +1,21 @@
 const std = @import("std");
+const Io = std.Io;
 const print = std.debug.print;
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer if (gpa.deinit() != .ok) @panic("leak");
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
 
-    var pool: std.Thread.Pool = undefined;
-    try pool.init(.{
-        .allocator = allocator,
-        .n_jobs = 4,
-    });
-    defer pool.deinit();
+    var group: Io.Group = .init;
+    errdefer group.cancel(io);
 
-    var wg: std.Thread.WaitGroup = .{};
     for (0..10) |i| {
-        pool.spawnWg(&wg, struct {
-            fn run(id: usize) void {
-                print("I'm from {d}\n", .{id});
-            }
-        }.run, .{i});
+        group.async(io, run, .{i});
     }
-    wg.wait();
+    try group.await(io);
 
     print("All threads exit.\n", .{});
+}
+
+fn run(id: usize) void {
+    print("I'm from {d}\n", .{id});
 }

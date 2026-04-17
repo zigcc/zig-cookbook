@@ -1,8 +1,11 @@
 const std = @import("std");
 const print = std.debug.print;
 
-pub fn main() !void {
-    const rand = std.crypto.random;
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
+
+    var source: std.Random.IoSource = .{ .io = io };
+    const rand = source.interface();
 
     print("Random u8: {}\n", .{rand.int(u8)});
     print("Random u8 less than 10: {}\n", .{rand.uintLessThan(u8, 10)});

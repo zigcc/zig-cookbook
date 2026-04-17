@@ -1,25 +1,14 @@
 const std = @import("std");
 const zon = std.zon;
-const Allocator = std.mem.Allocator;
 
 const Student = struct {
     name: []const u8,
     age: u16,
     favourites: []const []const u8,
-
-    fn deinit(self: *Student, allocator: Allocator) void {
-        allocator.free(self.name);
-        for (self.favourites) |item| {
-            allocator.free(item);
-        }
-        allocator.free(self.favourites);
-    }
 };
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer if (gpa.deinit() != .ok) @panic("leak");
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     const source = Student{
         .name = "John",
@@ -48,7 +37,7 @@ pub fn main() !void {
 
     var diag: zon.parse.Diagnostics = .{};
     defer diag.deinit(allocator);
-    var parsed = zon.parse.fromSlice(
+    const parsed = zon.parse.fromSliceAlloc(
         Student,
         allocator,
         input,
@@ -58,7 +47,7 @@ pub fn main() !void {
         std.debug.print("Parse status: {any}\n", .{diag});
         return err;
     };
-    defer parsed.deinit(allocator);
+    defer zon.parse.free(allocator, parsed);
 
     try std.testing.expectEqualDeep(source, parsed);
 }

@@ -101,10 +101,8 @@ fn LinkedList(comptime T: type) type {
     };
 }
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     var lst = LinkedList(u32).init(allocator);
     defer lst.deinit();

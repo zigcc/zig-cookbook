@@ -1,6 +1,5 @@
 const std = @import("std");
 const builtin = @import("builtin");
-const fs = std.fs;
 const allocPrint = std.fmt.allocPrint;
 const print = std.debug.print;
 
@@ -10,16 +9,17 @@ pub fn build(b: *std.Build) !void {
 }
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
-    const src_dir = try fs.cwd().openDir(b.path("assets/src").getPath(b), .{ .iterate = true });
+    const io = b.graph.io;
+    const src_dir = try std.Io.Dir.cwd().openDir(io, b.path("assets/src").getPath(b), .{ .iterate = true });
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
     const check = b.step("check", "Check if it compiles");
 
-    LoopExample: while (try it.next()) |entry| {
+    LoopExample: while (try it.next(io)) |entry| {
         switch (entry.kind) {
             .file => {
-                const name = std.mem.trimRight(u8, entry.name, ".zig");
+                const name = std.mem.trimEnd(u8, entry.name, ".zig");
                 const exe = b.addExecutable(.{
                     .name = try allocPrint(b.allocator, "examples-{s}", .{name}),
                     .root_module = b.createModule(.{
@@ -28,37 +28,39 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                         .optimize = .Debug,
                     }),
                 });
-                check.dependOn(&exe.step);
+                // 13-01 (simargs example) is skipped until zigcli ships a Zig 0.16-compatible release.
                 if (std.mem.eql(u8, "13-01", name)) {
-                    const zigcli = b.dependency("zigcli", .{});
-                    exe.root_module.addImport("simargs", zigcli.module("simargs"));
-                } else if (std.mem.eql(u8, "14-01", name)) {
-                    exe.linkSystemLibrary("sqlite3");
-                    exe.linkLibC();
+                    continue :LoopExample;
+                }
+                check.dependOn(&exe.step);
+                if (std.mem.eql(u8, "14-01", name)) {
+                    exe.root_module.linkSystemLibrary("sqlite3", .{});
+                    exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "14-02", name)) {
-                    exe.linkSystemLibrary("libpq");
-                    exe.linkLibC();
+                    exe.root_module.linkSystemLibrary("libpq", .{});
+                    exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "14-03", name)) {
-                    exe.linkSystemLibrary("mysqlclient");
-                    exe.linkLibC();
+                    exe.root_module.linkSystemLibrary("mysqlclient", .{});
+                    exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "15-01", name)) {
-                    const lib = b.addLibrary(.{
-                        .name = "regex_slim",
-                        .root_module = b.createModule(.{
-                            .target = target,
-                            .optimize = .Debug,
-                        }),
-                        .linkage = .static,
+                    const lib_module = b.createModule(.{
+                        .target = target,
+                        .optimize = .Debug,
+                        .link_libc = true,
                     });
-
-                    lib.addCSourceFiles(.{
+                    lib_module.addCSourceFiles(.{
                         .files = &.{"lib/regex_slim.c"},
                         .flags = &.{"-std=c99"},
                     });
-                    lib.linkLibC();
-                    exe.linkLibrary(lib);
-                    exe.addIncludePath(b.path("lib"));
-                    exe.linkLibC();
+                    const lib = b.addLibrary(.{
+                        .name = "regex_slim",
+                        .root_module = lib_module,
+                        .linkage = .static,
+                    });
+
+                    exe.root_module.linkLibrary(lib);
+                    exe.root_module.addIncludePath(b.path("lib"));
+                    exe.root_module.link_libc = true;
                 }
 
                 b.installArtifact(exe);

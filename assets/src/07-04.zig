@@ -1,17 +1,28 @@
 const std = @import("std");
 
 var n: u8 = 0;
+var once_state: std.atomic.Value(u8) = .init(0);
 
 fn incr() void {
     n = n + 1;
 }
 
-var once_incr = std.once(incr);
+fn callOnce() void {
+    // Zig 0.16 removed std.once. Implement once semantics with an atomic state.
+    const state = once_state.load(.acquire);
+    if (state == 2) return;
+    if (state == 0 and once_state.cmpxchgStrong(0, 1, .acq_rel, .acquire) == null) {
+        incr();
+        once_state.store(2, .release);
+        return;
+    }
+    while (once_state.load(.acquire) != 2) std.atomic.spinLoopHint();
+}
 
 fn onceIncr() void {
-    // The invocations of `call` are thread-safe.
-    once_incr.call();
-    once_incr.call();
+    // The invocations of `callOnce` are thread-safe.
+    callOnce();
+    callOnce();
 }
 
 pub fn main() !void {

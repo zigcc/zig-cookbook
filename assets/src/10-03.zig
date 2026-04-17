@@ -3,10 +3,8 @@ const print = std.debug.print;
 const Encoder = std.base64.standard.Encoder;
 const Decoder = std.base64.standard.Decoder;
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     const src = "hello zig";
 

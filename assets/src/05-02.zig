@@ -2,12 +2,11 @@ const std = @import("std");
 const print = std.debug.print;
 const http = std.http;
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const gpa = init.gpa;
+    const io = init.io;
 
-    var client = http.Client{ .allocator = allocator };
+    var client: http.Client = .{ .allocator = gpa, .io = io };
     defer client.deinit();
 
     const uri = try std.Uri.parse("https://httpbin.org/anything");
@@ -28,7 +27,7 @@ pub fn main() !void {
         return;
     }
 
-    const body = try response.reader(&.{}).allocRemaining(allocator, .unlimited);
-    defer allocator.free(body);
+    const body = try response.reader(&.{}).allocRemaining(gpa, .unlimited);
+    defer gpa.free(body);
     print("Body:\n{s}\n", .{body});
 }

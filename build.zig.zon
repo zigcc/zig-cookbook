@@ -2,17 +2,12 @@
     .name = .zig_cookbook,
     .fingerprint = 0xde9a8a438b394bd0,
     .version = "0.1.0",
-    .minimum_zig_version = "0.15.2",
+    .minimum_zig_version = "0.16.0",
     .paths = .{
         "src",
         "lib",
         "build.zig",
         "build.zig.zon",
     },
-    .dependencies = .{
-        .zigcli = .{
-            .url = "https://github.com/jiacai2050/zigcli/archive/edd29d2fbcf977cae40990e091bfb821712afb48.zip",
-            .hash = "zigcli-0.3.1-ORC7jLbOAgCvnBYGJqGslo1s-ujF9cMQ3ux05i1OpBMp",
-        },
-    },
+    .dependencies = .{},
 }

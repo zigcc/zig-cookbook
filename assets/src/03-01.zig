@@ -1,28 +1,29 @@
 const std = @import("std");
 const time = std.time;
-const Instant = time.Instant;
-const Timer = time.Timer;
+const Io = std.Io;
 const print = std.debug.print;
 
-fn expensive_function() void {
+fn expensiveFunction(io: Io) !void {
     // sleep 500ms
-    std.Thread.sleep(time.ns_per_ms * 500);
+    try Io.sleep(io, .fromMilliseconds(500), .awake);
 }
 
-pub fn main() !void {
-    // Method 1: Instant
-    const start = try Instant.now();
-    expensive_function();
-    const end = try Instant.now();
-    const elapsed1: f64 = @floatFromInt(end.since(start));
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
+
+    // Method 1: Two timestamps on the awake (monotonic) clock.
+    const start = Io.Clock.awake.now(io);
+    try expensiveFunction(io);
+    const end = Io.Clock.awake.now(io);
+    const elapsed1: f64 = @floatFromInt(start.durationTo(end).nanoseconds);
     print("Time elapsed is: {d:.3}ms\n", .{
         elapsed1 / time.ns_per_ms,
     });
 
-    // Method 2: Timer
-    var timer = try Timer.start();
-    expensive_function();
-    const elapsed2: f64 = @floatFromInt(timer.read());
+    // Method 2: Timestamp.untilNow
+    const before = Io.Clock.awake.now(io);
+    try expensiveFunction(io);
+    const elapsed2: f64 = @floatFromInt(before.untilNow(io, .awake).nanoseconds);
     print("Time elapsed is: {d:.3}ms\n", .{
         elapsed2 / time.ns_per_ms,
     });

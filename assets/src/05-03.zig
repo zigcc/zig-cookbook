@@ -1,41 +1,44 @@
 const std = @import("std");
 const log = std.log;
+const net = std.Io.net;
+const Io = std.Io;
 const Request = std.http.Server.Request;
-const Connection = std.net.Server.Connection;
 
 const MAX_BUF = 1024;
 
-pub fn main() !void {
-    const addr = try std.net.Address.parseIp("127.0.0.1", 8080);
-    var server = try std.net.Address.listen(addr, .{ .reuse_address = true });
-    defer server.deinit();
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
+
+    const addr = try net.IpAddress.parse("127.0.0.1", 8080);
+    var server = try addr.listen(io, .{ .reuse_address = true });
+    defer server.deinit(io);
 
     log.info("Start HTTP server at {f}", .{addr});
 
     while (true) {
-        const conn = server.accept() catch |err| {
+        const stream = server.accept(io) catch |err| {
             log.err("failed to accept connection: {s}", .{@errorName(err)});
             continue;
         };
-        const thread = std.Thread.spawn(.{}, accept, .{conn}) catch |err| {
+        const thread = std.Thread.spawn(.{}, accept, .{ stream, io }) catch |err| {
             log.err("unable to spawn connection thread: {s}", .{@errorName(err)});
-            conn.stream.close();
+            stream.close(io);
             continue;
         };
         thread.detach();
     }
 }
 
-fn accept(conn: Connection) !void {
-    defer conn.stream.close();
+fn accept(stream: net.Stream, io: Io) !void {
+    defer stream.close(io);
 
-    log.info("Got new client({f})!", .{conn.address});
+    log.info("Got new client!", .{});
 
     var recv_buffer: [1024]u8 = undefined;
     var send_buffer: [100]u8 = undefined;
-    var connection_br = conn.stream.reader(&recv_buffer);
-    var connection_bw = conn.stream.writer(&send_buffer);
-    var server = std.http.Server.init(connection_br.interface(), &connection_bw.interface);
+    var stream_reader = stream.reader(io, &recv_buffer);
+    var stream_writer = stream.writer(io, &send_buffer);
+    var server = std.http.Server.init(&stream_reader.interface, &stream_writer.interface);
     while (server.reader.state == .ready) {
         var request = server.receiveHead() catch |err| switch (err) {
             error.HttpConnectionClosing => return,

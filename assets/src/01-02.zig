@@ -1,33 +1,32 @@
 const std = @import("std");
-const fs = std.fs;
-const print = std.debug.print;
 
 const filename = "/tmp/zig-cookbook-01-02.txt";
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
     if (.windows == @import("builtin").os.tag) {
         std.debug.print("MMap is not supported in Windows\n", .{});
         return;
     }
 
-    const file = try fs.cwd().createFile(filename, .{
+    const io = init.io;
+    const file = try std.Io.Dir.cwd().createFile(io, filename, .{
         .read = true,
         .truncate = true,
         .exclusive = false, // Set to true will ensure this file is created by us
     });
-    defer file.close();
+    defer file.close(io);
     const content_to_write = "hello zig cookbook";
 
     // Before mmap, we need to ensure file isn't empty
-    try file.setEndPos(content_to_write.len);
+    try file.setLength(io, content_to_write.len);
 
-    const md = try file.stat();
+    const md = try file.stat(io);
     try std.testing.expectEqual(md.size, content_to_write.len);
 
     const ptr = try std.posix.mmap(
         null,
         content_to_write.len,
-        std.posix.PROT.READ | std.posix.PROT.WRITE,
+        .{ .READ = true, .WRITE = true },
         .{ .TYPE = .SHARED },
         file.handle,
         0,

@@ -176,10 +176,8 @@ pub const DB = struct {
     }
 };
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     const version = c.mysql_get_client_version();
     print("MySQL client version is {}\n", .{version});

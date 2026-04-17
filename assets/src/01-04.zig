@@ -1,12 +1,12 @@
 //! Test file/directory existence
 
 const std = @import("std");
-const fs = std.fs;
 
-pub fn main() !void {
+pub fn main(init: std.process.Init) !void {
+    const io = init.io;
     const filename = "build.zig";
     var found = true;
-    fs.cwd().access(filename, .{}) catch |e| switch (e) {
+    std.Io.Dir.cwd().access(io, filename, .{}) catch |e| switch (e) {
         error.FileNotFound => found = false,
         else => return e,
     };
