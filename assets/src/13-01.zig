@@ -1,13 +1,12 @@
 const std = @import("std");
 const print = std.debug.print;
-const simargs = @import("simargs");
+const zigcli = @import("zigcli");
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const gpa = init.gpa;
+    const io = init.io;
 
-    var opt = try simargs.parse(allocator, struct {
+    const opt = try zigcli.structargs.parse(gpa, io, init.minimal.args, struct {
         // Those fields declare arguments options
         // only `output` is required, others are all optional
         verbose: ?bool,
@@ -30,30 +29,30 @@ pub fn main() !void {
             .output = "Write to file instead of stdout",
             .timeout = "Max time this request can cost",
         };
-    }, "[file]", null);
+    }, .{ .argument_prompt = "[file]" });
     defer opt.deinit();
 
     const sep = "-" ** 30;
-    print("{s}Program{s}\n{s}\n\n", .{ sep, sep, opt.program });
+    print("{s}Program{s}\n{s}\n\n", .{ sep, sep, opt.program_name });
     print("{s}Arguments{s}\n", .{ sep, sep });
-    inline for (std.meta.fields(@TypeOf(opt.args))) |fld| {
+    inline for (std.meta.fields(@TypeOf(opt.options))) |fld| {
         const format = "{s:>10}: " ++ switch (fld.type) {
             []const u8 => "{s}",
             ?[]const u8 => "{?s}",
             else => "{any}",
         } ++ "\n";
-        print(format, .{ fld.name, @field(opt.args, fld.name) });
+        print(format, .{ fld.name, @field(opt.options, fld.name) });
     }
 
     print("\n{s}Positionals{s}\n", .{ sep, sep });
-    for (opt.positional_args, 0..) |arg, idx| {
+    for (opt.positional_arguments, 0..) |arg, idx| {
         print("{d}: {s}\n", .{ idx + 1, arg });
     }
 
     // Provide a print_help util method
     print("\n{s}print_help{s}\n", .{ sep, sep });
-    const stdout = std.fs.File.stdout();
+    const stdout = std.Io.File.stdout();
     var buf: [1024]u8 = undefined;
-    var writer = stdout.writer(&buf);
+    var writer = stdout.writer(io, &buf);
     try opt.printHelp(&writer.interface);
 }

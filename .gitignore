@@ -1,6 +1,7 @@
 public/
 zig-out/
 zig-cache/
+zig-pkg/
 .zig-cache/
 .DS_Store
 .tool-versions

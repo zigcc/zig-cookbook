@@ -28,16 +28,27 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                         .optimize = .Debug,
                     }),
                 });
-                // 13-01 (simargs example) is skipped until zigcli ships a Zig 0.16-compatible release.
-                if (std.mem.eql(u8, "13-01", name)) {
-                    continue :LoopExample;
-                }
                 check.dependOn(&exe.step);
-                if (std.mem.eql(u8, "14-01", name)) {
-                    exe.root_module.linkSystemLibrary("sqlite3", .{});
+                if (std.mem.eql(u8, "13-01", name)) {
+                    const zigcli = b.dependency("zigcli", .{});
+                    exe.root_module.addImport("zigcli", zigcli.module("zigcli"));
+                } else if (std.mem.eql(u8, "14-01", name)) {
+                    const translate_c = b.addTranslateC(.{
+                        .root_source_file = b.path("lib/sqlite3.h"),
+                        .target = target,
+                        .optimize = .Debug,
+                    });
+                    translate_c.linkSystemLibrary("sqlite3", .{});
+                    exe.root_module.addImport("c", translate_c.createModule());
                     exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "14-02", name)) {
-                    exe.root_module.linkSystemLibrary("libpq", .{});
+                    const translate_c = b.addTranslateC(.{
+                        .root_source_file = b.path("lib/libpq-fe.h"),
+                        .target = target,
+                        .optimize = .Debug,
+                    });
+                    translate_c.linkSystemLibrary("libpq", .{});
+                    exe.root_module.addImport("c", translate_c.createModule());
                     exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "14-03", name)) {
                     exe.root_module.linkSystemLibrary("mysqlclient", .{});
@@ -61,6 +72,13 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     exe.root_module.linkLibrary(lib);
                     exe.root_module.addIncludePath(b.path("lib"));
                     exe.root_module.link_libc = true;
+
+                    const translate_c = b.addTranslateC(.{
+                        .root_source_file = b.path("lib/regex_slim_all.h"),
+                        .target = target,
+                        .optimize = .Debug,
+                    });
+                    exe.root_module.addImport("c", translate_c.createModule());
                 }
 
                 b.installArtifact(exe);

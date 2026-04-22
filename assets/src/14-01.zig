@@ -2,9 +2,7 @@
 /// https://www.sqlite.org/cintro.html
 ///
 const std = @import("std");
-const c = @cImport({
-    @cInclude("sqlite3.h");
-});
+const c = @import("c");
 const print = std.debug.print;
 
 const DB = struct {

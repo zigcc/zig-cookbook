@@ -9,5 +9,10 @@
         "build.zig",
         "build.zig.zon",
     },
-    .dependencies = .{},
+    .dependencies = .{
+        .zigcli = .{
+            .url = "git+https://github.com/jiacai2050/zigcli.git?ref=v0.6.0#621920da8f2235c6b9c15addf353e7747e1e899c",
+            .hash = "zigcli-0.6.0-ORC7jHD5BQBipVTQYdQwlRQt-d7uVU_Jlz_HUyDouqpa",
+        },
+    },
 }
