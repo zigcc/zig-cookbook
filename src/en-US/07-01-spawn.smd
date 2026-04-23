@@ -14,5 +14,5 @@ This example splits the array in half and performs the work in separate threads.
 
 []($code.siteAsset('src/07-01.zig').language('zig'))
 
-[`std.thread`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread
-[`std.thread.spawn`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread.spawn
+[`std.Thread`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread
+[`std.Thread.spawn`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread.spawn

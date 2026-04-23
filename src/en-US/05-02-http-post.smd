@@ -13,4 +13,4 @@ with [`request`]. Prints obtained [`Response`] status, and data received from se
 []($code.siteAsset('src/05-02.zig').language('zig'))
 
 [`request`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L992
-[`response`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L322
+[`Response`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L322
