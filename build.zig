@@ -51,7 +51,13 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     exe.root_module.addImport("c", translate_c.createModule());
                     exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "14-03", name)) {
-                    exe.root_module.linkSystemLibrary("mysqlclient", .{});
+                    const translate_c = b.addTranslateC(.{
+                        .root_source_file = b.path("lib/mysql.h"),
+                        .target = target,
+                        .optimize = .Debug,
+                    });
+                    translate_c.linkSystemLibrary("mysqlclient", .{});
+                    exe.root_module.addImport("c", translate_c.createModule());
                     exe.root_module.link_libc = true;
                 } else if (std.mem.eql(u8, "15-01", name)) {
                     const lib_module = b.createModule(.{

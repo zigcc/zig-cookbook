@@ -7,7 +7,7 @@
 
 目前 Zig 中没有正则表达式支持，因此最好的方法是绑定 Posix 的 [regex.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/regex.h.html)。
 
-在 Zig 中与 C 互操作很容易，但是由于 translate-c 不支持位域，我们不能直接使用 `regex_t`。所以这里我们首先创建一个 [静态 C 库](https://github.com/zigcc/zig-cookbook/blob/460dea1f2f9937ab512a70683aacab79e34c723a/build.zig#L50)，提供两个函数：
+在 Zig 中通过构建系统的 [`addTranslateC`](https://ziglang.org/documentation/0.16.0/#toc-addTranslateC) 与 C 互操作很容易，但是由于 translate-c 不支持位域，我们不能直接使用 `regex_t`。所以这里我们首先创建一个 [静态 C 库](https://github.com/zigcc/zig-cookbook/blob/main/lib/regex_slim.c)，提供两个函数：
 
 ```c
 regex_t* alloc_regex_t(void);

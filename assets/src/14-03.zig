@@ -3,9 +3,7 @@
 //!
 const std = @import("std");
 const Allocator = std.mem.Allocator;
-const c = @cImport({
-    @cInclude("mysql.h");
-});
+const c = @import("c");
 const print = std.debug.print;
 
 pub const DBInfo = struct {

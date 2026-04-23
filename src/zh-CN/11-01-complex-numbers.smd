@@ -11,4 +11,4 @@
 
 []($code.siteAsset('src/11-01.zig').language('zig'))
 
-[`std.math.complex`]: https://ziglang.org/documentation/0.11.0/std/#A;std:math.Complex
+[`std.math.complex`]: https://ziglang.org/documentation/0.16.0/std/#std.math.Complex

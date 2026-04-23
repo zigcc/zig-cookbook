@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-Gets the current working directory by calling `fs.cwd()`, and then iterates files using `walk()`, which will recursively iterate entries in the directory.
+Gets the current working directory by calling `Io.Dir.cwd()`, and then iterates files using `walk()`, which will recursively iterate entries in the directory.
 
 For each entry, we check if it's a file, and use `statFile()` to retrieve the file's metadata.
 

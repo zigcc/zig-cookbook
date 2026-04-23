@@ -5,14 +5,11 @@
 .layout = "section.shtml",
 ---
 
-[`Instant`] represents a timestamp with respect to the currently executing program that ticks while the program is suspended and can be used to record elapsed time.
+[`Io.Clock`] provides monotonic timestamps via `Io.Clock.awake.now(io)`. Calling `durationTo` on a timestamp returns the elapsed `Duration` in nanoseconds.
 
-Calling [`std.time.Instant.since`] returns a u64 representing nanoseconds elapsed.
-
-This is such a common task, that there is a [`Timer`] for convenience.
+For sleeping, use [`Io.sleep`] with a `Duration` value.
 
 []($code.siteAsset('src/03-01.zig').language('zig'))
 
-[`instant`]: https://ziglang.org/documentation/0.11.0/std/#A;std:time.Instant
-[`timer`]: https://ziglang.org/documentation/0.11.0/std/#A;std:time.Timer
-[`std.time.instant.since`]: https://ziglang.org/documentation/0.11.0/std/#A;std:time.Instant.since
+[`Io.Clock`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.Clock
+[`Io.sleep`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.sleep

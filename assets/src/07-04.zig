@@ -1,6 +1,10 @@
 const std = @import("std");
 
 var n: u8 = 0;
+// Three-state atomic protocol (replaces std.once which was removed in Zig 0.16):
+//   0 = idle      – no thread has started the work yet
+//   1 = running   – one thread is executing the payload
+//   2 = done      – the payload has finished; all threads may proceed
 var once_state: std.atomic.Value(u8) = .init(0);
 
 fn incr() void {
@@ -8,14 +12,15 @@ fn incr() void {
 }
 
 fn callOnce() void {
-    // Zig 0.16 removed std.once. Implement once semantics with an atomic state.
     const state = once_state.load(.acquire);
-    if (state == 2) return;
+    if (state == 2) return; // fast path: already done
     if (state == 0 and once_state.cmpxchgStrong(0, 1, .acq_rel, .acquire) == null) {
+        // We won the race (0 → 1): execute the payload, then mark done.
         incr();
         once_state.store(2, .release);
         return;
     }
+    // Another thread is running (state == 1): spin until it finishes.
     while (once_state.load(.acquire) != 2) std.atomic.spinLoopHint();
 }
 

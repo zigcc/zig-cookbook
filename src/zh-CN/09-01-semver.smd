@@ -9,6 +9,6 @@
 
 []($code.siteAsset('src/09-01.zig').language('zig'))
 
-[`std.semanticversion`]: https://ziglang.org/documentation/0.11.0/std/#A;std:SemanticVersion
-[`semanticversion.parse`]: https://ziglang.org/documentation/0.11.0/std/#A;std:SemanticVersion.parse
+[`std.semanticversion`]: https://ziglang.org/documentation/0.16.0/std/#std.SemanticVersion
+[`semanticversion.parse`]: https://ziglang.org/documentation/0.16.0/std/#std.SemanticVersion.parse
 [semantic versioning specification]: http://semver.org/

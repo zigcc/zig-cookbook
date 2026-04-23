@@ -9,8 +9,8 @@ Parsing arguments is common in command line programs and there are some packages
 
 - [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
 - [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
-- [simargs](https://zigcli.liujiacai.net/modules/simargs/)
+- [structargs](https://zigcli.liujiacai.net/)
 
-Here we will give an example using `simargs`.
+Here we will give an example using `structargs` from the [zigcli](https://github.com/jiacai2050/zigcli) toolkit.
 
 []($code.siteAsset('src/13-01.zig').language('zig'))

@@ -5,9 +5,8 @@
 .layout = "section.shtml",
 ---
 
-Run an external command via [`std.process.Child`], and collect output into `ArrayList` via [pipe].
+Run an external command via [`std.process.run`], which spawns the child process, collects stdout/stderr, and waits for it to exit.
 
 []($code.siteAsset('src/08-02.zig').language('zig'))
 
-[`std.process.child`]: https://ziglang.org/documentation/0.11.0/std/#A;std:process.Child
-[pipe]: https://man7.org/linux/man-pages/man2/pipe.2.html
+[`std.process.run`]: https://ziglang.org/documentation/0.16.0/std/#std.process.run
