@@ -1,17 +1,16 @@
 const std = @import("std");
 
-pub fn main() !void {
-    var dbg = std.heap.DebugAllocator(.{}){};
-    defer _ = dbg.deinit();
-    const allocator = dbg.allocator();
+pub fn main(init: std.process.Init) !void {
+    const gpa = init.gpa;
+    const io = init.io;
 
     const password = "happy";
 
     //Random salt (Must be at least 8 bytes, recommended 16+)
     var raw: [8]u8 = undefined;
-    std.crypto.random.bytes(&raw);
-    const salt = try std.fmt.allocPrint(allocator, "{s}", .{std.fmt.bytesToHex(raw, .lower)});
-    defer allocator.free(salt);
+    try std.Io.randomSecure(io, &raw);
+    const salt = try std.fmt.allocPrint(gpa, "{s}", .{std.fmt.bytesToHex(raw, .lower)});
+    defer gpa.free(salt);
 
     //Parameters for Argon2id
     const params = std.crypto.pwhash.argon2.Params{
@@ -24,12 +23,13 @@ pub fn main() !void {
     var derived: [dk_len]u8 = undefined;
 
     try std.crypto.pwhash.argon2.kdf(
-        allocator,
+        gpa,
         &derived,
         password,
         salt,
         params,
         .argon2id, //argon2i, argon2d and argon2id
+        io,
     );
 
     std.debug.print("Argon2id derived key: {s}\n", .{std.fmt.bytesToHex(derived, .lower)});

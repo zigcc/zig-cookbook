@@ -10,4 +10,4 @@
 
 []($code.siteAsset('src/04-02.zig').language('zig'))
 
-默认情况下，程序使用 IPv4 连接。如果您想要 IPv6，请使用 `::1` 代替 `127.0.0.1`，将 `net.Address.parseIp4` 替换为 `net.Address.parseIp6`。
+默认情况下，程序使用 IPv4 连接。如果您想要 IPv6，请使用 `::1` 代替 `127.0.0.1`，将 `net.IpAddress.parseIp4` 替换为 `net.IpAddress.parseIp6`。

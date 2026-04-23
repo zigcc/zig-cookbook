@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-在 Zig 中检查文件是否存在，可以使用标准库中的 `std.fs` 模块。具体来说，可以使用 `Dir.access` 方法来检查文件的存在性和权限。
+在 Zig 中检查文件是否存在，可以使用标准库中的 `std.Io.Dir` 模块。具体来说，可以使用 `Dir.access` 方法来检查文件的存在性和权限。
 
 []($code.siteAsset('src/01-04.zig').language('zig'))
 

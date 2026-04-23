@@ -3,9 +3,7 @@
 //!
 const std = @import("std");
 const Allocator = std.mem.Allocator;
-const c = @cImport({
-    @cInclude("mysql.h");
-});
+const c = @import("c");
 const print = std.debug.print;
 
 pub const DBInfo = struct {
@@ -176,10 +174,8 @@ pub const DB = struct {
     }
 };
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     const version = c.mysql_get_client_version();
     print("MySQL client version is {}\n", .{version});

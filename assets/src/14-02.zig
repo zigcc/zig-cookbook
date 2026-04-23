@@ -4,9 +4,7 @@
 //!
 const std = @import("std");
 const print = std.debug.print;
-const c = @cImport({
-    @cInclude("libpq-fe.h");
-});
+const c = @import("c");
 
 const DB = struct {
     conn: *c.PGconn,

@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-尽管 Zig 中有一些 SQLite 的 [wrapper package](https://github.com/vrischmann/zig-sqlite)（封装包）选项，但它们还不稳定。所以这里我们将介绍 [C API interface](https://www.sqlite.org/cintro.html)（C API 接口）。
+尽管 Zig 中有一些 SQLite 的 [wrapper package](https://github.com/vrischmann/zig-sqlite)（封装包）选项，但它们还不稳定。所以这里我们将通过 `addTranslateC` 介绍 [C API interface](https://www.sqlite.org/cintro.html)（C API 接口）。
 
 数据模型在 [这里](database) 介绍。
 

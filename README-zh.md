@@ -9,7 +9,7 @@
 
 [Zig Cookbook](https://github.com/zigcc/zig-cookbook) 是一系列简单的 Zig 示例程序合集，展示了完成常见编程任务的良好实践。
 
-> - 主分支跟踪 Zig 0.15.x，并通过 GitHub Actions 在 Linux 和 macOS 上进行测试。
+> - 主分支跟踪 Zig 0.16.x，并通过 GitHub Actions 在 Linux 和 macOS 上进行测试。
 > - 更早版本的 Zig 支持可以在[其他分支](https://github.com/zigcc/zig-cookbook/branches)中找到。
 
 # 如何使用

@@ -187,11 +187,8 @@ fn ensureList(lst: DoublyLinkedList(u32), comptime expected: []const u32) !void 
     try std.testing.expectEqual(visited_times2, expected.len);
 }
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
     var list = DoublyLinkedList(u32).init(allocator);
     defer list.deinit();
 

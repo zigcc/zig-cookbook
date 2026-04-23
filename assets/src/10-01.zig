@@ -2,10 +2,8 @@ const std = @import("std");
 const json = std.json;
 const testing = std.testing;
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer _ = gpa.deinit();
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.gpa;
 
     // Deserialize JSON
     const json_str =

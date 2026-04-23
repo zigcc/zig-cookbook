@@ -10,6 +10,6 @@ Thread pools address two different problems:
 2. They provide a means of bounding and managing the resources, including threads, consumed when executing a collection of tasks.
 
 
-In this example, we spawn 10 tasks into thread pool, and use `WaitGroup` to wait for them to finish.
+In this example, we spawn 10 tasks using `Io.Group`, and call `await` to wait for them to finish.
 
 []($code.siteAsset('src/07-03.zig').language('zig'))

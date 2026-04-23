@@ -1,10 +1,6 @@
 const std = @import("std");
 const print = std.debug.print;
-const c = @cImport({
-    @cInclude("regex.h");
-    // This is our static library.
-    @cInclude("regex_slim.h");
-});
+const c = @import("c");
 
 const Regex = struct {
     inner: *c.regex_t,

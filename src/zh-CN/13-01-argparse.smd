@@ -9,8 +9,8 @@
 
 - [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
 - [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
-- [simargs](https://zigcli.liujiacai.net/modules/simargs/)
+- [structargs](https://zigcli.liujiacai.net/)
 
-这里我们将给出一个使用 `simargs` 的示例。
+这里我们将给出一个使用 [zigcli](https://github.com/jiacai2050/zigcli) 工具包中 `structargs` 的示例。
 
 []($code.siteAsset('src/13-01.zig').language('zig'))

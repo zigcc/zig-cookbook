@@ -1,12 +1,8 @@
 const std = @import("std");
-const print = std.debug.print;
-const Child = std.process.Child;
-const ArrayList = std.ArrayList;
 
-pub fn main() !void {
-    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
-    defer if (gpa.deinit() != .ok) @panic("leak");
-    const allocator = gpa.allocator();
+pub fn main(init: std.process.Init) !void {
+    const gpa = init.gpa;
+    const io = init.io;
 
     const argv = [_][]const u8{
         "echo",
@@ -15,23 +11,16 @@ pub fn main() !void {
         "world",
     };
 
-    // By default, child will inherit stdout & stderr from its parents,
-    // this usually means that child's output will be printed to terminal.
-    // Here we change them to pipe and collect into `ArrayList`.
-    var child = Child.init(&argv, allocator);
-    child.stdout_behavior = .Pipe;
-    child.stderr_behavior = .Pipe;
+    // `std.process.run` spawns the child, collects stdout/stderr into owned
+    // slices, and waits for it to exit. Use `SpawnOptions` + `std.process.spawn`
+    // directly for more control.
+    const result = try std.process.run(gpa, io, .{
+        .argv = &argv,
+    });
+    defer gpa.free(result.stdout);
+    defer gpa.free(result.stderr);
 
-    var stdout: std.ArrayListUnmanaged(u8) = .empty;
-    defer stdout.deinit(allocator);
-    var stderr: std.ArrayListUnmanaged(u8) = .empty;
-    defer stderr.deinit(allocator);
-
-    try child.spawn();
-    try child.collectOutput(allocator, &stdout, &stderr, 1024);
-    const term = try child.wait();
-
-    try std.testing.expectEqual(term.Exited, 0);
-    try std.testing.expectEqualStrings("hello world", stdout.items);
-    try std.testing.expectEqualStrings("", stderr.items);
+    try std.testing.expectEqual(@as(u8, 0), result.term.exited);
+    try std.testing.expectEqualStrings("hello world", result.stdout);
+    try std.testing.expectEqualStrings("", result.stderr);
 }

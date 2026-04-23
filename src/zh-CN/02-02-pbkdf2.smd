@@ -6,9 +6,9 @@
 ---
 使用 PBKDF2 对密码进行加盐和哈希
 
-使用 [`std.crypto.pwhash.pbkdf2`] 对加盐后的密码进行哈希处理。盐值是使用 [`std.rand.DefaultPrng`] 生成的，它用生成的随机数填充盐值字节数组。
+使用 [`std.crypto.pwhash.pbkdf2`] 通过 HMAC-SHA256 对加盐后的密码进行哈希处理。在生产环境中，盐值应使用 [`std.Io.randomSecure`] 随机生成。
 
 []($code.siteAsset('src/02-02.zig').language('zig'))
 
-[`std.crypto.pwhash.pbkdf2`]: https://ziglang.org/documentation/0.11.0/std/#A;std:crypto.pwhash.pbkdf2
-[`std.rand.defaultprng`]: https://ziglang.org/documentation/0.11.0/std/#A;std:rand.DefaultPrng
+[`std.crypto.pwhash.pbkdf2`]: https://ziglang.org/documentation/0.16.0/std/#std.crypto.pwhash.pbkdf2
+[`std.Io.randomSecure`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.randomSecure

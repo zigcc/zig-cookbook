@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-As with [previous section](14-01-sqlite), here we introduce [libpq](https://www.postgresql.org/docs/16/libpq-example.html) interface directly, other than [wrapper package](https://github.com/tonis2/zig-postgres).
+As with [previous section](14-01-sqlite), here we introduce [libpq](https://www.postgresql.org/docs/16/libpq-example.html) interface directly via `addTranslateC`, other than [wrapper package](https://github.com/tonis2/zig-postgres).
 
 Data models used in this demo are the same with the one used in [SQLite section](14-01-sqlite).
 

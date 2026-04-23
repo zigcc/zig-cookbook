@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-与 [sqlite 章节](14-01-sqlite) 一样，这里我们直接介绍 [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html) 接口。
+与 [sqlite 章节](14-01-sqlite) 一样，这里我们通过 `addTranslateC` 直接介绍 [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html) 接口。
 
 数据模型在 [这里](database) 介绍。
 

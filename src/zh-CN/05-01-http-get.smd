@@ -12,5 +12,5 @@
 
 []($code.siteAsset('src/05-01.zig').language('zig'))
 
-[`request`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L992
-[`response`]: https://ziglang.org/documentation/0.11.0/std/src/std/http/Client.zig.html#L322
+[`request`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L992
+[`Response`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L322
