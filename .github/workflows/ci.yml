@@ -54,8 +54,8 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           node .github/ci.js
-          prefix=$(brew --prefix)
-          echo "PKG_CONFIG_PATH=${prefix}/opt/sqlite/lib/pkgconfig:${prefix}/opt/libpq/lib/pkgconfig:${prefix}/opt/mysql-client/lib/pkgconfig" >> ${GITHUB_ENV}
+          source env.sh
+          echo "PKG_CONFIG_PATH=${PKG_CONFIG_PATH}" >> ${GITHUB_ENV}
       - name: Run examples(Unix)
         run: |
           pkg-config --libs --cflags libpq mysqlclient

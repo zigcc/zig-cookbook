@@ -19,4 +19,6 @@ if ! brew list mysql-client &>/dev/null; then
 fi
 
 PREFIX=$(brew --prefix)
-export PKG_CONFIG_PATH="${PREFIX}/opt/libpq/lib/pkgconfig:${PREFIX}/opt/mysql-client/lib/pkgconfig"
+# Note: sqlite is usually preinstalled on macOS, but brew version might be needed for headers.
+# We include it here to match the CI environment requirements.
+export PKG_CONFIG_PATH="${PREFIX}/opt/sqlite/lib/pkgconfig:${PREFIX}/opt/libpq/lib/pkgconfig:${PREFIX}/opt/mysql-client/lib/pkgconfig"
