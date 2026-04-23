@@ -10,7 +10,8 @@ pub fn build(b: *std.Build) !void {
 
 fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
     const io = b.graph.io;
-    const src_dir = try std.Io.Dir.cwd().openDir(io, b.path("assets/src").getPath(b), .{ .iterate = true });
+    var src_dir = try std.Io.Dir.cwd().openDir(io, b.path("assets/src").getPath(b), .{ .iterate = true });
+    defer src_dir.close(io);
 
     const target = b.standardTargetOptions(.{});
     var it = src_dir.iterate();
