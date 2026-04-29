@@ -1,13 +1,13 @@
 ---
-.title = "Measure the elapsed time between two code sections",
-.date = "2024-01-01",
+.title = "Mengukur waktu yang berlalu antara dua bagian kode",
+.date = "2026-04-29 11:30",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-[`Io.Clock`] provides monotonic timestamps via `Io.Clock.awake.now(io)`. Calling `durationTo` on a timestamp returns the elapsed `Duration` in nanoseconds.
+[`Io.Clock`] menyediakan stempel waktu monoton melalui `Io.Clock.awake.now(io)`. Memanggil `durationTo` pada stempel waktu akan mengembalikan `Duration` yang telah berlalu dalam nanodetik.
 
-For sleeping, use [`Io.sleep`] with a `Duration` value.
+Untuk tidur, gunakan [`Io.sleep`] dengan nilai `Duration`.
 
 []($code.siteAsset('src/03-01.zig').language('zig'))
 
