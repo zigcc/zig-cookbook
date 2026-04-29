@@ -11,7 +11,7 @@
 
   - [Baca file baris per baris](01-01-read-file-line-by-line)
   - [file Mmap](01-02-mmap-file)
-  - [Pencarian file-fille yang telah diubah dalam 24 jam terakhir](01-03-file-modified-24h-ago)
+  - [Pencarian file-file yang telah diubah dalam 24 jam terakhir](01-03-file-modified-24h-ago)
   - [Cek Keberadaan file](01-04-file-exists)
   - [Iterasi direktori](01-05-iterate-dir)
 
