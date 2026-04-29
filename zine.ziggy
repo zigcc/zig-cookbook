@@ -21,7 +21,7 @@ Multilingual {
         },
         {
             .code = "id-ID",
-            .name = "Indonesia",
+            .name = "Indonesian",
             .site_title = "Zig Cookbook",
             .content_dir_path = "src/id-ID",
         },

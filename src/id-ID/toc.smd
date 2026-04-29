@@ -1,0 +1,89 @@
+---
+.title = "toc",
+.date = "2026-04-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[Pengenalan](/)
+
+- Sistem File
+
+  - [Baca file baris per baris](01-01-read-file-line-by-line)
+  - [file Mmap](01-02-mmap-file)
+  - [Cari file-fille yang telah diubah dalam 24 jam terakhir](01-03-file-modified-24h-ago)
+  - [Cek Keberadaan file](01-04-file-exists)
+  - [Iterasi direktori](01-05-iterate-dir)
+
+- Kriptografi
+
+  - [Menghitung digest SHA-256 dari sebuah file](02-01-sha-digest)
+  - [Salt dan hash sebuah password dengan PBKDF2](02-02-pbkdf2)
+  - [Salt dan hash sebuah password dengan Argon2](02-03-argon2)
+
+- Tanggal dan Waktu
+
+  - [Mengukur waktu yang berlalu antara dua bagian kode](03-01-elapsed-time)
+
+- Jaringan
+
+  - [Listen ke port TCP/IP yang tidak digunakan](04-01-tcp-server)
+  - [TCP Client](04-02-tcp-client)
+  - [UDP Echo](04-03-udp-echo)
+
+- Pemrograman Web
+
+  - [HTTP Get](05-01-http-get)
+  - [HTTP Post](05-02-http-post)
+  - [HTTP Server(std)](05-03-http-server-std)
+
+- Algoritma
+
+  - [Penghasil nilai acak](06-01-rand)
+
+- Konkurensi
+
+  - [Explicit Threads](07-01-spawn)
+  - [Shared Data](07-02-shared-data)
+  - [Thread pool](07-03-threadpool)
+  - [Run Once](07-04-run-once)
+
+- Sistem Operasi
+
+  - [Prosessor](08-01-cpu-count)
+  - [External Command](08-02-external)
+
+- Alat Pengembangan
+
+  - [Versioning](09-01-semver)
+
+- Encoding
+
+  - [(De)serialize JSON](10-01-json)
+  - [(De)serialize Zon](10-02-zon)
+  - [Encode dan decode base64](10-03-base64)
+
+- Mathematics
+
+  - [Complex Numbers](11-01-complex-numbers)
+
+- Struktur Data
+
+  - [Bitfield](12-01-bitfield)
+  - [Singly Linked List](12-02-singly-linked-list)
+  - [Doubly Linked List](12-03-doubly-linked-list)
+
+- Command line
+
+  - [Argument Parsing](13-01-argparse)
+  - ANSI Terminal
+
+- [Database](database)
+
+  - [SQLite](14-01-sqlite)
+  - [Postgres](14-02-postgres)
+  - [MySQL](14-03-mysql)
+
+- Pemrosesan teks
+  - [Regex Expressions](15-01-regex)
+  - [String Parsing](15-02-string)
