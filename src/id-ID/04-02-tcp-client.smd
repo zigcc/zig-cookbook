@@ -1,0 +1,16 @@
+---
+.title = "TCP Client",
+.date = "2026-04-29 11:38",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Dalam contoh ini, kami mendemonstrasikan pembuatan klien TCP untuk terhubung ke server dari bagian sebelumnya.
+
+Anda dapat menjalankannya menggunakan `zig build run-04-02 -- <port>`.
+
+[]($code.siteAsset('src/04-02.zig').language('zig'))
+
+Secara default, program terhubung dengan IPv4. Jika Anda menginginkan IPv6, gunakan
+`::1` sebagai pengganti `127.0.0.1`, ganti `net.IpAddress.parseIp4` dengan
+`net.IpAddress.parseIp6`.

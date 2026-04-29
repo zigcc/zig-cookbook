@@ -1,0 +1,23 @@
+---
+.title = "Serialisasi dan deserialisasi Zon",
+.date = "2026-04-29 12:02",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+ZON ("Zig Object Notation") adalah format file berbasis teks. Di luar literal `nan` dan `inf`, tata bahasa ZON merupakan bagian dari tata bahasa Zig.
+
+Primitif Zig yang didukung:
+* literal boolean
+* literal angka (termasuk `nan` dan `inf`)
+* literal karakter
+* literal enum
+* literal `null`
+* literal string
+* literal string multibaris
+
+ Tipe kontainer Zig yang didukung:
+ * literal struct anonim
+ * literal tuple anonim
+
+[]($code.siteAsset('src/10-02.zig').language('zig'))

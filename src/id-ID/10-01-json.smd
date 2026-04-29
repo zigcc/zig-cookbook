@@ -1,0 +1,17 @@
+---
+.title = "Serialisasi dan deserialisasi JSON",
+.date = "2026-04-29 12:01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Modul [`std.json`] menyediakan [`parseFromSlice`] untuk mendeserialkan JSON, dan struct [`json.Stringify`] untuk menserialisasi nilai kembali ke JSON melalui `Io.Writer.Allocating`.
+
+Contoh di bawah ini menunjukkan penguraian `[]u8` berisi JSON. Setiap anggota dibandingkan satu per satu.
+Kemudian, kita mengubah field `verified` menjadi `false` dan menserialisasinya kembali ke string JSON.
+
+[]($code.siteAsset('src/10-01.zig').language('zig'))
+
+[`std.json`]: https://ziglang.org/documentation/0.16.0/std/#std.json
+[`json.Stringify`]: https://ziglang.org/documentation/0.16.0/std/#std.json.Stringify
+[`parsefromslice`]: https://ziglang.org/documentation/0.16.0/std/#std.json.parseFromSlice

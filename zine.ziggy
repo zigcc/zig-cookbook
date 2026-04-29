@@ -19,5 +19,11 @@ Multilingual {
             .site_title = "Zig Cookbook",
             .content_dir_path = "src/zh-CN",
         },
+        {
+            .code = "id-ID",
+            .name = "Indonesian",
+            .site_title = "Zig Cookbook",
+            .content_dir_path = "src/id-ID",
+        },
     ],
 }

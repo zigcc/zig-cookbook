@@ -1,0 +1,54 @@
+---
+.title = "http.Server - std",
+.date = "2026-04-29 11:46",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Implementasi dasar `http.Server` telah diperkenalkan sejak Zig 0.12.0.
+
+Untuk setiap koneksi, kami membuat thread baru untuk menanganinya, di `accept` thread tersebut akan:
+1. Pertama, ia menggunakan `defer` untuk memastikan koneksi ditutup saat dikembalikan.
+
+2. Kemudian menginisialisasi server HTTP untuk mulai mengurai permintaan.
+3. Untuk setiap permintaan, pertama-tama kami memeriksa apakah permintaan tersebut dapat ditingkatkan ke WebSocket.
+
+- Jika berhasil, panggil `serveWebSocket`, jika tidak, panggil `serverHTTP`
+
+[]($code.siteAsset('src/05-03.zig').language('zig'))
+
+## Tes
+
+Untuk HTTP, kita bisa menggunakan `curl`:
+```bash
+curl -v localhost:8080
+```
+Hasilnya akan seperti ini:
+```bash
+< HTTP/1.1 200 OK
+< content-length: 32
+< custom header: custom value
+<
+Hello World from Zig HTTP server
+```
+
+Untuk WebSocket, kita bisa menggunakan konsol di `Developer Tools` browser Anda:
+
+```js
+var webSocket = new WebSocket('ws://localhost:8080');
+webSocket.onmessage = function(data) { console.log(data); }
+```
+Kemudian kita bisa mengirim pesan seperti ini:
+```js
+webSocket.send('abc')
+```
+
+[websocket-client]($image.siteAsset('images/websocket-client.webp'))
+
+Lihat [Menulis aplikasi klien WebSocket - Web API | MDN](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_client_applications) untuk detailnya.
+
+## Catatan
+Implementasi standar menunjukkan kinerja yang sangat buruk. Jika Anda berencana melampaui eksperimen dasar, pertimbangkan untuk menggunakan pustaka alternatif seperti:
+- <https://github.com/karlseguin/http.zig>
+- <https://github.com/zigzap/zap>
+- <https://github.com/mookums/zzz>

@@ -1,0 +1,10 @@
+---
+.title = "Pembacaan file baris per baris",
+.date = "2026-04-29 10:58",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Terdapat tipe `Reader` di Zig, yang mana menyediakan berbagai metode untuk membaca file, seperti `readAll`, `readInt`. Di sini kita akan menggunakan `takeDelimiter` untuk pemisahan baris.
+
+[]($code.siteAsset('src/01-01.zig').language('zig'))

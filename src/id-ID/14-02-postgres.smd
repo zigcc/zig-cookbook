@@ -1,0 +1,16 @@
+---
+.title = "Postgres",
+.date = "2026-04-29 12:06",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Seperti [bagian sebelumnya](14-01-sqlite), di sini kita memperkenalkan antarmuka [libpq](https://www.postgresql.org/docs/16/libpq-example.html) secara langsung melalui `addTranslateC`, bukan menggunakan [paket wrapper](https://github.com/tonis2/zig-postgres).
+
+Model data yang digunakan dalam demo ini sama dengan yang digunakan di [bagian SQLite](14-01-sqlite).
+
+> Catatan: Setelah menjalankan query dengan fungsi seperti `PQexec`, jika ada hasil yang dikembalikan, periksa hasilnya dengan `PGRES_TUPLES_OK`, jika tidak, gunakan `PGRES_COMMAND_OK`.
+
+- <https://www.postgresql.org/docs/current/libpq-exec.html#LIBPQ-PQRESULTSTATUS>
+
+[]($code.siteAsset('src/14-02.zig').language('zig'))

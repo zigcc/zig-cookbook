@@ -1,0 +1,15 @@
+---
+.title = "Cek keberadaan file",
+.date = "2026-04-29 11:13",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Contoh ini menggunakan, `access` dalam memverifikasi keberadaan file; namun, agar dapat berfungsi dengan benar, seseorang harus secara khusus melakukan pemeriksaan tipe error `FileNotFound`.
+
+[]($code.siteAsset('src/01-04.zig').language('zig'))
+
+Namun, ada jebakan yang dijelaskan dalam [dokumentasinya](https://github.com/ziglang/zig/blob/0.13.0/lib/std/fs/Dir.zig#L2390-L2396):
+
+> Berhati-hatilah terhadap race condition [Time-Of-Check-Time-Of-Use](https://en.wikipedia.org/wiki/Time-of-check_to_time-of-use) saat menggunakan fungsi ini.
+> Misalnya, alih-alih memeriksa apakah sebuah file ada lalu membukanya, cukup buka saja dan tangani error file not found.

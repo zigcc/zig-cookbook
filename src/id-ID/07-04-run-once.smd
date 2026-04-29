@@ -1,0 +1,17 @@
+---
+.title = "Run Once",
+.date = "2026-04-29 11:57",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+
+`std.once` telah dihapus di Zig 0.16. Di sini kita mengimplementasikan semantik "jalankan tepat sekali" secara manual menggunakan protokol atomik tiga-status:
+
+- **0 (idle)** – belum ada thread yang memulai pekerjaan.
+- **1 (running)** – satu thread berhasil merebut kesempatan dan sedang menjalankan tugasnya.
+- **2 (done)** – tugas telah selesai; semua thread dapat langsung kembali.
+
+Ini memastikan suatu fungsi hanya dijalankan tepat satu kali, terlepas dari berapa banyak thread yang mencoba memanggilnya. Berguna untuk pola singleton dan operasi inisialisasi sekali pakai.
+
+[]($code.siteAsset('src/07-04.zig').language('zig'))

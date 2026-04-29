@@ -1,0 +1,25 @@
+---
+.title = "Ekspresi Reguler",
+.date = "2026-04-29 12:07",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Saat ini belum ada dukungan regex di Zig, sehingga cara terbaik adalah dengan menggunakan binding dari [regex.h](https://pubs.opengroup.org/onlinepubs/7908799/xsh/regex.h.html) milik Posix.
+
+Interoperabilitas dengan C mudah dilakukan di Zig melalui [`addTranslateC`](https://ziglang.org/documentation/0.16.0/#toc-addTranslateC) dalam sistem build, namun karena translate-c tidak mendukung bitfield, kita tidak dapat menggunakan `regex_t` secara langsung. Oleh karena itu, di sini kita terlebih dahulu membuat [pustaka C statis](https://github.com/zigcc/zig-cookbook/blob/main/lib/regex_slim.c) yang menyediakan dua fungsi:
+
+```c
+regex_t* alloc_regex_t(void);
+void free_regex_t(regex_t* ptr);
+```
+
+`regex_t*` adalah pointer dengan ukuran tetap, sehingga dapat digunakan langsung di Zig.
+
+[]($code.siteAsset('src/15-01.zig').language('zig'))
+
+## Referensi
+
+- [regex(3) — Linux manual page](https://man7.org/linux/man-pages/man3/regex.3.html)
+- [How to allocate a struct of incomplete type in Zig?](https://stackoverflow.com/a/73095054)
+- [Regular Expressions in Zig](https://www.openmymind.net/Regular-Expressions-in-Zig/)

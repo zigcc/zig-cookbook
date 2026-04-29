@@ -1,0 +1,20 @@
+---
+.title = "UDP Echo",
+.date = "2026-04-29 11:40",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Mirip dengan contoh server TCP, program ini akan mendengarkan pada alamat IP dan port yang ditentukan, tetapi kali ini untuk datagram UDP. Jika data diterima,
+data tersebut akan dikembalikan ke alamat pengirim.
+
+Meskipun `std.Io.net` sebagian besar berfokus pada abstraksi untuk TCP (sejauh ini), kita masih dapat
+menggunakan pemrograman soket untuk berkomunikasi melalui UDP.
+
+[]($code.siteAsset('src/04-03.zig').language('zig'))
+
+Setelah menjalankan program, uji sebagai berikut dengan `nc`, menggunakan flag `-u` untuk UDP:
+
+```bash
+echo "hello zig" | nc -u localhost <port>
+```

@@ -1,0 +1,12 @@
+---
+.title = "Pencarian file-file yang telah diubah dalam 24 jam terakhir",
+.date = "2026-04-29 11:06",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Dapatkan direktori kerja saat ini dengan memanggil `Io.Dir.cwd()`, kemudian lakukan iterasi file menggunakan `walk()`, yang akan secara rekursif mengulangi entri dalam direktori.
+
+Untuk setiap entri, kita periksa apakah itu file, dan menggunakan `statFile()` untuk mengambil metadata file.
+
+[]($code.siteAsset('src/01-03.zig').language('zig'))

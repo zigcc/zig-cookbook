@@ -1,0 +1,12 @@
+---
+.title = "Perintah Eksternal",
+.date = "2026-04-29 11:58",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Menjalankan perintah eksternal melalui [`std.process.run`], yang membuat proses anak, mengumpulkan stdout/stderr, dan menunggu hingga proses tersebut selesai.
+
+[]($code.siteAsset('src/08-02.zig').language('zig'))
+
+[`std.process.run`]: https://ziglang.org/documentation/0.16.0/std/#std.process.run

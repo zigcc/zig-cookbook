@@ -1,0 +1,26 @@
+---
+.title = "Doubly Linked List",
+.date = "2026-04-29 12:05",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Sebuah [doubly linked list] berisi node-node yang terhubung dalam dua arah, memungkinkan operasi yang lebih efisien dalam beberapa skenario. Setiap node dalam doubly linked list memiliki:
+- `data`, nilai yang disimpan dalam node.
+- `next`, pointer ke node berikutnya dalam daftar.
+- `prev`, pointer ke node sebelumnya dalam daftar.
+
+Daftar itu sendiri memiliki:
+- `head`, kepala daftar, digunakan untuk penelusuran dari awal.
+- `tail`, ekor daftar, digunakan untuk penelusuran dari akhir dan penambahan yang cepat.
+- `len`, panjang daftar, yang mencatat jumlah node.
+
+Operasi yang dapat dilakukan pada doubly linked list meliputi:
+- Penyisipan di akhir O(1), berdasarkan pointer `tail`.
+- Penyisipan di posisi sembarang O(n), karena memerlukan penelusuran.
+- Penghapusan O(n), dengan efisiensi yang lebih baik dibanding singly linked list karena dapat menemukan dan menghapus node tanpa penelusuran penuh.
+
+
+[]($code.siteAsset('src/12-03.zig').language('zig'))
+
+[doubly linked list]: https://en.wikipedia.org/wiki/Doubly_linked_list

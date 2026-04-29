@@ -1,0 +1,11 @@
+---
+.title = "Menghitung digest SHA-256 dari sebuah file",
+.date = "2026-04-29 11:23",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+Menghitung digest SHA-256 dari sebuah file
+
+Terdapat banyak implementasi algoritma kriptografi di std, `sha256`, `md5` didukung secara langsung.
+
+[]($code.siteAsset('src/02-01.zig').language('zig'))

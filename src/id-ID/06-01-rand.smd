@@ -1,0 +1,12 @@
+---
+.title = "Penghasil nilai acak",
+.date = "2026-04-29 11:49",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Menghasilkan angka acak menggunakan [`std.Random.IoSource`], yang menyediakan generator angka acak yang aman secara kriptografis yang didukung oleh antarmuka I/O sistem.
+
+[]($code.siteAsset('src/06-01.zig').language('zig'))
+
+[`std.Random.IoSource`]: https://ziglang.org/documentation/0.16.0/std/#std.Random.IoSource

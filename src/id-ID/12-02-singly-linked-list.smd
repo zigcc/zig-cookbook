@@ -1,0 +1,20 @@
+---
+.title = "Singly Linked List",
+.date = "2026-04-29 12:04",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[Singly linked list] berisi node-node yang saling terhubung. Daftar ini memiliki:
+- `head`, kepala daftar, digunakan untuk penelusuran.
+- `tail`, ekor daftar, digunakan untuk penambahan yang cepat.
+- `len`, panjang daftar.
+
+Operasi yang dapat dilakukan pada singly linked list meliputi:
+- Penyisipan O(1)
+- Penghapusan O(n), yang paling kompleks karena perlu menjaga pointer head/tail.
+- Penelusuran O(n)
+
+[]($code.siteAsset('src/12-02.zig').language('zig'))
+
+[Singly linked list]: https://en.wikipedia.org/wiki/Linked_list

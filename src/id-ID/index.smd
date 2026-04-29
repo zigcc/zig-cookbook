@@ -1,0 +1,67 @@
+---
+.title = "Pengenalan",
+.date = "2026-04-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+```=html
+<a href="https://discord.gg/bAehMGPb2R">
+  <img src="https://img.shields.io/discord/1155469703846834187?label=Chat%20on%20Discord" alt="Chat on Discord">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/stargazers">
+  <img src="https://img.shields.io/github/stars/zigcc/zig-cookbook?style=square&color=#30a14e" alt="GitHub Stars">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml">
+  <img src="https://github.com/zigcc/zig-cookbook/actions/workflows/ci.yml/badge.svg" alt="CI">
+</a>
+<a href="https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml">
+  <img src="https://github.com/zigcc/zig-cookbook/actions/workflows/pages.yml/badge.svg" alt="Pages">
+</a>
+```
+
+![](/images/logo.webp)
+
+[Zig cookbook](https://github.com/zigcc/zig-cookbook) merupakan kumpulan berbagai program Zig sederhana yang bertujuan untuk mencontohkan praktik terbaik dalam penyelesaian tugas pemrograman umum. 
+
+> - Branch Utama mengikuti Zig 0.16.x, dan telah dicoba di Linux dan macOS via Github actions.
+> - Dukungan Zig versi sebelumnya dapat ditemukan di [branch lainnya](https://github.com/zigcc/zig-cookbook/branches).
+
+# Cara Penggunaan
+
+[Website ini](https://cookbook.ziglang.cc/) merupakan hasil dari [zine-ssg](https://zine-ssg.io), sebuah static site generator untuk Zig. `zine` akan menjalankan server di `http://localhost:1990` untuk pratinjau.
+
+Setiap resep disertai dengan contoh ilustratif yang dinamai sesuai nomor urutannya. Contoh-contoh ini dapat dijalankan menggunakan perintah `zig build run-{chapter-num}-{sequence-num}`, atau `zig build run-all` untuk menjalankan semua.
+
+> ## Catatan
+> Beberapa resep mungkin bergantung pada pustaka sistem
+> - Gunakan `make install-deps` untuk menginstal pustaka klien, dan
+> - `docker-compose up -d` untuk memulai database yang diperlukan.
+
+# Kontribusi
+
+Cookbook ini masih dalam masa pengembangan, dan kami menyambut baik segala kontribusi dari komunitas. Jika kamu punya resep favorit yang mau dibagikan, silakan ajukan [pull request](https://github.com/zigcc/zig-cookbook/pulls).
+
+## Lokalisasi
+
+Buat resep yang sesuai di folder bahasa, lokalisasikan, dan ajukan [pull request](https://github.com/zigcc/zig-cookbook/pulls).
+
+# Penghargaan
+
+Zig Cookbook terinspirasi oleh beberapa proyek yang serupa lainnya. Kami ingin mengucapkan banyak terima kasih kepada proyek-proyek berikut atas karya mereka yang luar biasa.
+
+
+- [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
+- [zine-ssg](https://zine-ssg.io), terima kasih kepada [Loris Cro](https://github.com/kristoff-it) yang telah membuat static site generator yang sangat luar biasa keren ini.
+
+# Star History
+
+```=html
+<a href="https://star-history.com/#zigcc/zig-cookbook&Date">
+  <img src="https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date" alt="Star History">
+</a>
+```
+
+# Lisensi
+
+File markdown dilisensikan di bawah [CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/), dan file zig di bawah MIT.
