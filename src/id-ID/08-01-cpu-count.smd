@@ -1,0 +1,12 @@
+---
+.title = "Memeriksa jumlah core CPU logis",
+.date = "2026-04-29 11:58",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Menampilkan jumlah core CPU logis pada mesin yang sedang berjalan menggunakan [`std.Thread.getCpuCount`].
+
+[]($code.siteAsset('src/08-01.zig').language('zig'))
+
+[`std.Thread.getCpuCount`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread.getCpuCount

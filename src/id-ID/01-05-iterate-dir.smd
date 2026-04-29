@@ -1,0 +1,13 @@
+---
+.title = "Iterasi direktori",
+.date = "2026-04-29 11:20",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+Iterasi direktori
+
+Tersedia metode `walk` yang praktis untuk tujuan ini, yang akan menelusuri direktori secara iteratif.
+
+[]($code.siteAsset('src/01-05.zig').language('zig'))
+
+Urutan entri sistem file yang dikembalikan tidak ditentukan. Jika ada persyaratan untuk urutan pengembalian entri, seperti abjad atau kronologis waktu, maka urutkan sesuai kebutuhan. Jika tidak, biarkan dalam urutan aslinya yang tidak diurutkan.

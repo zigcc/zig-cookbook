@@ -1,0 +1,12 @@
+---
+.title = "SQLite",
+.date = "2026-04-29 12:06",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Meskipun terdapat beberapa pilihan [paket wrapper](https://github.com/vrischmann/zig-sqlite) untuk SQLite di Zig, semuanya masih belum stabil. Oleh karena itu, di sini kita akan memperkenalkan antarmuka [C API](https://www.sqlite.org/cintro.html) melalui `addTranslateC`.
+
+Model data diperkenalkan [di sini](database).
+
+[]($code.siteAsset('src/14-01.zig').language('zig'))

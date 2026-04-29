@@ -1,0 +1,15 @@
+---
+.title = "Thread pool",
+.date = "2026-04-29 11:56",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Thread pool menyelesaikan dua masalah berbeda:
+1. Biasanya memberikan peningkatan performa saat menjalankan tugas asinkron dalam jumlah besar, karena berkurangnya overhead pemanggilan per tugas, dan
+2. Menyediakan cara untuk membatasi dan mengelola sumber daya, termasuk thread, yang digunakan saat menjalankan sekumpulan tugas.
+
+
+Dalam contoh ini, kita membuat 10 tugas menggunakan `Io.Group`, dan memanggil `await` untuk menunggu semuanya selesai.
+
+[]($code.siteAsset('src/07-03.zig').language('zig'))

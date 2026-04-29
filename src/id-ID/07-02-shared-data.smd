@@ -1,0 +1,13 @@
+---
+.title = "Berbagi data antara dua thread",
+.date = "2026-04-29 11:52",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Ketika kita ingin mengubah data yang dibagi antar thread, [`Mutex`] (**Mut**ually **ex**clusive flag) harus digunakan untuk menyinkronkan thread, karena jika tidak, hasilnya bisa tidak terduga.
+
+[]($code.siteAsset('src/07-02.zig').language('zig'))
+Jika kita menghapus perlindungan Mutex, hasilnya kemungkinan besar akan kurang dari 30.000.
+
+[`Mutex`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.Mutex

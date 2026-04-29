@@ -1,0 +1,26 @@
+---
+.title = "Listen ke port TCP/IP yang tidak digunakan",
+.date = "2026-04-29 11:31",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Dalam contoh ini, port ditampilkan di konsol, dan program akan
+mendengarkan hingga ada permintaan. Menggunakan `IpAddress` dengan `.loopback(0)` akan menetapkan
+port acak.
+
+[]($code.siteAsset('src/04-01.zig').language('zig'))
+
+Saat program dimulai, coba uji seperti ini:
+
+```bash
+echo "hello zig" | nc localhost <port>
+```
+
+Secara default, program mendengarkan dengan IPv4. Jika Anda menginginkan IPv6, gunakan
+`net.IpAddress{ .ip6 = .loopback(0) }` sebagai gantinya.
+
+(Dan hubungkan ke sesuatu seperti `ip6-localhost`, tergantung pada cara
+mesin Anda diatur.)
+
+Bagian selanjutnya akan menunjukkan cara terhubung ke server ini menggunakan kode Zig.

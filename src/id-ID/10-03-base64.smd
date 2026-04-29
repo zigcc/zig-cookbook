@@ -1,0 +1,16 @@
+---
+.title = "Enkode dan dekode base64",
+.date = "2026-04-29 12:02",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Mengenkode slice byte ke string `base64` menggunakan [`std.base64.standard`] [`encode`]
+dan mendekodenya dengan [`standard`] [`decode`].
+
+[]($code.siteAsset('src/10-03.zig').language('zig'))
+
+[`std.base64.standard`]: https://ziglang.org/documentation/0.16.0/std/#std.base64.standard
+[`standard`]: https://ziglang.org/documentation/0.16.0/std/src/std/base64.zig.html#L29
+[`encode`]: https://ziglang.org/documentation/0.16.0/std/#std.base64.Base64Encoder.encode
+[`decode`]: https://ziglang.org/documentation/0.16.0/std/#std.base64.Base64Decoder.decode

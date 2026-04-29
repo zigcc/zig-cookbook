@@ -1,0 +1,17 @@
+---
+.title = "Bitfield",
+.date = "2026-04-29 12:03",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Field-field dari sebuah [packed struct](https://ziglang.org/documentation/master/#packed-struct) selalu disusun di memori sesuai urutan penulisannya, tanpa padding, sehingga sangat cocok untuk merepresentasikan bitfield.
+
+Nilai boolean direpresentasikan sebagai 1 bit dalam packed struct. Zig juga mendukung integer dengan lebar bit arbitrer, seperti u28, u1, dan seterusnya.
+
+[]($code.siteAsset('src/12-01.zig').language('zig'))
+
+## Referensi
+
+- [Packed structs in Zig make bit/flag sets trivial | Hexops' devlog](https://devlog.hexops.com/2022/packed-structs-in-zig/)
+- [A Better Way to Implement Bit Fields](https://andrewkelley.me/post/a-better-way-to-implement-bit-fields.html)

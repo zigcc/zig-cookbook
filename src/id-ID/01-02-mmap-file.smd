@@ -1,0 +1,10 @@
+---
+.title = "file Mmap",
+.date = "2026-04-29 10:59",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Pembuatan memory map dari sebuah file dapat menggunakan [mmap](https://man7.org/linux/man-pages/man2/mmap.2.html) dan mensimulasikan beberapa pembacaan non-sekuensial dari file tersebut. Menggunakan memory map berarti kamu hanya perlu mengindeks ke dalam sebuah slice daripada harus berurusan dengan seek dalam menavigasi file.
+
+[]($code.siteAsset('src/01-02.zig').language('zig'))

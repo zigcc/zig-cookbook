@@ -1,0 +1,16 @@
+---
+.title = "Penguraian Argumen",
+.date = "2026-04-29 12:06",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Penguraian argumen adalah hal yang umum dalam program baris perintah, dan terdapat beberapa paket di Zig untuk mempermudah tugas ini. Di antaranya:
+
+- [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
+- [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
+- [structargs](https://zigcli.liujiacai.net/)
+
+Di sini kita akan memberikan contoh menggunakan `structargs` dari toolkit [zigcli](https://github.com/jiacai2050/zigcli).
+
+[]($code.siteAsset('src/13-01.zig').language('zig'))

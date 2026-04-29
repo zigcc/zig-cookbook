@@ -1,0 +1,14 @@
+---
+.title = "Salt dan hash sebuah password dengan Argon2",
+.date = "2026-04-29 11:29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+Salt dan hash sebuh password dengan Argon2
+
+Program Zig ini menghasilkan kunci kriptografi dari password dan salt menggunakan algoritma hashing kata sandi Argon2id. Program ini menggunakan [std.crypto.pwhash.argon2] untuk melakukan hashing pada password yang diberi salt, di mana salt dihasilkan menggunakan [`std.Io.randomSecure`].
+
+[]($code.siteAsset('src/02-03.zig').language('zig'))
+
+[`std.crypto.pwhash.argon2`]: https://ziglang.org/documentation/0.16.0/std/#std.crypto.pwhash.argon2
+[`std.Io.randomSecure`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.randomSecure

@@ -1,0 +1,18 @@
+---
+.title = "Membuat thread sementara",
+.date = "2026-04-29 11:51",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Contoh ini menggunakan [`std.Thread`] untuk pemrograman konkuren dan paralel.
+[`std.Thread.spawn`] membuat thread baru untuk menghitung hasilnya.
+
+Contoh ini membagi array menjadi dua bagian dan melakukan pekerjaan di thread yang terpisah.
+
+> Catatan: Untuk memastikan thread `t1` telah selesai ketika pembuatan `t2` gagal, kita menggunakan `defer t1.join()` segera setelah membuat `t1`.
+
+[]($code.siteAsset('src/07-01.zig').language('zig'))
+
+[`std.Thread`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread
+[`std.Thread.spawn`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread.spawn

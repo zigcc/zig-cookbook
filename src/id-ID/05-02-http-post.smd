@@ -1,0 +1,16 @@
+---
+.title = "POST",
+.date = "2026-04-29 11:45",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Mengurai URL yang diberikan dan membuat permintaan HTTP POST sinkron
+dengan [`request`]. Mencetak status [`Response`] yang diperoleh, dan data yang diterima dari server.
+
+> Catatan: Karena dukungan HTTP masih dalam tahap awal, disarankan untuk menggunakan [libcurl](https://curl.se/libcurl/c/) untuk tugas yang kompleks.
+
+[]($code.siteAsset('src/05-02.zig').language('zig'))
+
+[`request`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L992
+[`Response`]: https://ziglang.org/documentation/0.16.0/std/src/std/http/Client.zig.html#L322

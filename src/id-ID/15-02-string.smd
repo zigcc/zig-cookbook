@@ -1,0 +1,10 @@
+---
+.title = "Penguraian String",
+.date = "2026-04-29 12:08",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+## String ke angka/enum
+
+[]($code.siteAsset('src/15-02.zig').language('zig'))

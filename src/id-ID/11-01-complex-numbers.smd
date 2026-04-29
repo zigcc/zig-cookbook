@@ -1,0 +1,17 @@
+---
+.title = "Membuat dan menjumlahkan bilangan kompleks",
+.date = "2026-04-29 12:03",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Membuat bilangan kompleks bertipe [`std.math.Complex`]. Bagian real dan
+imajiner dari bilangan kompleks harus memiliki tipe yang sama.
+
+Melakukan operasi matematika pada bilangan kompleks sama seperti pada
+tipe bawaan: bilangan yang dioperasikan harus bertipe sama (yaitu float
+atau integer).
+
+[]($code.siteAsset('src/11-01.zig').language('zig'))
+
+[`std.math.complex`]: https://ziglang.org/documentation/0.16.0/std/#std.math.Complex

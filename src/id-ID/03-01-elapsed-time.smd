@@ -1,0 +1,15 @@
+---
+.title = "Measure the elapsed time between two code sections",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[`Io.Clock`] provides monotonic timestamps via `Io.Clock.awake.now(io)`. Calling `durationTo` on a timestamp returns the elapsed `Duration` in nanoseconds.
+
+For sleeping, use [`Io.sleep`] with a `Duration` value.
+
+[]($code.siteAsset('src/03-01.zig').language('zig'))
+
+[`Io.Clock`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.Clock
+[`Io.sleep`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.sleep
