@@ -5,6 +5,6 @@
 .layout = "section.shtml",
 ---
 
-Terdapat tipe`Reader` di Zig, yang mana menyediakan berbagai metode untuk membaca file, seperti `readAll`, `readInt`. Disini kita akan menggunakan `takeDelimiter` untuk pemisahan baris.
+Terdapat tipe `Reader` di Zig, yang mana menyediakan berbagai metode untuk membaca file, seperti `readAll`, `readInt`. Di sini kita akan menggunakan `takeDelimiter` untuk pemisahan baris.
 
 []($code.siteAsset('src/01-01.zig').language('zig'))
