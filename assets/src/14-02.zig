@@ -79,25 +79,26 @@ const DB = struct {
         inline for (cat_colors) |row| {
             const color = row.@"0";
             const cat_names = row.@"1";
-            const color_id = blk: {
-                const res = c.PQexecPrepared(
-                    self.conn,
-                    "insert_cat_colors",
-                    1, // nParams
-                    &[_][*c]const u8{color}, // paramValues
-                    &[_]c_int{color.len}, // paramLengths
-                    &[_]c_int{0}, // paramFormats
-                    0, // resultFormat
-                );
-                defer c.PQclear(res);
 
-                // Since this insert has returns, so we check res with PGRES_TUPLES_OK
-                if (c.PQresultStatus(res) != c.PGRES_TUPLES_OK) {
-                    print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(res)});
-                    return error.InsertCatColors;
-                }
-                break :blk std.mem.span(c.PQgetvalue(res, 0, 0));
-            };
+            const color_res = c.PQexecPrepared(
+                self.conn,
+                "insert_cat_colors",
+                1, // nParams
+                &[_][*c]const u8{color}, // paramValues
+                &[_]c_int{color.len}, // paramLengths
+                &[_]c_int{0}, // paramFormats
+                0, // resultFormat
+            );
+            // Defer PQclear to the outer loop scope so color_id remains valid below.
+            defer c.PQclear(color_res);
+
+            // Since this insert has returns, so we check res with PGRES_TUPLES_OK
+            if (c.PQresultStatus(color_res) != c.PGRES_TUPLES_OK) {
+                print("exec insert cat_colors failed, err: {s}\n", .{c.PQresultErrorMessage(color_res)});
+                return error.InsertCatColors;
+            }
+            const color_id = std.mem.span(c.PQgetvalue(color_res, 0, 0));
+
             inline for (cat_names) |name| {
                 const res = c.PQexecPrepared(
                     self.conn,
