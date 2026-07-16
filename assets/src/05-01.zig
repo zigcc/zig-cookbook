@@ -9,7 +9,7 @@ pub fn main(init: std.process.Init) !void {
     var client: http.Client = .{ .allocator = gpa, .io = io };
     defer client.deinit();
 
-    const uri = try std.Uri.parse("http://httpbin.org/headers");
+    const uri = try std.Uri.parse("https://httpbin.org/headers");
     var req = try client.request(.GET, uri, .{
         .extra_headers = &.{.{ .name = "Custom-header", .value = "Custom Value" }},
     });
@@ -24,7 +24,11 @@ pub fn main(init: std.process.Init) !void {
         std.debug.print("Name:{s}, Value:{s}\n", .{ header.name, header.value });
     }
 
-    try std.testing.expectEqual(response.head.status, .ok);
+    // Occasionally, httpbin might time out, so we disregard cases
+    // where the response status is not okay.
+    if (response.head.status != .ok) {
+        return;
+    }
     const body = try response.reader(&.{}).allocRemaining(gpa, .unlimited);
     defer gpa.free(body);
 
