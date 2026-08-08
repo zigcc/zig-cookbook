@@ -5,7 +5,7 @@ pub fn main(init: std.process.Init) !void {
     const gpa = init.gpa;
     const io = init.io;
 
-    // In order to walk the directry, `iterate` must be set to true.
+    // In order to walk the directory, `iterate` must be set to true.
     var dir = try std.Io.Dir.cwd().openDir(io, "zig-out", .{ .iterate = true });
     defer dir.close(io);
 

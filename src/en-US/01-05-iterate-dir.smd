@@ -4,7 +4,6 @@
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
-Iterate directory
 
 There is a convenient method `walk` for this purpose, it will walk the directory iteratively.
 
