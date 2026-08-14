@@ -42,7 +42,7 @@ Zig Cookbook 受到以下类似项目的启发，感谢它们出色的工作。
 
 # Star 趋势
 
-[![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=zigcc/zig-cookbook&type=Date)](https://star-history.dera.page/#zigcc/zig-cookbook&Date)
 
 # 许可证
 

@@ -44,7 +44,7 @@ Zig Cookbook was inspired by several other similar projects. We would like to th
 
 # Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=zigcc/zig-cookbook&type=Date)](https://star-history.dera.page/#zigcc/zig-cookbook&Date)
 
 # License
 
