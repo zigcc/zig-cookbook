@@ -40,10 +40,6 @@ Zig Cookbook 受到以下类似项目的启发，感谢它们出色的工作。
 - [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
 - [zine-ssg](https://zine-ssg.io)，感谢 [Loris Cro](https://github.com/kristoff-it) 为 Zig 创建了这个优秀的静态网站生成器。
 
-# Star 趋势
-
-[![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
-
 # 许可证
 
 Markdown 文件采用 [CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/) 许可，Zig 文件采用 MIT 许可。

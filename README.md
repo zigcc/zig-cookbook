@@ -42,10 +42,6 @@ Zig Cookbook was inspired by several other similar projects. We would like to th
 - [Rust Cookbook](https://github.com/rust-lang-nursery/rust-cookbook)
 - [zine-ssg](https://zine-ssg.io), thanks to [Loris Cro](https://github.com/kristoff-it) for creating this awesome static site generator for Zig.
 
-# Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=zigcc/zig-cookbook&type=Date)](https://www.star-history.com/#zigcc/zig-cookbook&Date)
-
 # License
 
 The markdown files are licensed under [CC BY-NC-ND 4.0 DEED](https://creativecommons.org/licenses/by-nc-nd/4.0/), and zig files are under MIT.
