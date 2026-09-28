@@ -75,7 +75,8 @@
 
 - Command line
 
-  - [Argument Parsing](13-01-argparse)
+  - [Argument Parsing Without a Library](13-01-argparse)
+  - [Argument Parsing with structargs](13-02-structargs)
   - ANSI Terminal
 
 - [Database](database)

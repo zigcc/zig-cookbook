@@ -1,16 +1,14 @@
 ---
 .title = "参数解析",
-.date = "2024-01-01",
+.date = "2026-09-28",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-解析参数在命令行程序中很常见，Zig 中有一些包可以使这项任务更容易。仅举几例：
+命令行参数可以通过 `std.process.Init` 获取。这个简单的解析器只遍历一次参数，并识别一个标志、
+一个带值的选项和位置参数。
 
-- [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
-- [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
-- [structargs](https://zigcli.liujiacai.net/)
-
-这里我们将给出一个使用 [zigcli](https://github.com/jiacai2050/zigcli) 工具包中 `structargs` 的示例。
+示例只使用 Zig 标准库，因此解析过程清晰可见，没有被第三方包隐藏。固定大小的文件列表也让内存
+所有权保持简单。
 
 []($code.siteAsset('src/13-01.zig').language('zig'))

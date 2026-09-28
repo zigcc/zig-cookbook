@@ -11,8 +11,8 @@
     },
     .dependencies = .{
         .zigcli = .{
-            .url = "git+https://github.com/jiacai2050/zigcli.git?ref=v0.6.0#621920da8f2235c6b9c15addf353e7747e1e899c",
-            .hash = "zigcli-0.6.0-ORC7jHD5BQBipVTQYdQwlRQt-d7uVU_Jlz_HUyDouqpa",
+            .url = "git+https://github.com/jiacai2050/zigcli.git?ref=v0.6.3#91d9f7fc505ac522f868fac882bc7bf87410f487",
+            .hash = "zigcli-0.6.3-ORC7jEq5BgBpghsTghUfiIZf0vurICzhJtJZOVXPbLZr",
         },
     },
 }

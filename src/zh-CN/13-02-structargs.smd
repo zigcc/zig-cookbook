@@ -1,0 +1,21 @@
+---
+.title = "使用 structargs 解析参数",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+解析参数在命令行程序中很常见，Zig 中有一些包可以使这项任务更容易。仅举几例：
+
+- [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
+- [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
+- [structargs](https://zigcli.liujiacai.net/)
+
+对于只有少量选项的[手动解析](13-01-argparse)程序，通常已经足够。
+对于更大或更复杂的命令行界面，一般应选择成熟的参数解析库，因为它们可以提供统一的帮助信息、
+参数校验、子命令和错误处理。
+
+这里我们使用 [zigcli](https://github.com/jiacai2050/zigcli) 工具包中的 `structargs`。这个库会将
+命令行选项映射到 Zig 结构体的字段。
+
+[]($code.siteAsset('src/13-02.zig').language('zig'))

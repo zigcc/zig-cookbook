@@ -30,7 +30,7 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     }),
                 });
                 check.dependOn(&exe.step);
-                if (std.mem.eql(u8, "13-01", name)) {
+                if (std.mem.eql(u8, "13-02", name)) {
                     const zigcli = b.dependency("zigcli", .{});
                     exe.root_module.addImport("zigcli", zigcli.module("zigcli"));
                 } else if (std.mem.eql(u8, "14-01", name)) {
