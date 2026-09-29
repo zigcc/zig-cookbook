@@ -106,6 +106,8 @@ fn addExample(b: *std.Build, run_all: *std.Build.Step) !void {
                     "04-02", // client of tcp server
                     "04-03", // udp listener
                     "05-03", // http server
+                    "01-07-kqueue", // waits for a macOS/FreeBSD file event
+                    "01-07-inotify", // waits for a Linux file event
                 };
                 for (skip_list) |example| {
                     if (std.mem.eql(u8, example, name)) {

@@ -1,22 +1,15 @@
+//! Build and inspect paths without assuming a platform separator.
+
 const std = @import("std");
-const print = std.debug.print;
 
 pub fn main(init: std.process.Init) !void {
-    const gpa = init.gpa;
-    const io = init.io;
+    const path = try std.fs.path.join(init.gpa, &.{ "notes", "today.txt" });
+    defer init.gpa.free(path);
 
-    // In order to walk the directory, `iterate` must be set to true.
-    var dir = try std.Io.Dir.cwd().openDir(io, "zig-out", .{ .iterate = true });
-    defer dir.close(io);
-
-    var walker = try dir.walk(gpa);
-    defer walker.deinit();
-
-    while (try walker.next(io)) |entry| {
-        print("path: {s}, basename:{s}, type:{s}\n", .{
-            entry.path,
-            entry.basename,
-            @tagName(entry.kind),
-        });
-    }
+    std.debug.print("separator: '{c}'\npath: {s}\nbasename: {s}\ndirname: {s}\n", .{
+        std.fs.path.sep,
+        path,
+        std.fs.path.basename(path),
+        std.fs.path.dirname(path) orelse ".",
+    });
 }

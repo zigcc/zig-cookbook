@@ -11,9 +11,13 @@
 
   - [Read file line by line](01-01-read-file-line-by-line)
   - [Mmap file](01-02-mmap-file)
-  - [Find Files modified in the last 24 hours](01-03-file-modified-24h-ago)
-  - [Check file existence](01-04-file-exists)
-  - [Iterate directory](01-05-iterate-dir)
+  - [Check file existence](01-03-file-exists)
+  - [Recursively find recent files](01-04-iterate-dir)
+  - [Build portable paths](01-05-paths)
+  - [Create and manage files](01-06-file-operations)
+  - [Watch files with platform APIs](01-07-file-watching)
+  - [Temporary files and atomic writes](01-08-atomic-writes)
+  - [Create a TAR archive](01-09-tar-archive)
 
 - Cryptography
 
