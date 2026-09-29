@@ -1,0 +1,13 @@
+---
+.title = "Frame messages on a TCP stream",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+TCP preserves byte order, but it does not preserve application message boundaries. A receiver
+may get one write in several reads, or several writes in one read. This example prefixes a
+payload with its four-byte length, then reads exactly one complete frame. It uses an in-memory
+stream to keep the framing logic deterministic; the same framing works on a TCP connection.
+
+[]($code.siteAsset('src/04-05.zig').language('zig'))

@@ -1,0 +1,13 @@
+---
+.title = "Retry HTTP failures and reuse connections",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Transient server failures can be retried with a bounded attempt count. Keeping one
+`std.http.Client` for all attempts also lets its connection pool reuse eligible keep-alive
+connections; call `request.deinit()` after each response so the client can release or reuse it.
+Only retry failures that are safe for the request and appropriate for the service.
+
+[]($code.siteAsset('src/04-07.zig').language('zig'))

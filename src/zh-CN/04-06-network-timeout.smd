@@ -1,0 +1,12 @@
+---
+.title = "为网络接收设置超时",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+阻塞式网络读取需要设置截止时间，避免空闲的对端让任务永久等待。
+`std.Io.net.Socket.receiveTimeout` 在截止时间内没有收到 UDP 数据报时返回
+`error.Timeout`。其他支持 `std.Io.Timeout` 的网络操作也可以采用相同的超时策略。
+
+[]($code.siteAsset('src/04-06.zig').language('zig'))

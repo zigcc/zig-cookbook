@@ -34,6 +34,10 @@
   - [监听未使用的 TCP/IP 端口](04-01-tcp-server)
   - [TCP 客户端](04-02-tcp-client)
   - [UDP 回显](04-03-udp-echo)
+  - [解析主机名](04-04-dns-lookup)
+  - [在 TCP 流上进行消息分帧](04-05-tcp-framing)
+  - [为网络接收设置超时](04-06-network-timeout)
+  - [重试 HTTP 失败并复用连接](04-07-http-retry-reuse)
 
 - Web 编程
 

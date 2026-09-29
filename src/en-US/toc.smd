@@ -34,6 +34,10 @@
   - [Listen on unused port TCP/IP](04-01-tcp-server)
   - [TCP Client](04-02-tcp-client)
   - [UDP Echo](04-03-udp-echo)
+  - [Resolve a host name](04-04-dns-lookup)
+  - [Frame messages on a TCP stream](04-05-tcp-framing)
+  - [Bound a network receive with a timeout](04-06-network-timeout)
+  - [Retry HTTP failures and reuse connections](04-07-http-retry-reuse)
 
 - Web Programming
 
