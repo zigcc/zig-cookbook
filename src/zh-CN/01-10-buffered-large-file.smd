@@ -1,0 +1,11 @@
+---
+.title = "使用底层文件 API 读取大文件"
+.date = "2024-01-01"
+.author = "ZigCC"
+.layout = "section.shtml"
+---
+
+底层的 `File.readStreaming` 和 `File.writeStreamingAll` API 可以直接操作文件。
+循环每次只处理一个固定大小的数据块，因此不需要将整个文件加载到内存中。
+
+[]($code.siteAsset('src/01-10.zig').language('zig'))

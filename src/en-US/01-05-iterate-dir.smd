@@ -1,11 +1,12 @@
 ---
-.title = "Iterate directory",
+.title = "Recursively find recent files",
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-There is a convenient method `walk` for this purpose, it will walk the directory iteratively.
+The `walk` method recursively iterates a directory. This example filters `.smd` files while walking,
+then uses `statFile()` to print files modified during the last 24 hours.
 
 []($code.siteAsset('src/01-05.zig').language('zig'))
 

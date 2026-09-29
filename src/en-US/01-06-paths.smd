@@ -1,0 +1,11 @@
+---
+.title = "Build portable paths"
+.date = "2024-01-01"
+.author = "ZigCC"
+.layout = "section.shtml"
+---
+
+Use `std.fs.path` for path manipulation instead of hard-coding `/`. The
+separator and parsing rules follow the target platform.
+
+[]($code.siteAsset('src/01-06.zig').language('zig'))

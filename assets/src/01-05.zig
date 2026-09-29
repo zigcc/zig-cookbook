@@ -5,18 +5,25 @@ pub fn main(init: std.process.Init) !void {
     const gpa = init.gpa;
     const io = init.io;
 
-    // In order to walk the directory, `iterate` must be set to true.
-    var dir = try std.Io.Dir.cwd().openDir(io, "zig-out", .{ .iterate = true });
+    var dir = try std.Io.Dir.cwd().openDir(io, "src", .{ .iterate = true });
     defer dir.close(io);
 
     var walker = try dir.walk(gpa);
     defer walker.deinit();
 
+    const now_ns = std.Io.Clock.real.now(io).nanoseconds;
     while (try walker.next(io)) |entry| {
-        print("path: {s}, basename:{s}, type:{s}\n", .{
-            entry.path,
-            entry.basename,
-            @tagName(entry.kind),
-        });
+        if (entry.kind != .file) continue;
+        if (!std.mem.endsWith(u8, entry.basename, ".smd")) continue;
+
+        const stat = try dir.statFile(io, entry.path, .{});
+        const age_ns = now_ns - stat.mtime.nanoseconds;
+        if (age_ns < std.time.ns_per_hour * 24) {
+            print("modified {d}s ago, size: {d}, file: {s}\n", .{
+                @divTrunc(age_ns, std.time.ns_per_s),
+                stat.size,
+                entry.path,
+            });
+        }
     }
 }

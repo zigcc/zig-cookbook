@@ -1,11 +1,12 @@
 ---
-.title = "遍历目录",
+.title = "递归查找最近文件",
 .date = "2024-01-01",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-在 Zig 中遍历目录，可以使用标准库中的 `std.Io.Dir` 模块。它提供了多种方法来操作文件系统，例如打开目录、读取目录内容等，这里使用 `walk` 方法来递归遍历目录。
+在 Zig 中遍历目录，可以使用标准库中的 `std.Io.Dir` 模块。这里使用 `walk` 方法递归遍历目录，
+筛选 `.smd` 文件，并使用 `statFile()` 输出过去 24 小时内修改过的文件。
 
 
 []($code.siteAsset('src/01-05.zig').language('zig'))

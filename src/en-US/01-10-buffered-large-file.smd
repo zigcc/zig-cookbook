@@ -1,0 +1,12 @@
+---
+.title = "Read large files with direct file I/O"
+.date = "2024-01-01"
+.author = "ZigCC"
+.layout = "section.shtml"
+---
+
+The low-level `File.readStreaming` and `File.writeStreamingAll` APIs operate directly on files.
+The loop processes one fixed-size chunk at a time, so the complete file never has to be held in
+memory.
+
+[]($code.siteAsset('src/01-10.zig').language('zig'))
