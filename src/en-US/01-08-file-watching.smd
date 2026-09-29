@@ -13,11 +13,11 @@ instead of polling modification times.
 This example uses `kqueue` and `EVFILT_VNODE` to watch `build.zig`. Run it on macOS or FreeBSD,
 then modify or rename the file from another terminal.
 
-[]($code.siteAsset('src/01-11-kqueue.zig').language('zig'))
+[]($code.siteAsset('src/01-08-kqueue.zig').language('zig'))
 
 ### Linux: `inotify`
 
 This example uses `inotify` to watch the current directory. Run it on Linux, then create, modify,
 move, or delete a file from another terminal.
 
-[]($code.siteAsset('src/01-11-inotify.zig').language('zig'))
+[]($code.siteAsset('src/01-08-inotify.zig').language('zig'))

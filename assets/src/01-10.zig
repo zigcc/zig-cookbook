@@ -1,27 +1,24 @@
-//! Read a large file with the low-level streaming file API.
+//! Create a TAR archive with the standard library.
+//!
+//! TAR is an archive format rather than a compressor; compress the resulting
+//! file with gzip/zstd when a compressed tarball is needed. The standard
+//! library provides ZIP parsing/extraction, but no portable ZIP writer API.
 
 const std = @import("std");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
-    const source = try std.Io.Dir.cwd().openFile(io, "build.zig", .{});
-    defer source.close(io);
-    const destination = try std.Io.Dir.cwd().createFile(io, "zig-cookbook-buffered-copy.txt", .{ .truncate = true });
+    const archive = try std.Io.Dir.cwd().createFile(io, "zig-cookbook.tar", .{ .truncate = true });
     defer {
-        destination.close(io);
-        std.Io.Dir.cwd().deleteFile(io, "zig-cookbook-buffered-copy.txt") catch {};
+        archive.close(io);
+        std.Io.Dir.cwd().deleteFile(io, "zig-cookbook.tar") catch {};
     }
 
-    var buffer: [8192]u8 = undefined;
-    var bytes_copied: usize = 0;
-    while (true) {
-        const bytes_read = source.readStreaming(io, &.{buffer[0..]}) catch |err| switch (err) {
-            error.EndOfStream => break,
-            else => return err,
-        };
-        if (bytes_read == 0) break;
-        try destination.writeStreamingAll(io, buffer[0..bytes_read]);
-        bytes_copied += bytes_read;
-    }
-    std.debug.print("copied {d} bytes with direct file I/O\n", .{bytes_copied});
+    var buffer: [4096]u8 = undefined;
+    var writer = archive.writer(io, &buffer);
+    var tar_writer: std.tar.Writer = .{ .underlying_writer = &writer.interface };
+    try tar_writer.writeFileBytes("message.txt", "hello from a tar archive\n", .{});
+    try tar_writer.finishPedantically();
+    try writer.interface.flush();
+    std.debug.print("created a portable TAR archive containing message.txt\n", .{});
 }

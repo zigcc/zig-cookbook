@@ -8,4 +8,4 @@
 `std.Io.Dir` 提供创建、复制、重命名和删除操作。本例会清理自己创建的
 目录，因此可以重复运行。
 
-[]($code.siteAsset('src/01-07.zig').language('zig'))
+[]($code.siteAsset('src/01-06.zig').language('zig'))

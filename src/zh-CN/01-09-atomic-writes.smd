@@ -8,4 +8,4 @@
 `std.Io.File.Atomic` 先写入临时文件，再通过重命名完成替换，避免目标
 文件出现半写入状态。
 
-[]($code.siteAsset('src/01-12.zig').language('zig'))
+[]($code.siteAsset('src/01-09.zig').language('zig'))

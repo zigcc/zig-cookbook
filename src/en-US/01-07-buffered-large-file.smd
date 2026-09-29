@@ -9,4 +9,4 @@ The low-level `File.readStreaming` and `File.writeStreamingAll` APIs operate dir
 The loop processes one fixed-size chunk at a time, so the complete file never has to be held in
 memory.
 
-[]($code.siteAsset('src/01-10.zig').language('zig'))
+[]($code.siteAsset('src/01-07.zig').language('zig'))

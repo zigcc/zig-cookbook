@@ -7,7 +7,7 @@
 
 在 Zig 中检查文件是否存在，可以使用标准库中的 `std.Io.Dir` 模块。具体来说，可以使用 `Dir.access` 方法来检查文件的存在性和权限。
 
-[]($code.siteAsset('src/01-04.zig').language('zig'))
+[]($code.siteAsset('src/01-03.zig').language('zig'))
 
 `Dir.access` 方法接受两个参数：文件路径和访问模式（如读取、写入等）。如果文件存在且具有指定的权限，函数将返回 `true`，否则返回 `false`。
 
