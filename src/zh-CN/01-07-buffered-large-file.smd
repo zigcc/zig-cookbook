@@ -5,7 +5,7 @@
 .layout = "section.shtml",
 ---
 
-底层的 `File.readStreaming` 和 `File.writeStreamingAll` API 可以直接操作文件。
+`std.Io.File.readStreaming` 和 `std.Io.File.writeStreamingAll` API 可以直接操作文件。
 循环每次只处理一个固定大小的数据块，因此不需要将整个文件加载到内存中。
 这里的“直接”是指直接使用文件 API，而不是更高层的缓冲抽象；它不会请求操作系统的
 `O_DIRECT` 模式，因此仍然使用文件系统的正常缓存机制。
