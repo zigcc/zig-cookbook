@@ -5,7 +5,11 @@
 .layout = "section.shtml",
 ---
 
-`std.Io.File.Atomic` writes to a temporary file and materializes it with a
-rename, avoiding partially-written destination files.
+With an ordinary file, truncating and rewriting the destination can expose
+partially-written contents to readers, and a crash can leave the destination
+incomplete. `std.Io.File.Atomic` writes the new contents to a temporary file
+first, then replaces the destination with a rename, so readers see either the
+old complete file or the new complete file. This is useful for configuration
+files, generated data, and other files that must remain self-consistent.
 
 []($code.siteAsset('src/01-08.zig').language('zig'))
