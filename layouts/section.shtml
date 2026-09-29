@@ -4,47 +4,87 @@
   <script defer src="$site.asset('giscus.js').link()"></script>
 </head>
 <body id="body">
-  <div class="mobile-header">
-    <button id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="$i18n.get('toggle_toc')">☰</button>
-    <a class="brand" href="/" :text="$i18n.get('site_title')"></a>
-  </div>
-  <div class="toc" id="toc">
-    <ctx :html="$site.page('toc').content()"></ctx>
-  </div>
-  <div class="body">
+  <header class="mobile-header">
+    <button class="icon-button" id="toc-toggle" aria-expanded="false" aria-controls="toc" aria-label="$i18n.get('toggle_toc')">
+      <span aria-hidden="true">☰</span>
+    </button>
+    <a class="mobile-brand" href="/" :text="$i18n.get('site_title')"></a>
+  </header>
+
+  <aside class="sidebar" id="toc">
+    <div class="sidebar-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">Z</span>
+        <span>
+          <strong :text="$i18n.get('site_title')"></strong>
+        </span>
+      </a>
+      <div class="sidebar-actions">
+        <button class="icon-button" id="sidebar-collapse" aria-label="Collapse sidebar">‹</button>
+      </div>
+    </div>
+    <label class="search">
+      <span aria-hidden="true">⌕</span>
+      <input id="toc-search" type="search" placeholder="Search recipes…" aria-label="Search recipes">
+      <kbd>/</kbd>
+    </label>
+    <nav class="toc-nav" aria-label="Table of contents">
+      <ctx :html="$site.page('toc').content()"></ctx>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="https://github.com/zigcc/zig-cookbook">View on GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </aside>
+
+  <main class="page-shell">
+    <div class="topbar">
+      <button class="icon-button topbar-sidebar-toggle" id="sidebar-expand" aria-label="Show table of contents">☰</button>
+      <h1 class="menu-title" :text="$i18n.get('site_title')"></h1>
+      <div class="topbar-links">
+        <a href="https://github.com/zigcc/zig-cookbook">GitHub ↗</a>
+      </div>
+    </div>
     <div class="content">
       <article>
         <div id="content-header">
           <h1 :text="$page.title"></h1>
         </div>
-        <div :html="$page.content()"></div>
+        <div class="article-body" :html="$page.content()"></div>
       </article>
       <ctx :if="$page.isSection().not()">
-        <div id="prev-next">
-          <div :if="$page.prevPage?()">
-            <span :text="$i18n.get('prev')"></span><a href="$if.link()" :text="$if.title"></a>
+        <nav id="prev-next" aria-label="Recipe navigation">
+          <div class="nav-card prev" :if="$page.prevPage?()">
+            <span class="nav-label">← <span :text="$i18n.get('prev')"></span></span>
+            <a href="$if.link()" :text="$if.title"></a>
           </div>
-          <div :if="$page.nextPage?()">
-            <span :text="$i18n.get('next')"></span><a href="$if.link()" :text="$if.title"></a>
+          <div class="nav-card next" :if="$page.nextPage?()">
+            <span class="nav-label"><span :text="$i18n.get('next')"></span> →</span>
+            <a href="$if.link()" :text="$if.title"></a>
           </div>
-        </div>
+        </nav>
       </ctx>
-      <div id="footer">
-        <div>&copy; 2023 - 2025
-          | <a href="https://github.com/zigcc/zig-cookbook">GitHub</a>
-          | <a href="http://ziglang.cc">Zig 中文社区</a>
-          | <a href="http://course.ziglang.cc">Zig 圣经</a>
-          | <a href="http://ask.ziglang.cc/discord">Discord</a>
-          | <a href="http://ask.ziglang.cc/telegram">Telegram</a>
-          | <a href="http://ask.ziglang.cc/weixin">微信群</a>
+      <footer id="footer">
+        <div class="footer-main">
+          <span>&copy; 2023 - 2025</span>
+          <span>·</span>
+          <a href="https://github.com/zigcc/zig-cookbook">GitHub</a>
+          <span>·</span>
+          <a href="http://ziglang.cc">Zig 中文社区</a>
+          <span>·</span>
+          <a href="http://course.ziglang.cc">Zig 圣经</a>
+          <span>·</span>
+          <a href="http://ask.ziglang.cc/discord">Discord</a>
+          <span>·</span>
+          <a href="http://ask.ziglang.cc/telegram">Telegram</a>
+          <span>·</span>
+          <a href="http://ask.ziglang.cc/weixin">微信群</a>
         </div>
-        <div :text="$i18n.get('languages_menu')"></div>
         <div class="langs" :loop="$page.locales()">
           <a href="$loop.it.link()">
-            <ctx :text="$loop.it.site().localeName()"></ctx><ctx :if="$loop.it.site().localeName().eql('English')">(Original)</ctx>
+            <ctx :text="$loop.it.site().localeName()"></ctx><ctx :if="$loop.it.site().localeName().eql('English')"> (Original)</ctx>
           </a>
         </div>
-      </div>
+      </footer>
     </div>
-  </div>
+  </main>
 </body>
