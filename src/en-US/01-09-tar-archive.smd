@@ -10,4 +10,4 @@ compress them; pair it with gzip or zstd when compression is required. Zig
 currently exposes ZIP parsing/extraction rather than a portable ZIP writer, so
 this recipe uses TAR and calls out that constraint explicitly.
 
-[]($code.siteAsset('src/01-10.zig').language('zig'))
+[]($code.siteAsset('src/01-09.zig').language('zig'))

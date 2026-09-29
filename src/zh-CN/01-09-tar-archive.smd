@@ -9,4 +9,4 @@
 使用 gzip 或 zstd。当前 Zig 提供 ZIP 的解析/解压能力，而没有可移植的
 ZIP 写入器，因此本例使用 TAR 并说明这一限制。
 
-[]($code.siteAsset('src/01-10.zig').language('zig'))
+[]($code.siteAsset('src/01-09.zig').language('zig'))

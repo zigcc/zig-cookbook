@@ -1,17 +1,24 @@
-//! Write a temporary file and atomically replace the destination.
+//! Create a TAR archive with the standard library.
+//!
+//! TAR is an archive format rather than a compressor; compress the resulting
+//! file with gzip/zstd when a compressed tarball is needed. The standard
+//! library provides ZIP parsing/extraction, but no portable ZIP writer API.
 
 const std = @import("std");
 
 pub fn main(init: std.process.Init) !void {
     const io = init.io;
-    const destination = "zig-cookbook-atomic.txt";
-    var atomic = try std.Io.Dir.cwd().createFileAtomic(io, destination, .{ .replace = true });
-    defer atomic.deinit(io);
-    var buffer: [1024]u8 = undefined;
-    var writer = atomic.file.writer(io, &buffer);
-    try writer.interface.writeAll("all bytes are written before commit\n");
+    const archive = try std.Io.Dir.cwd().createFile(io, "zig-cookbook.tar", .{ .truncate = true });
+    defer {
+        archive.close(io);
+        std.Io.Dir.cwd().deleteFile(io, "zig-cookbook.tar") catch {};
+    }
+
+    var buffer: [4096]u8 = undefined;
+    var writer = archive.writer(io, &buffer);
+    var tar_writer: std.tar.Writer = .{ .underlying_writer = &writer.interface };
+    try tar_writer.writeFileBytes("message.txt", "hello from a tar archive\n", .{});
+    try tar_writer.finishPedantically();
     try writer.interface.flush();
-    try atomic.replace(io);
-    defer std.Io.Dir.cwd().deleteFile(io, destination) catch {};
-    std.debug.print("atomically replaced {s}\n", .{destination});
+    std.debug.print("created a portable TAR archive containing message.txt\n", .{});
 }

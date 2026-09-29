@@ -15,10 +15,9 @@
   - [递归查找最近文件](01-04-iterate-dir)
   - [构建跨平台路径](01-05-paths)
   - [创建和管理文件](01-06-file-operations)
-  - [使用底层文件 API 读取大文件](01-07-buffered-large-file)
-  - [使用平台 API 监听文件](01-08-file-watching)
-  - [临时文件和原子写入](01-09-atomic-writes)
-  - [创建 TAR 归档](01-10-tar-archive)
+  - [使用平台 API 监听文件](01-07-file-watching)
+  - [临时文件和原子写入](01-08-atomic-writes)
+  - [创建 TAR 归档](01-09-tar-archive)
 
 - 加密
 

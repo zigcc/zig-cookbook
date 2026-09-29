@@ -15,10 +15,9 @@
   - [Recursively find recent files](01-04-iterate-dir)
   - [Build portable paths](01-05-paths)
   - [Create and manage files](01-06-file-operations)
-  - [Read large files with direct file I/O](01-07-buffered-large-file)
-  - [Watch files with platform APIs](01-08-file-watching)
-  - [Temporary files and atomic writes](01-09-atomic-writes)
-  - [Create a TAR archive](01-10-tar-archive)
+  - [Watch files with platform APIs](01-07-file-watching)
+  - [Temporary files and atomic writes](01-08-atomic-writes)
+  - [Create a TAR archive](01-09-tar-archive)
 
 - Cryptography
 
