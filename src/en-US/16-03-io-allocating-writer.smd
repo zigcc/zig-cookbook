@@ -1,0 +1,12 @@
+---
+.title = "Build Dynamic Output with Io.Writer.Allocating",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Use `std.Io.Writer.Allocating` when the final output size is not known in advance. It owns a
+growable buffer, exposes the completed bytes through `written()`, and releases its allocation with
+`deinit()`.
+
+[]($code.siteAsset('src/16-03.zig').language('zig'))

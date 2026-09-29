@@ -7,7 +7,7 @@
 
 与 [sqlite 章节](14-01-sqlite) 一样，这里我们通过 `addTranslateC` 直接介绍 [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html) 接口。
 
-数据模型在 [这里](database) 介绍。
+数据模型在 [这里](14-database) 介绍。
 
 > 注意：在执行类似 `mysql_real_query` 的函数查询后，如果有返回结果，我们必须消耗该结果，否则在执行下一个查询时会出现以下错误。
 

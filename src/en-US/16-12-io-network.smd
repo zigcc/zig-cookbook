@@ -1,0 +1,12 @@
+---
+.title = "Resolve Hosts through Io Networking",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.net.HostName.lookup` sends DNS results into a typed `std.Io.Queue`.
+This is the Io-facing shape used by network code; the Network chapter contains
+longer TCP, UDP, timeout, and HTTP examples.
+
+[]($code.siteAsset('src/16-12.zig').language('zig'))

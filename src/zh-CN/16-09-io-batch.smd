@@ -1,0 +1,12 @@
+---
+.title = "使用 Batch 提交底层 Io 操作",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Operation` 是位于 `Future` 和 `Select` 之下的底层接口。
+`std.Io.Batch` 可以提交多个文件、设备或网络操作，按索引读取完成结果，
+并取消仍在等待的操作。
+
+[]($code.siteAsset('src/16-09.zig').language('zig'))

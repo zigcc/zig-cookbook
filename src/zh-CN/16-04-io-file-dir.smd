@@ -1,0 +1,11 @@
+---
+.title = "使用 Io.Dir 和 Io.File 句柄",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Dir` 相对于目录打开路径，`std.Io.File` 表示打开的文件句柄。每个操作都接收同一个
+`std.Io` 上下文。本例写入、关闭、重新打开并读取临时文件，最后删除它。
+
+[]($code.siteAsset('src/16-04.zig').language('zig'))

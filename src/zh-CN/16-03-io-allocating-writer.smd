@@ -1,0 +1,11 @@
+---
+.title = "使用 Io.Writer.Allocating 构建动态输出",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+当最终输出大小未知时，可以使用 `std.Io.Writer.Allocating`。它拥有一个可增长的缓冲区，
+通过 `written()` 获取完整字节，并使用 `deinit()` 释放分配的内存。
+
+[]($code.siteAsset('src/16-03.zig').language('zig'))

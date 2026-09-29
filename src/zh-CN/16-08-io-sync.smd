@@ -1,0 +1,13 @@
+---
+.title = "使用同步原语协调 Io 任务",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Mutex`、`std.Io.RwLock`、`std.Io.Semaphore`、`std.Io.Event`
+和 `std.Io.Queue` 提供支持取消的协调和类型化生产者-消费者存储。
+示例展示锁的明确所有权、共享读锁、许可管理、event reset、队列关闭
+和 FIFO 读取。
+
+[]($code.siteAsset('src/16-08.zig').language('zig'))

@@ -34,6 +34,10 @@
   - [监听未使用的 TCP/IP 端口](04-01-tcp-server)
   - [TCP 客户端](04-02-tcp-client)
   - [UDP 回显](04-03-udp-echo)
+  - [解析主机名](04-04-dns-lookup)
+  - [在 TCP 流上进行消息分帧](04-05-tcp-framing)
+  - [为网络接收设置超时](04-06-network-timeout)
+  - [重试 HTTP 失败并复用连接](04-07-http-retry-reuse)
 
 - Web 编程
 
@@ -83,7 +87,7 @@
   - [使用 structargs 解析参数](13-02-structargs)
   - ANSI 终端
 
-- [数据库](database)
+- [14. 数据库](14-database)
 
   - [SQLite](14-01-sqlite)
   - [Postgres](14-02-postgres)
@@ -92,3 +96,18 @@
 - 文本处理
   - [正则表达式](15-01-regex)
   - [字符串解析](15-02-string)
+
+- [16. Io](16-io)
+
+  - [在应用中传递 Io 上下文](16-01-io-context)
+  - [使用 Io 接口读写字节](16-02-io-reader-writer)
+  - [使用 Io.Writer.Allocating 构建动态输出](16-03-io-allocating-writer)
+  - [使用 Io.Dir 和 Io.File 句柄](16-04-io-file-dir)
+  - [使用 Io Clock 和 Timeout 测量并限制操作](16-05-io-clock-timeout)
+  - [通过 Io 获取安全随机字节](16-06-io-random)
+  - [使用 Async、Group、Select 和 Cancel 组合 Io 任务](16-07-io-tasks)
+  - [使用同步原语协调 Io 任务](16-08-io-sync)
+  - [使用 Batch 提交底层 Io 操作](16-09-io-batch)
+  - [使用 Io 的进程和终端能力](16-10-io-process-terminal)
+  - [使用 Io MemoryMap 同步文件](16-11-io-memory-map)
+  - [通过 Io 网络接口解析主机名](16-12-io-network)

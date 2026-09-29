@@ -1,0 +1,12 @@
+---
+.title = "使用 Async、Group、Select 和 Cancel 组合 Io 任务",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.async` 返回类型化 `Future`；`std.Io.Group` 等待一组扇出任务；
+`std.Io.Select` 等待任务集合中的下一个结果。取消请求必须在释放任务
+拥有的资源前完成 join。
+
+[]($code.siteAsset('src/16-07.zig').language('zig'))

@@ -7,7 +7,7 @@
 
 As with [sqlite section](14-01-sqlite), here we introduce [libmysqlclient](https://dev.mysql.com/doc/c-api/8.0/en/c-api-basic-interface-usage.html) interface directly via `addTranslateC`.
 
-Data models are introduced [here](database).
+Data models are introduced [here](14-database).
 
 > Note: After executing a query with `mysql_real_query` like functions, if there are returning results, we must consume the result, otherwise we will get following error when we execute next query.
 

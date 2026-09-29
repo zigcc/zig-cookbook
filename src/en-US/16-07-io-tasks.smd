@@ -1,0 +1,12 @@
+---
+.title = "Compose Io Tasks with Async, Groups, Select, and Cancel",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.async` returns a typed `Future`; `std.Io.Group` joins fan-out work, and
+`std.Io.Select` waits for the next result from a set of tasks. Cancellation
+requests are joined before task-owned resources are released.
+
+[]($code.siteAsset('src/16-07.zig').language('zig'))
