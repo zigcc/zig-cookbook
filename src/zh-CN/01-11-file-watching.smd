@@ -7,9 +7,9 @@
 
 文件监听依赖具体平台。下面的示例等待真实的文件系统事件，而不是轮询文件修改时间。
 
-### macOS 和 BSD：`kqueue`
+### macOS 和 FreeBSD：`kqueue`
 
-这个示例使用 `kqueue` 和 `EVFILT_VNODE` 监听 `build.zig`。请在 macOS 或 BSD 系统上运行，
+这个示例使用 `kqueue` 和 `EVFILT_VNODE` 监听 `build.zig`。请在 macOS 或 FreeBSD 系统上运行，
 然后在另一个终端修改或重命名该文件。
 
 []($code.siteAsset('src/01-11-kqueue.zig').language('zig'))

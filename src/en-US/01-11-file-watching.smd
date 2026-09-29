@@ -8,10 +8,10 @@
 File watching is platform-specific. The following examples wait for one real file-system event
 instead of polling modification times.
 
-### macOS and BSD: `kqueue`
+### macOS and FreeBSD: `kqueue`
 
-This example uses `kqueue` and `EVFILT_VNODE` to watch `build.zig`. Run it on macOS or a BSD
-system, then modify or rename the file from another terminal.
+This example uses `kqueue` and `EVFILT_VNODE` to watch `build.zig`. Run it on macOS or FreeBSD,
+then modify or rename the file from another terminal.
 
 []($code.siteAsset('src/01-11-kqueue.zig').language('zig'))
 

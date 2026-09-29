@@ -18,6 +18,7 @@ pub fn main(init: std.process.Init) !void {
 
         const stat = try dir.statFile(io, entry.path, .{});
         const age_ns = now_ns - stat.mtime.nanoseconds;
+        if (age_ns < 0) continue;
         if (age_ns < std.time.ns_per_hour * 24) {
             print("modified {d}s ago, size: {d}, file: {s}\n", .{
                 @divTrunc(age_ns, std.time.ns_per_s),

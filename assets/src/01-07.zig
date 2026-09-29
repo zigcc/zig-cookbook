@@ -9,10 +9,11 @@ pub fn main(init: std.process.Init) !void {
     const source = root ++ "/source.txt";
     const copy = root ++ "/copy.txt";
 
-    cwd.deleteTree(io, root) catch {};
-    defer cwd.deleteTree(io, root) catch {};
-
     try cwd.createDir(io, root, .default_dir);
+    defer cwd.deleteTree(io, root) catch |err| {
+        std.log.err("failed to remove example directory: {t}", .{err});
+    };
+
     const file = try cwd.createFile(io, source, .{});
     try file.writeStreamingAll(io, "created by Zig\n");
     file.close(io);
