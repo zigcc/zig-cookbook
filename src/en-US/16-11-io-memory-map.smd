@@ -1,0 +1,12 @@
+---
+.title = "Synchronize a File with Io MemoryMap",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.File.MemoryMap` maps file storage, then exposes explicit `read`, `write`,
+`setLength`, and `destroy` synchronization points. The example changes a mapped
+byte and flushes it back to the file.
+
+[]($code.siteAsset('src/16-11.zig').language('zig'))

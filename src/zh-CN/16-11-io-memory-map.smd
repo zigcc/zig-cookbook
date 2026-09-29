@@ -1,0 +1,12 @@
+---
+.title = "使用 Io MemoryMap 同步文件",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.File.MemoryMap` 将文件存储映射到内存，并通过显式的 `read`、
+`write`、`setLength` 和 `destroy` 建立同步点。示例修改映射中的字节，
+再将变化写回文件。
+
+[]($code.siteAsset('src/16-11.zig').language('zig'))

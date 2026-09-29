@@ -1,0 +1,443 @@
+---
+.title = "Io",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Zig 0.16 introduces `std.Io` as more than a replacement name for the old
+`std.io` package. `std.Io` is the
+application's operating-system I/O boundary: it carries the implementation, makes
+blocking and cancellation behavior explicit, and gives files, sockets, clocks,
+randomness, processes, and concurrency one common context.
+
+## Why `std.Io` is needed
+
+Operating-system I/O is broader than reading and writing bytes. A real program
+also needs paths, handles, sockets, DNS, clocks, timers, child processes,
+randomness, cancellation, and synchronization. If every subsystem chooses its
+own global API or platform syscall, application code becomes difficult to test,
+and a function's blocking, cancellation, and resource requirements remain
+hidden.
+
+Zig 0.16 puts these capabilities behind one context. The same `std.Io` value
+can be passed to files, network streams, time, randomness, and task scheduling.
+This gives the standard library a place to implement platform differences and
+lets application code choose a threaded or evented backend without rewriting
+business logic. It also makes resource ownership and cancellation part of the
+API instead of undocumented conventions.
+
+## Current definition and implementations
+
+The vtable groups the API into:
+
+- task scheduling and cancellation;
+- directories and files;
+- child processes and the current working directory;
+- time, sleeping, and randomness;
+- IP/Unix networking;
+- memory maps and synchronization.
+
+Most operations return an error union. Handle errors at the layer that can add
+useful context; do not convert an I/O failure into a successful empty result.
+
+### How the interface is defined
+
+At the conceptual level, `std.Io` is an erased implementation pointer plus a
+table of operations:
+
+```zig
+pub const Io = struct {
+    userdata: ?*anyopaque,
+    vtable: *const VTable,
+};
+
+pub const VTable = struct {
+    async: *const fn (...) ?*AnyFuture,
+    concurrent: *const fn (...) ConcurrentError!*AnyFuture,
+    await: *const fn (...) void,
+    cancel: *const fn (...) void,
+    groupAsync: *const fn (...) void,
+    groupConcurrent: *const fn (...) ConcurrentError!void,
+    groupAwait: *const fn (...) Cancelable!void,
+    groupCancel: *const fn (...) void,
+    checkCancel: *const fn (...) Cancelable!void,
+    operate: *const fn (...) Cancelable!Operation.Result,
+    // File, directory, process, clock, random, and network operations follow.
+};
+```
+
+The actual Zig declaration gives every callback its complete typed signature;
+the abbreviated signatures above show the shape, not code to paste into a
+backend. `userdata` points to backend state. Each public `std.Io` function
+passes that state and its typed arguments to one vtable entry. This is why
+callers can use the same `io` value for a file, a socket, a timeout, or a
+task without knowing whether the backend blocks a thread or drives an event
+loop.
+
+There are two related abstraction levels:
+
+1. `Operation` is the lower-level union used by `io.operate` and batching.
+   Its variants include streaming file read/write, device I/O, and network
+   receive.
+2. The higher-level task API (`async`, `concurrent`, `Group`, and `Select`)
+   schedules functions and uses the same vtable for waiting and cancellation.
+
+The vtable also contains `recancel`, cancel protection, futex waiting, batch
+waiting, directory and file callbacks, process callbacks, clocks, randomness,
+and network callbacks. A custom backend must implement the complete contract,
+including resource release and cancellation semantics; application code should
+normally use `std.Io.Threaded`, `std.Io.Evented`, or a test implementation
+instead of constructing a vtable.
+
+### VTable coverage
+
+The following is the complete field-level map of the Zig 0.16 `VTable`.
+The public APIs described later are built on these callbacks:
+
+| VTable fields | Responsibility |
+| --- | --- |
+| `crashHandler` | Backend-defined handling for an unrecoverable I/O failure. |
+| `async`, `concurrent`, `await`, `cancel` | One task and its `Future`. |
+| `groupAsync`, `groupConcurrent`, `groupAwait`, `groupCancel` | Groups of tasks. |
+| `recancel`, `swapCancelProtection`, `checkCancel` | Cooperative cancellation state. |
+| `futexWait`, `futexWaitUncancelable`, `futexWake` | Low-level atomic wait/wake. |
+| `operate` | Execute one lower-level `Operation`. |
+| `batchAwaitAsync`, `batchAwaitConcurrent`, `batchCancel` | Wait for or cancel an `Io.Batch`. |
+| `dirCreateDir`, `dirCreateDirPath`, `dirCreateDirPathOpen`, `dirOpenDir` | Create and open directories. |
+| `dirStat`, `dirStatFile`, `dirAccess`, `dirRead`, `dirClose` | Inspect, access, enumerate, and close directories. |
+| `dirCreateFile`, `dirCreateFileAtomic`, `dirOpenFile` | Create and open files relative to a directory. |
+| `dirRealPath`, `dirRealPathFile`, `dirDeleteFile`, `dirDeleteDir` | Resolve and delete directory entries. |
+| `dirRename`, `dirRenamePreserve`, `dirSymLink`, `dirReadLink`, `dirHardLink` | Rename and link entries. |
+| `dirSetOwner`, `dirSetFileOwner`, `dirSetPermissions`, `dirSetFilePermissions` | Change directory or entry ownership and permissions. |
+| `dirSetTimestamps` | Change a directory entry's timestamps. |
+| `fileStat`, `fileLength`, `fileClose` | Inspect and close an open file. |
+| `fileWritePositional`, `fileWriteFileStreaming`, `fileWriteFilePositional` | Positional writes and file-to-file copies. |
+| `fileReadPositional`, `fileSeekBy`, `fileSeekTo`, `fileSync` | Positional reads, seeking, and durability. |
+| `fileIsTty`, `fileEnableAnsiEscapeCodes`, `fileSupportsAnsiEscapeCodes` | Terminal detection and setup. |
+| `fileSetLength`, `fileSetOwner`, `fileSetPermissions`, `fileSetTimestamps` | Change file metadata. |
+| `fileLock`, `fileTryLock`, `fileUnlock`, `fileDowngradeLock` | File locking. |
+| `fileRealPath`, `fileHardLink` | Resolve a file path and create a hard link. |
+| `fileMemoryMapCreate`, `fileMemoryMapDestroy`, `fileMemoryMapSetLength`, `fileMemoryMapRead`, `fileMemoryMapWrite` | Manage mapped file storage. |
+| `processExecutableOpen`, `processExecutablePath` | Locate and open the running executable. |
+| `lockStderr`, `tryLockStderr`, `unlockStderr` | Serialize diagnostic output. |
+| `processCurrentPath`, `processSetCurrentDir`, `processSetCurrentPath` | Read or change the working directory. |
+| `processReplace`, `processReplacePath` | Replace the current process. |
+| `processSpawn`, `processSpawnPath`, `childWait`, `childKill` | Start, wait for, and terminate child processes. |
+| `progressParentFile` | Connect progress reporting to a file. |
+| `now`, `clockResolution`, `sleep` | Clocks, precision, and sleeping. |
+| `random`, `randomSecure` | Pseudorandom and cryptographically secure bytes. |
+| `netListenIp`, `netAccept`, `netBindIp`, `netConnectIp` | IPv4/IPv6 server and client sockets. |
+| `netListenUnix`, `netConnectUnix`, `netSocketCreatePair` | Unix sockets and socket pairs. |
+| `netSend`, `netRead`, `netWrite`, `netWriteFile` | Datagrams, streams, and file-to-network sends. |
+| `netClose`, `netShutdown` | Network resource lifecycle. |
+| `netInterfaceNameResolve`, `netInterfaceName`, `netLookup` | Interface names and DNS lookup. |
+
+### Implementations
+
+`std.Io.Threaded` is the normal blocking implementation. `std.Io.Evented` selects
+the platform event backend when available (`io_uring` on Linux and `kqueue` or
+Dispatch on supported BSD and Apple targets). `std.Io` also exposes `failing` for
+tests and `Threaded` helpers for process-wide defaults. Code should depend on
+`std.Io`, not on a concrete backend.
+
+## Process integration
+
+`std.process.Init` is the bridge between the operating system and application
+code:
+
+- `init.io`: the default I/O context;
+- `init.gpa`: the general-purpose allocator;
+- `init.arena`: a process-lifetime arena;
+- `init.minimal.args`: lazy command-line arguments;
+- `init.environ_map`: parsed environment variables;
+- `init.preopens`: WASI-style preopened directories.
+
+Use `init.minimal.args.iterate()` when arguments can be processed as a stream,
+or `toSlice(init.arena.allocator())` when indexed access is useful. Keep
+environment and argument data owned by the process context; pass a map or an
+allocator-owned slice to helpers that need it.
+
+## Usage: I/O is an explicit dependency
+
+The preferred entry point is `pub fn main(init: std.process.Init) !void`. `init.io`
+is the default `std.Io` implementation, while `init.gpa`, `init.arena`,
+`init.minimal.args`, `init.environ_map`, and `init.preopens` provide the other
+process resources. Pass `io` into every function that performs I/O instead of
+reading hidden global state:
+
+```zig
+const std = @import("std");
+
+pub fn main(init: std.process.Init) !void {
+    try printGreeting(init.io, "Zig");
+}
+
+fn printGreeting(io: std.Io, name: []const u8) !void {
+    try std.Io.File.stdout().writeStreamingAll(io, "Hello, ");
+    try std.Io.File.stdout().writeStreamingAll(io, name);
+    try std.Io.File.stdout().writeStreamingAll(io, "!\n");
+}
+```
+
+This makes dependencies testable and portable. A helper can receive a different
+`std.Io` implementation in a test, and the same application can use a threaded,
+evented, or failing implementation without changing its business logic. The
+application uses the stable interface; only the process boundary selects the
+implementation.
+
+## Reader and Writer
+
+`std.Io.Reader` and `std.Io.Writer` are byte-stream interfaces. They separate
+the algorithm that consumes or produces bytes from the source or destination.
+The main constructors and adapters are:
+
+| API | Purpose |
+| --- | --- |
+| `Reader.fixed(bytes)` | Read from an in-memory byte slice. |
+| `Reader.limited(limit, buffer)` | Expose a bounded view of another reader. |
+| `Writer.fixed(buffer)` | Write into caller-owned memory. |
+| `Writer.Allocating.init(gpa)` | Grow output using an allocator. |
+| `Reader.hashed` / `Writer.hashed` | Hash bytes while they pass through. |
+| `Reader.stream` / `Writer.sendFile` | Copy data between streams or files. |
+
+Reader operations include `readVec`, `readVecAll`, `readSliceAll`, `readAlloc`,
+`peek`, `take`, `takeArray`, `fill`, `peekByte`, `takeByte`, delimiter helpers
+(`takeDelimiter`, `peekDelimiterExclusive`, `streamDelimiter`), and binary
+helpers (`takeVarInt`, `takeLeb128`, `takeEnum`, `takeStructPointer`). Use
+`readSliceAll` or `streamExact` when a complete payload is required; a single
+read is allowed to return fewer bytes.
+
+Writer operations include `write`, `writeAll`, `writeVecAll`, `writeByte`,
+`splatByteAll`, `print`, `writeLeb128`, `writeSleb128`, `writeUleb128`,
+`sendFile`, `alignBuffer`, `flush`, and `buffered`. `write` may be partial;
+`writeAll` is the appropriate operation for a complete byte slice. `print`
+uses Zig formatting directly on the writer and replaces the old pattern of
+constructing a separate formatter.
+
+Use a fixed writer when the maximum size is known:
+
+```zig
+var buffer: [128]u8 = undefined;
+var writer = std.Io.Writer.fixed(&buffer);
+try writer.print("count = {d}\n", .{7});
+const output = writer.buffered();
+```
+
+Use `Writer.Allocating` when output grows dynamically. Its important lifecycle
+methods are `init`, `initCapacity`, `initOwnedSlice`, `written`, `toOwnedSlice`,
+`ensureTotalCapacity`, `clearRetainingCapacity`, `shrinkRetainingCapacity`, and
+`deinit`. The allocator owns the storage until `toOwnedSlice` transfers it.
+
+Readers and writers may be layered. A file reader can feed a parser, a hashing
+reader, and then a network writer without changing the parser. Preserve or
+discard buffered bytes deliberately when calling `peek`, `toss`, `rebase`, or
+`flush`.
+
+## Files and directories
+
+`std.Io.Dir` represents a directory capability and `std.Io.File` represents an
+open file handle. Prefer directory-relative operations:
+`Dir.cwd().openFile(io, path, options)` avoids rebuilding absolute paths and
+reduces race-prone check-then-use sequences.
+
+### `std.Io.Dir`
+
+The directory API includes:
+
+- discovery: `cwd`, `stat`, `statFile`, `access`, `realPath`,
+  `realPathFile`, and their absolute or allocating variants;
+- opening: `openDir`, `openFile`, `createFile`, `createFileAtomic`;
+- content: `readFile`, `readFileAlloc`, `writeFile`, `updateFile`;
+- directory changes: `createDir`, `createDirPath`, `deleteFile`, `deleteDir`,
+  `deleteTree`, `rename`, `renamePreserve`, `copyFile`, and `hardLink`;
+- links and metadata: `symLink`, `readLink`, `setPermissions`, `setOwner`,
+  `setTimestamps`, and `setTimestampsNow`;
+- traversal: `iterate`, `walk`, and `walkSelectively`.
+
+`iterate` reads direct children. `walk` recursively visits a tree and must be
+deinitialized. `walkSelectively` lets the program call `enter` only for
+directories it wants to descend into; use it when most directories should not
+be opened.
+
+### `std.Io.File`
+
+The file API includes `stdin`, `stdout`, `stderr`, `stat`, `length`, `sync`,
+`setLength`, `setPermissions`, `setOwner`, `setTimestamps`, `realPath`,
+`hardLink`, and `createMemoryMap`. For data access use:
+
+- `readStreaming` and `writeStreaming` for sequential access;
+- `readPositional`, `readPositionalAll`, `writePositional`, and
+  `writePositionalAll` for explicit offsets;
+- `reader` / `readerStreaming` and `writer` / `writerStreaming` to obtain
+  buffered Reader and Writer adapters;
+- `lock`, `tryLock`, `unlock`, and `downgradeLock` for file locks;
+- `MemoryMap.create`, `read`, `write`, `setLength`, and `destroy` for mapped I/O.
+
+Open handles are resources. Close every `File` and `Dir` exactly once, and keep
+the close `defer` next to the successful open. Use a nested scope when a file
+must be closed before it is reopened with a different mode.
+
+`File.Atomic` and `Dir.createFileAtomic` implement temporary-file-then-rename
+writes. Write and flush the temporary file, then call `commit`; readers either
+see the old complete file or the new complete file, rather than a half-written
+file. This is the preferred pattern for configuration and generated metadata.
+
+## Networking and terminals
+
+`std.Io.net` provides `IpAddress` (IPv4/IPv6), `UnixAddress`, `Socket`,
+`Stream`, `Server`, `HostName`, and interface-name resolution. The main
+operations are IP bind/listen/connect, server accept, stream read/write,
+datagram send, shutdown, socket-pair creation, close, DNS lookup, and network
+interface lookup. Network streams use the same Reader/Writer concepts as files.
+
+The cookbook's [Network](04-01-tcp-server) recipes demonstrate TCP, UDP, DNS,
+message framing, receive timeouts, and HTTP connection reuse. Bound every
+receive or retry loop with a timeout or a finite retry count, and distinguish
+connection closure (zero bytes) from a successful payload.
+
+`std.Io.Terminal` contains terminal color and mode support. `File.isTty`,
+`supportsAnsiEscapeCodes`, `enableAnsiEscapeCodes`, `lockStderr`, and
+`tryLockStderr` are the relevant process-facing APIs. Lock stderr when multiple
+tasks can write diagnostic output so messages are not interleaved.
+
+## Combining async, select, and cancel
+
+These APIs form layers rather than competing ways to start work:
+
+- `std.Io.async(io, function, args)` returns a typed `Future(Result)`. The
+  function may run immediately, or may be assigned a unit of concurrency.
+  Call `future.await(io)` exactly once to obtain its result.
+- `std.Io.concurrent(io, function, args)` has a stronger scheduling guarantee:
+  after it succeeds, the function has been assigned a concurrent execution
+  unit. It can return `error.ConcurrencyUnavailable`, so use it only when that
+  guarantee matters.
+- `Future.cancel(io)` requests cancellation and then waits for the result.
+  Cancellation is observed at the task's next cancelation point, such as a
+  cancelable I/O call or `io.checkCancel()`. It is not an immediate thread
+  kill.
+- `std.Io.Group` owns many tasks but does not return their individual values.
+  Use `group.await(io)` to let all work finish, or `group.cancel(io)` to
+  request cancellation for all members.
+- `std.Io.Select(U)` owns many tasks and places each completed value into a
+  tagged union `U`. Use `select.await()` for the next result or
+  `select.awaitMany()` for a batch of results.
+
+`Select` is the usual “wait for whichever finishes first” composition:
+
+```zig
+const Result = union(enum) {
+    dns: []const u8,
+    timeout: void,
+};
+
+var result_buffer: [2]Result = undefined;
+var select = std.Io.Select(Result).init(io, &result_buffer);
+
+select.async(.dns, resolveName, .{io});
+select.async(.timeout, waitBriefly, .{io});
+
+const result = try select.await();
+switch (result) {
+    .dns => |address| useAddress(address),
+    .timeout => waitExpired(),
+}
+
+// Cancel and join every task that did not win the race.
+select.cancelDiscard();
+```
+
+In real code, `resolveName` and `waitBriefly` return the exact payload type of
+their selected union field. The select owns their resources, so it must be
+awaited or canceled before it goes out of scope. If a task can return an
+allocated object, use `select.cancel()` repeatedly to drain and release every
+remaining result instead of `cancelDiscard()`, which intentionally discards
+all outstanding values. The result buffer must have enough capacity for all
+tasks that can finish while cancellation is being joined.
+
+The composition pattern is therefore:
+
+1. Put independent operations behind small functions that accept `std.Io`.
+2. Start one operation with `async` and keep its `Future`, or start a race with
+   `Select`.
+3. Await the first useful result.
+4. Cancel the losers, then join them before releasing their input buffers,
+   files, sockets, or allocators.
+5. Propagate `error.Canceled` unless the caller explicitly owns the cancellation
+   boundary.
+
+For fan-out work where results are not needed, use `Group`:
+
+```zig
+var group: std.Io.Group = .init;
+errdefer group.cancel(io);
+
+group.async(io, worker, .{io, item_a});
+group.async(io, worker, .{io, item_b});
+try group.await(io);
+```
+
+`Group.async` and `Group.concurrent` are the grouped forms of the corresponding
+top-level functions. `Select.async` and `Select.concurrent` are grouped forms
+that additionally enqueue a tagged result. `async` is more portable because a
+single-threaded blocking backend may execute the function inline; choose
+`concurrent` only when parallel progress is required.
+
+## Time, sleeping, randomness, and cancellation
+
+`Clock` has `.real`, `.awake`, and `.boot` domains. Use `Clock.now(clock, io)`
+for timestamps and `Timestamp.durationTo` for elapsed durations. Do not compare
+timestamps from different clock domains. `clockResolution` reports precision.
+
+`Duration` represents nanoseconds. `Timeout` can represent a duration, an
+absolute deadline, or no timeout. Pass `Timeout` to operations that support
+bounded waiting and use `std.Io.sleep(io, duration, clock)` instead of the
+removed `std.time.sleep`. A timeout is a correctness boundary, not merely a
+performance hint.
+
+`std.Io.random` is suitable for non-security-sensitive randomized behavior.
+Use `std.Io.randomSecure(io, buffer)` for keys, tokens, salts, and other
+security-sensitive values. It can fail with entropy or cancellation errors.
+
+Cancelable operations return `std.Io.Cancelable`. Check cancellation at
+cooperative boundaries with `io.checkCancel()`. `recancel`,
+`swapCancelProtection`, and `CancelProtection` are for code that must
+temporarily protect a critical cleanup section. Cancellation does not replace
+ordinary error handling.
+
+## Concurrency and synchronization
+
+`std.Io.async` schedules work that may complete asynchronously and returns a
+typed `Future`; `std.Io.concurrent` requests a concurrent unit of execution.
+`Future.await` waits for a result, while `Future.cancel` requests cancellation.
+`std.Io.Group` owns a group of tasks: submit work with `group.async` or
+`group.concurrent`, then `wait` or `cancel` the group before its lifetime ends.
+`Batch`, `Select`, `Queue`, and `TypeErasedQueue` support batching, waiting on
+multiple outcomes, and producer-consumer pipelines.
+
+For synchronization, `std.Io` exposes `Mutex`, `RwLock`, `Condition`, `Event`,
+`Semaphore`, and futex helpers. Prefer these I/O-aware primitives when the
+operation may block in the same execution model. Always define ownership:
+the task that creates a group, queue, or lock must arrange its shutdown and
+must not destroy it while another task can still access it.
+
+## Recommended workflow
+
+1. Start with `pub fn main(init: std.process.Init) !void` and pass `init.io`.
+2. Select a bounded Reader/Writer strategy before allocating or reading data.
+3. Use directory-relative paths and capability checks instead of check-then-open.
+4. Close handles, flush writers, and commit atomic files in explicit lifetimes.
+5. Put limits on file sizes, message sizes, retries, and waits.
+6. Preserve useful errors and add context at application boundaries.
+7. Test logic with `Reader.fixed`, `Writer.fixed`, `Io.failing`, and temporary
+   directories before testing platform-specific backends.
+
+The focused examples cover every public VTable group: [Io context](16-01-io-context),
+[Reader and Writer](16-02-io-reader-writer), [allocating writers](16-03-io-allocating-writer),
+[files and directories](16-04-io-file-dir), [clocks and timeouts](16-05-io-clock-timeout),
+[secure randomness](16-06-io-random), [tasks and cancellation](16-07-io-tasks),
+[synchronization and queues](16-08-io-sync), [low-level batches](16-09-io-batch),
+[process and terminal capabilities](16-10-io-process-terminal), [memory maps](16-11-io-memory-map),
+and [Io networking](16-12-io-network). Existing File System and Network chapters
+may demonstrate similar operating-system actions, but these recipes explain the
+same actions from the `std.Io` interface and VTable perspective.

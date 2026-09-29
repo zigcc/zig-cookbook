@@ -87,7 +87,7 @@
   - [Argument Parsing with structargs](13-02-structargs)
   - ANSI Terminal
 
-- [Database](database)
+- [14. Database](14-database)
 
   - [SQLite](14-01-sqlite)
   - [Postgres](14-02-postgres)
@@ -96,3 +96,18 @@
 - Text Processing
   - [Regex Expressions](15-01-regex)
   - [String Parsing](15-02-string)
+
+- [16. Io](16-io)
+
+  - [Pass the Io Context Through an Application](16-01-io-context)
+  - [Read and Write Bytes with Io Interfaces](16-02-io-reader-writer)
+  - [Build Dynamic Output with Io.Writer.Allocating](16-03-io-allocating-writer)
+  - [Use Io.Dir and Io.File Handles](16-04-io-file-dir)
+  - [Measure and Bound Work with Io Clock and Timeout](16-05-io-clock-timeout)
+  - [Get Secure Random Bytes through Io](16-06-io-random)
+  - [Compose Io Tasks with Async, Groups, Select, and Cancel](16-07-io-tasks)
+  - [Coordinate Io Work with Synchronization Primitives](16-08-io-sync)
+  - [Submit Low-Level Io Operations in a Batch](16-09-io-batch)
+  - [Use Io Process and Terminal Capabilities](16-10-io-process-terminal)
+  - [Synchronize a File with Io MemoryMap](16-11-io-memory-map)
+  - [Resolve Hosts through Io Networking](16-12-io-network)
