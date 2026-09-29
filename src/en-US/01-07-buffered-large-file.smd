@@ -7,6 +7,8 @@
 
 The low-level `File.readStreaming` and `File.writeStreamingAll` APIs operate directly on files.
 The loop processes one fixed-size chunk at a time, so the complete file never has to be held in
-memory.
+memory. “Direct” here means using the file API rather than a higher-level buffered abstraction;
+it does not request the operating system's `O_DIRECT` mode, so normal filesystem caching still
+applies.
 
 []($code.siteAsset('src/01-07.zig').language('zig'))
