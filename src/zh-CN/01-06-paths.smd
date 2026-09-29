@@ -1,8 +1,8 @@
 ---
-.title = "构建跨平台路径"
-.date = "2024-01-01"
-.author = "ZigCC"
-.layout = "section.shtml"
+.title = "构建跨平台路径",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
 ---
 
 使用 `std.fs.path` 处理路径，不要硬编码 `/`。分隔符和解析规则会根据

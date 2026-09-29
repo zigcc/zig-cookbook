@@ -1,8 +1,8 @@
 ---
-.title = "Build portable paths"
-.date = "2024-01-01"
-.author = "ZigCC"
-.layout = "section.shtml"
+.title = "Build portable paths",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
 ---
 
 Use `std.fs.path` for path manipulation instead of hard-coding `/`. The

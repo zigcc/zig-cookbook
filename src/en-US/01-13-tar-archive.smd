@@ -1,8 +1,8 @@
 ---
-.title = "Create a TAR archive"
-.date = "2024-01-01"
-.author = "ZigCC"
-.layout = "section.shtml"
+.title = "Create a TAR archive",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
 ---
 
 The standard library includes a TAR writer. TAR groups files but does not

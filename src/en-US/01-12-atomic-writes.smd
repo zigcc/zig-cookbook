@@ -1,8 +1,8 @@
 ---
-.title = "Temporary files and atomic writes"
-.date = "2024-01-01"
-.author = "ZigCC"
-.layout = "section.shtml"
+.title = "Temporary files and atomic writes",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
 ---
 
 `std.Io.File.Atomic` writes to a temporary file and materializes it with a

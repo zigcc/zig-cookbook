@@ -1,8 +1,8 @@
 ---
-.title = "Read large files with direct file I/O"
-.date = "2024-01-01"
-.author = "ZigCC"
-.layout = "section.shtml"
+.title = "Read large files with direct file I/O",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
 ---
 
 The low-level `File.readStreaming` and `File.writeStreamingAll` APIs operate directly on files.
