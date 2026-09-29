@@ -21,4 +21,5 @@ pub fn main(init: std.process.Init) !void {
     try writer.interface.print("executable: {s}\n", .{executable_path});
     try writer.interface.print("stdout is tty: {any}\n", .{is_tty});
     try writer.interface.print("ANSI supported: {any}\n", .{supports_color});
+    try writer.interface.flush();
 }

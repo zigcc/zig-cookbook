@@ -18,4 +18,5 @@ pub fn main(init: std.process.Init) !void {
     var writer = stdout.writer(io, &writer_buffer);
     try writer.interface.print("arguments: {d}\n", .{argument_count});
     try writer.interface.print("environment entries: {d}\n", .{init.environ_map.count()});
+    try writer.interface.flush();
 }

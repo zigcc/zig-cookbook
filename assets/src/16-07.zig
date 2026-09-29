@@ -33,6 +33,7 @@ pub fn main(init: std.process.Init) !void {
         .fast => |value| try writer.interface.print("select winner: fast {d}\n", .{value}),
         .slow => |value| try writer.interface.print("select winner: slow {d}\n", .{value}),
     }
+    try writer.interface.flush();
 }
 
 fn add(left: u32, right: u32) u32 {

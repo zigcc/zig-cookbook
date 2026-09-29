@@ -1,11 +1,14 @@
 ---
 .title = "使用 Io Clock 和 Timeout 测量并限制操作",
-.date = "2024-01-01",
+.date = "2026-09-29",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-`std.Io.Clock` 从选定的时钟获取时间戳。`std.Io.Timeout` 可以表示无超时、持续时间或截止时间；
-把它传给操作即可限制等待时间。本例使用 awake clock 的持续时间，并测量实际等待时间。
+`std.Io.Clock` 从选定的时钟获取时间戳。直接休眠使用
+`std.Io.sleep(io, duration, clock)`；当一个操作需要等待上限时，使用
+`std.Io.Timeout`，它可以表示无超时、持续时间或截止时间，并通过
+`timeout.sleep(io)` 执行等待。本例比较了直接 sleep 和 timeout sleep，
+并测量两次实际等待时间。
 
 []($code.siteAsset('src/16-05.zig').language('zig'))

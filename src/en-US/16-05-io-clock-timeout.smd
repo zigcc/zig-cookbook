@@ -1,12 +1,14 @@
 ---
 .title = "Measure and Bound Work with Io Clock and Timeout",
-.date = "2024-01-01",
+.date = "2026-09-29",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
 
-`std.Io.Clock` provides timestamps from a selected clock. `std.Io.Timeout` represents no timeout,
-a duration, or a deadline; passing it to an operation bounds how long it may wait. This example
-uses an awake-clock duration and measures the resulting wait.
+`std.Io.Clock` provides timestamps from a selected clock. Direct sleeping uses
+`std.Io.sleep(io, duration, clock)`; when an operation needs a wait limit, use
+`std.Io.Timeout`, which can represent no timeout, a duration, or a deadline,
+and call `timeout.sleep(io)`. This example compares direct sleep with timeout
+sleep and measures both waits.
 
 []($code.siteAsset('src/16-05.zig').language('zig'))

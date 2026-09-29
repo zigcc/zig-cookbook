@@ -1,6 +1,6 @@
 ---
 .title = "Io",
-.date = "2024-01-01",
+.date = "2026-09-29",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
@@ -381,7 +381,7 @@ try group.await(io);
 `std.Io.concurrent` 请求一个并发执行单元。`Future.await` 等待结果，
 `Future.cancel` 请求取消。`std.Io.Group` 管理一组任务：用
 `group.async` 或 `group.concurrent` 提交工作，在生命周期结束前调用
-`wait` 或 `cancel`。`Batch`、`Select`、`Queue` 和 `TypeErasedQueue`
+`group.await(io)` 或 `group.cancel(io)`。`Batch`、`Select`、`Queue` 和 `TypeErasedQueue`
 用于批处理、等待多个结果和生产者-消费者流水线。
 
 同步 API 包括 `Mutex`、`RwLock`、`Condition`、`Event`、`Semaphore`

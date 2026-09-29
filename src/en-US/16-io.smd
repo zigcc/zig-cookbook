@@ -1,6 +1,6 @@
 ---
 .title = "Io",
-.date = "2024-01-01",
+.date = "2026-09-29",
 .author = "ZigCC",
 .layout = "section.shtml",
 ---
@@ -411,7 +411,8 @@ ordinary error handling.
 typed `Future`; `std.Io.concurrent` requests a concurrent unit of execution.
 `Future.await` waits for a result, while `Future.cancel` requests cancellation.
 `std.Io.Group` owns a group of tasks: submit work with `group.async` or
-`group.concurrent`, then `wait` or `cancel` the group before its lifetime ends.
+`group.concurrent`, then call `group.await(io)` or `group.cancel(io)` before
+its lifetime ends.
 `Batch`, `Select`, `Queue`, and `TypeErasedQueue` support batching, waiting on
 multiple outcomes, and producer-consumer pipelines.
 
