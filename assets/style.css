@@ -149,8 +149,14 @@ body.sidebar-collapsed .page-shell { margin-left: 0; }
 .topbar { position: sticky; top: 0; z-index: 10; width: 100%; height: var(--menu-bar-height); padding: 0 1.5rem; display: flex; align-items: center; color: var(--faint); background: var(--bg); border-bottom: 1px solid var(--line); }
 .topbar-sidebar-toggle { flex: 0 0 auto; margin-right: 1rem; font-size: 1.6rem; }
 .menu-title { flex: 1; min-width: 0; margin: 0; overflow: hidden; color: var(--text); font-size: 2rem; font-weight: 300; line-height: var(--menu-bar-height); text-align: center; text-overflow: ellipsis; white-space: nowrap; }
-.topbar-links { display: flex; gap: .65rem; letter-spacing: 0; }
-.topbar-links a { color: var(--muted); }
+.right-buttons { display: flex; align-items: center; gap: .25rem; }
+.topbar-icon {
+  display: grid; place-items: center; width: 2.8rem; height: 2.8rem; color: var(--muted);
+  border-radius: 3px;
+}
+.topbar-icon:hover, .topbar-icon:focus-visible { color: var(--accent); background: var(--accent-soft); text-decoration: none; }
+.topbar-icon:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.topbar-icon svg { width: 1.55rem; height: 1.55rem; fill: currentColor; }
 .content { max-width: none; margin: 0; padding: 3rem 1.5rem 5rem; }
 article { min-width: 0; }
 .content > article, #prev-next, #footer { max-width: var(--content-width); margin-left: auto; margin-right: auto; }
@@ -185,7 +191,9 @@ th { color: var(--muted); font-size: 1.4rem; font-weight: 600; }
 @media (max-width: 800px) {
   .sidebar { display: none; width: 100%; top: 3.5rem; padding: 1rem; border-right: 0; box-shadow: 0 12px 28px #0002; }
   body.toc-open .sidebar { display: flex; }
-  .mobile-header { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; height: 3.5rem; padding: 0 1rem; background: var(--sidebar); border-bottom: 1px solid var(--line); }
+  .mobile-header { position: sticky; top: 0; z-index: 30; display: flex; align-items: center; justify-content: space-between; gap: .4rem; height: 3.5rem; padding: 0 1rem; background: var(--sidebar); border-bottom: 1px solid var(--line); }
+  .mobile-brand { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-actions { flex: 0 0 auto; }
   .mobile-brand { font-size: .9rem; font-weight: 700; }
   .page-shell { margin-left: 0; }
   body.sidebar-collapsed .sidebar { transform: none; }

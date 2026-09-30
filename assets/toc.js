@@ -4,6 +4,11 @@
   const tocToggle = document.querySelector('#toc-toggle');
   const sidebarExpand = document.querySelector('#sidebar-expand');
   const search = document.querySelector('#toc-search');
+  const desktopActions = document.querySelector('.topbar .right-buttons');
+  const mobileActions = document.querySelector('.mobile-actions');
+  if (desktopActions && mobileActions) mobileActions.innerHTML = desktopActions.innerHTML;
+  const printButtons = document.querySelectorAll('.print-button');
+  const editButtons = document.querySelectorAll('.edit-button');
   const savedSections = JSON.parse(localStorage.getItem('zig-cookbook-sections') || '{}');
 
   root.removeAttribute('data-theme');
@@ -13,6 +18,20 @@
     const withoutIndex = path.replace(/index\.html$/, '');
     return withoutIndex.replace(/\/$/, '') || '/';
   };
+
+  printButtons.forEach((button) => button.addEventListener('click', (event) => {
+    event.preventDefault();
+    window.print();
+  }));
+
+  if (editButtons.length) {
+    const path = normalizePath(location.pathname).replace(/^\/zh-CN\/?/, '/');
+    const locale = /^\/zh-CN(?:\/|$)/.test(location.pathname) ? 'zh-CN' : 'en-US';
+    const source = path === '/' ? 'index.smd' : `${path.slice(1)}.smd`;
+    editButtons.forEach((button) => {
+      button.href = `https://github.com/zigcc/zig-cookbook/edit/main/src/${locale}/${source}`;
+    });
+  }
 
   const markActiveLink = () => {
     const currentPath = normalizePath(location.pathname);
