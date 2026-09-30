@@ -31,7 +31,7 @@
 
 [网站](https://cookbook.ziglang.cc/) 由 [zine-ssg](https://zine-ssg.io) 生成，这是一个 Zig 编写的静态网站生成器。运行 `zine` 将在 `http://localhost:1990` 启动一个预览服务器。
 
-每个示例都附带一个以对应序号命名的示例程序。可以使用命令 `zig build run-{章节号}-{序号}` 来运行单个示例，或使用 `zig build run-all` 运行所有示例。
+每个示例都附带一个以标题命名的示例程序。可以使用命令 `zig build run-{标题}` 来运行单个示例，或使用 `zig build run-all` 运行所有示例。
 
 > ## 注意
 > 某些示例可能依赖系统库：

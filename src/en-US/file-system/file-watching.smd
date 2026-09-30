@@ -1,0 +1,23 @@
+---
+.title = "Watch Files with Platform APIs",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+File watching is platform-specific. The following examples wait for one real file-system event
+instead of polling modification times.
+
+### macOS and FreeBSD: `kqueue`
+
+This example uses `kqueue` and `EVFILT_VNODE` to watch `build.zig`. Run it on macOS or FreeBSD,
+then modify or rename the file from another terminal.
+
+[]($code.siteAsset('src/file-system/kqueue.zig').language('zig'))
+
+### Linux: `inotify`
+
+This example uses `inotify` to watch the current directory. Run it on Linux, then create, modify,
+move, or delete a file from another terminal.
+
+[]($code.siteAsset('src/file-system/inotify.zig').language('zig'))

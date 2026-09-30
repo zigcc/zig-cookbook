@@ -1,0 +1,12 @@
+---
+.title = "使用 Io 的进程和终端能力",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+面向进程的 Io API 可以在不依赖全局状态的情况下取得当前路径和可执行
+文件路径。文件终端 API 可以判断输出是否为 TTY，以及是否支持 ANSI
+转义序列。
+
+[]($code.siteAsset('src/io/io-process-terminal.zig').language('zig'))

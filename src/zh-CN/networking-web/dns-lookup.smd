@@ -1,0 +1,15 @@
+---
+.title = "解析主机名",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.net.HostName.lookup` 通过系统解析器解析主机名，并输出所有可用的地址。
+可以通过可选参数传入主机名；不传参数时默认解析 `localhost`。
+
+[]($code.siteAsset('src/networking-web/dns-lookup.zig').language('zig'))
+
+```bash
+zig build run-dns-lookup -- example.com
+```

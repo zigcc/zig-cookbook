@@ -1,0 +1,15 @@
+---
+.title = "ANSI 终端",
+.date = "2026-09-30",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+ANSI 转义序列无需额外依赖即可设置终端输出样式。这个示例将常用的文字样式、前景色、
+清屏操作和光标控制集中到 `Ansi` 辅助结构中。`Ansi.print` 会应用样式并自动重置，
+也可以在编译期组合常量，例如 `Ansi.bold ++ Ansi.green`。
+
+你可以继续扩展这个结构，加入背景色、256 色序列或项目专用样式。输出后应始终重置样式，
+避免影响终端后续显示。
+
+[]($code.siteAsset('src/systems-tools/ansi-terminal.zig').language('zig'))

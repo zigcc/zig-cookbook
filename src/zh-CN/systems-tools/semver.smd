@@ -1,0 +1,14 @@
+---
+.title = "解析版本字符串",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+使用 [`SemanticVersion.parse`] 从字符串字面量构造 [`std.SemanticVersion`]。
+
+[]($code.siteAsset('src/systems-tools/semver.zig').language('zig'))
+
+[`std.SemanticVersion`]: https://ziglang.org/documentation/0.16.0/std/#std.SemanticVersion
+[`SemanticVersion.parse`]: https://ziglang.org/documentation/0.16.0/std/#std.SemanticVersion.parse
+[semantic versioning specification]: http://semver.org/

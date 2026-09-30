@@ -114,13 +114,21 @@ img { display: block; max-width: 100%; }
 .chapter-link-wrapper a { color: var(--muted); text-decoration: none; }
 .chapter-link-wrapper a:hover { color: var(--accent); }
 .chapter-fold-toggle {
-  flex: 0 0 auto; display: grid; place-items: center; width: 2.8rem; height: 2.8rem;
-  margin-left: auto; padding: 0 .8rem; color: var(--muted); background: transparent;
-  border: 0; cursor: pointer; font-size: 1.8rem; line-height: 1; transition: color .2s ease;
+  flex: 0 0 auto; display: grid; place-items: center; width: 2.4rem; height: 2.4rem;
+  margin: .2rem .2rem .2rem auto; padding: 0; color: var(--muted); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 3px; cursor: pointer; font-size: 1.8rem;
+  line-height: 1; transition: color .2s ease, background-color .2s ease, border-color .2s ease;
 }
-.chapter-fold-toggle:hover { color: var(--accent); }
+.chapter-fold-toggle:hover,
+.chapter-fold-toggle:focus-visible {
+  color: var(--accent); background: var(--accent-soft); border-color: var(--accent);
+}
+.chapter-fold-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .chapter-fold-toggle span { display: block; transition: transform .2s ease; }
 .has-children.expanded > .chapter-link-wrapper > .chapter-fold-toggle span { transform: rotate(90deg); }
+.has-children.expanded > .chapter-link-wrapper > .chapter-fold-toggle {
+  color: var(--accent); background: var(--accent-soft); border-color: var(--accent);
+}
 .toc-nav > ul > li > .chapter-link-wrapper > a,
 .toc-nav > ul > li > .chapter-link-wrapper > p,
 .toc-nav > ul > li:not(:has(ul)) > a {

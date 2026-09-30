@@ -1,0 +1,12 @@
+---
+.title = "重试 HTTP 失败并复用连接",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+可以在限定次数内重试临时性的服务端失败。让所有尝试共用一个 `std.http.Client`，
+可以利用其连接池复用符合条件的 keep-alive 连接；每次收到响应后调用
+`request.deinit()`，使客户端能够释放或复用连接。只有当请求安全且服务允许时，才应该重试失败。
+
+[]($code.siteAsset('src/networking-web/http-retry-reuse.zig').language('zig'))

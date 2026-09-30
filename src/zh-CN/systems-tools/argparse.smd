@@ -1,0 +1,14 @@
+---
+.title = "参数解析",
+.date = "2026-09-28",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+命令行参数可以通过 `std.process.Init` 获取。这个简单的解析器只遍历一次参数，并识别一个标志、
+一个带值的选项和位置参数。
+
+示例只使用 Zig 标准库，因此解析过程清晰可见，没有被第三方包隐藏。固定大小的文件列表也让内存
+所有权保持简单。
+
+[]($code.siteAsset('src/systems-tools/argparse.zig').language('zig'))

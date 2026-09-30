@@ -1,0 +1,13 @@
+---
+.title = "Pass the Io Context Through an Application",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Zig 0.16 makes `std.Io` an explicit dependency of code that performs I/O. The juicy
+`std.process.Init` entry point provides the `io` implementation, allocator, arguments, and
+environment map. Pass `init.io` to file, terminal, clock, and network operations instead of
+using hidden global state.
+
+[]($code.siteAsset('src/io/io-context.zig').language('zig'))

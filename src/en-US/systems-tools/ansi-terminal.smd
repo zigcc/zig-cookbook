@@ -1,0 +1,16 @@
+---
+.title = "ANSI Terminal",
+.date = "2026-09-30",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+ANSI escape codes can style terminal output without an additional package. This example
+collects commonly used styles, foreground colors, screen operations, and cursor controls in
+one `Ansi` helper. `Ansi.print` applies a style and always resets it, while constants can be
+combined at compile time, such as `Ansi.bold ++ Ansi.green`.
+
+The same pattern can be extended with background colors, 256-color sequences, or application-
+specific styles. Always reset styling after output so later terminal text is not affected.
+
+[]($code.siteAsset('src/systems-tools/ansi-terminal.zig').language('zig'))

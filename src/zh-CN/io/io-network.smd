@@ -1,0 +1,12 @@
+---
+.title = "通过 Io 网络接口解析主机名",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.net.HostName.lookup` 将 DNS 结果写入类型化的
+`std.Io.Queue`。这里展示网络代码面向 Io 的调用形态；更完整的 TCP、
+UDP、超时和 HTTP 示例位于 Network 章节。
+
+[]($code.siteAsset('src/io/io-network.zig').language('zig'))

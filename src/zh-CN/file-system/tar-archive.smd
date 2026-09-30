@@ -1,0 +1,12 @@
+---
+.title = "创建 TAR 归档",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+标准库包含 TAR 写入器。TAR 只负责打包，不负责压缩；需要压缩时可以再
+使用 gzip 或 zstd。当前 Zig 提供 ZIP 的解析/解压能力，而没有可移植的
+ZIP 写入器，因此本例使用 TAR 并说明这一限制。
+
+[]($code.siteAsset('src/file-system/tar-archive.zig').language('zig'))

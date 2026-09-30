@@ -1,0 +1,15 @@
+---
+.title = "测量两个代码段之间的经过时间",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+[`Io.Clock`] 通过 `Io.Clock.awake.now(io)` 提供单调时间戳。对时间戳调用 `durationTo` 可返回以纳秒为单位的 `Duration`。
+
+如需休眠，使用 [`Io.sleep`] 并传入 `Duration` 值。
+
+[]($code.siteAsset('src/date-time/elapsed-time.zig').language('zig'))
+
+[`Io.Clock`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.Clock
+[`Io.sleep`]: https://ziglang.org/documentation/0.16.0/std/#std.Io.sleep

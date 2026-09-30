@@ -1,0 +1,12 @@
+---
+.title = "Read and Write Bytes with Io Interfaces",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Writer` and `std.Io.Reader` are the common byte interfaces used by memory buffers, files,
+and network streams. This example formats data into a fixed buffer, then reads a delimiter from
+the resulting bytes.
+
+[]($code.siteAsset('src/io/io-reader-writer.zig').language('zig'))

@@ -1,0 +1,410 @@
+---
+.title = "Io",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Zig 0.16 引入的 `std.Io` 不只是旧版 `std.io` 的改名。`std.Io` 是应用程序
+与操作系统 I/O 之间的
+统一边界：它承载具体实现，显式表达阻塞与取消行为，并让文件、套接字、
+时钟、随机数、进程和并发任务使用同一套上下文。
+
+## 为什么需要 `std.Io`
+
+操作系统 I/O 不只是读写字节。真实程序还需要路径、句柄、套接字、DNS、
+时钟、定时器、子进程、随机数、取消和同步。如果每个子系统都选择自己
+的全局 API 或平台系统调用，代码就很难测试；函数会阻塞、如何取消、
+需要管理哪些资源，也都会隐藏在实现细节中。
+
+Zig 0.16 将这些能力放进同一个上下文。文件、网络流、时间、随机数和
+任务调度都可以接收同一个 `std.Io` 值。这样标准库可以集中处理平台
+差异，应用也可以在不重写业务逻辑的情况下选择 threaded 或 evented
+后端。同时，资源所有权和取消语义成为 API 的一部分，而不是未写明的
+约定。
+
+## 当前定义与实现
+
+VTable 按以下类别组织：
+
+- 任务调度与取消；
+- 目录与文件；
+- 子进程与当前工作目录；
+- 时间、休眠与随机数；
+- IP/Unix 网络；
+- 内存映射与同步原语。
+
+大多数操作返回错误联合。应在能够补充上下文的层处理错误，不要把 I/O
+失败悄悄转换成成功的空结果。
+
+### 这个接口是如何定义的
+
+从概念上看，`std.Io` 是一个类型擦除的实现指针，加上一张操作表：
+
+```zig
+pub const Io = struct {
+    userdata: ?*anyopaque,
+    vtable: *const VTable,
+};
+
+pub const VTable = struct {
+    async: *const fn (...) ?*AnyFuture,
+    concurrent: *const fn (...) ConcurrentError!*AnyFuture,
+    await: *const fn (...) void,
+    cancel: *const fn (...) void,
+    groupAsync: *const fn (...) void,
+    groupConcurrent: *const fn (...) ConcurrentError!void,
+    groupAwait: *const fn (...) Cancelable!void,
+    groupCancel: *const fn (...) void,
+    checkCancel: *const fn (...) Cancelable!void,
+    operate: *const fn (...) Cancelable!Operation.Result,
+    // 后面还有文件、目录、进程、时钟、随机数和网络操作。
+};
+```
+
+实际 Zig 声明为每个 callback 提供了完整的类型签名；上面的省略号只
+用于展示结构，不能直接复制来实现后端。`userdata` 指向后端状态，
+每个公开的 `std.Io` 函数都会把这个状态和类型化参数传给一项 vtable
+操作。因此调用方可以用同一个 `io` 值处理文件、套接字、超时和任务，
+不需要知道后端是阻塞线程还是事件循环。
+
+这里有两个相关的抽象层：
+
+1. `Operation` 是 `io.operate` 和批处理使用的底层 union，包括文件
+   流式读写、设备 I/O 和网络接收等变体。
+2. 更高层的任务 API（`async`、`concurrent`、`Group`、`Select`）
+   负责调度函数，并通过同一张 vtable 等待和取消。
+
+VTable 还包含 `recancel`、取消保护、futex 等待、批处理等待、目录与
+文件 callback、进程 callback、时钟、随机数和网络 callback。自定义后端
+必须实现完整契约，包括资源释放和取消语义；应用代码通常应使用
+`std.Io.Threaded`、`std.Io.Evented` 或测试实现，而不是自己构造 vtable。
+
+### VTable 字段完整对应关系
+
+下面按字段列出了 Zig 0.16 `VTable` 的完整分组。后文介绍的公开 API
+最终都建立在这些 callback 之上：
+
+| VTable 字段 | 职责 |
+| --- | --- |
+| `crashHandler` | 后端定义的不可恢复 I/O 错误处理。 |
+| `async`、`concurrent`、`await`、`cancel` | 单个任务及其 `Future`。 |
+| `groupAsync`、`groupConcurrent`、`groupAwait`、`groupCancel` | 任务组。 |
+| `recancel`、`swapCancelProtection`、`checkCancel` | 合作式取消状态。 |
+| `futexWait`、`futexWaitUncancelable`、`futexWake` | 底层原子等待/唤醒。 |
+| `operate` | 执行一个底层 `Operation`。 |
+| `batchAwaitAsync`、`batchAwaitConcurrent`、`batchCancel` | 等待或取消 `Io.Batch`。 |
+| `dirCreateDir`、`dirCreateDirPath`、`dirCreateDirPathOpen`、`dirOpenDir` | 创建和打开目录。 |
+| `dirStat`、`dirStatFile`、`dirAccess`、`dirRead`、`dirClose` | 查询、访问、枚举和关闭目录。 |
+| `dirCreateFile`、`dirCreateFileAtomic`、`dirOpenFile` | 相对目录创建和打开文件。 |
+| `dirRealPath`、`dirRealPathFile`、`dirDeleteFile`、`dirDeleteDir` | 解析和删除目录项。 |
+| `dirRename`、`dirRenamePreserve`、`dirSymLink`、`dirReadLink`、`dirHardLink` | 重命名和创建链接。 |
+| `dirSetOwner`、`dirSetFileOwner`、`dirSetPermissions`、`dirSetFilePermissions` | 修改目录或目录项的所有者和权限。 |
+| `dirSetTimestamps` | 修改目录项时间戳。 |
+| `fileStat`、`fileLength`、`fileClose` | 查询和关闭打开的文件。 |
+| `fileWritePositional`、`fileWriteFileStreaming`、`fileWriteFilePositional` | 偏移写入和文件到文件复制。 |
+| `fileReadPositional`、`fileSeekBy`、`fileSeekTo`、`fileSync` | 偏移读取、定位和持久化。 |
+| `fileIsTty`、`fileEnableAnsiEscapeCodes`、`fileSupportsAnsiEscapeCodes` | 终端检测和设置。 |
+| `fileSetLength`、`fileSetOwner`、`fileSetPermissions`、`fileSetTimestamps` | 修改文件元数据。 |
+| `fileLock`、`fileTryLock`、`fileUnlock`、`fileDowngradeLock` | 文件锁。 |
+| `fileRealPath`、`fileHardLink` | 解析文件路径和创建硬链接。 |
+| `fileMemoryMapCreate`、`fileMemoryMapDestroy`、`fileMemoryMapSetLength`、`fileMemoryMapRead`、`fileMemoryMapWrite` | 管理文件映射存储。 |
+| `processExecutableOpen`、`processExecutablePath` | 查找和打开当前可执行文件。 |
+| `lockStderr`、`tryLockStderr`、`unlockStderr` | 串行化诊断输出。 |
+| `processCurrentPath`、`processSetCurrentDir`、`processSetCurrentPath` | 查询或修改工作目录。 |
+| `processReplace`、`processReplacePath` | 替换当前进程。 |
+| `processSpawn`、`processSpawnPath`、`childWait`、`childKill` | 启动、等待和终止子进程。 |
+| `progressParentFile` | 将进度报告连接到文件。 |
+| `now`、`clockResolution`、`sleep` | 时钟、精度和休眠。 |
+| `random`、`randomSecure` | 普通随机数和密码学安全随机字节。 |
+| `netListenIp`、`netAccept`、`netBindIp`、`netConnectIp` | IPv4/IPv6 服务端和客户端套接字。 |
+| `netListenUnix`、`netConnectUnix`、`netSocketCreatePair` | Unix 套接字和 socket pair。 |
+| `netSend`、`netRead`、`netWrite`、`netWriteFile` | 数据报、流和文件到网络发送。 |
+| `netClose`、`netShutdown` | 网络资源生命周期。 |
+| `netInterfaceNameResolve`、`netInterfaceName`、`netLookup` | 网卡名称和 DNS 查询。 |
+
+### 实现方式
+
+`std.Io.Threaded` 是通常的阻塞实现。平台支持时，`std.Io.Evented` 会选择
+事件后端（Linux 上是 `io_uring`，部分 BSD 和 Apple 平台上是 `kqueue`
+或 Dispatch）。`std.Io` 还提供用于测试的 `failing` 实现以及
+`Threaded` 的进程级默认实现。业务代码应该依赖 `std.Io`，而不是依赖
+某个具体后端。
+
+## 进程集成
+
+`std.process.Init` 是操作系统资源和应用代码之间的桥梁：
+
+- `init.io`：默认 I/O 上下文；
+- `init.gpa`：通用分配器；
+- `init.arena`：进程生命周期的 arena；
+- `init.minimal.args`：惰性命令行参数；
+- `init.environ_map`：解析后的环境变量；
+- `init.preopens`：WASI 风格的预打开目录。
+
+如果参数可以流式处理，使用 `init.minimal.args.iterate()`；需要按索引访问
+时，使用 `toSlice(init.arena.allocator())`。环境变量和参数的所有权应留在
+进程上下文中；传给辅助函数时，传入 map 或由分配器管理的切片。
+
+## 用法：I/O 是显式依赖
+
+推荐入口是 `pub fn main(init: std.process.Init) !void`。`init.io` 是默认的
+`std.Io` 实现，`init.gpa`、`init.arena`、`init.minimal.args`、
+`init.environ_map` 和 `init.preopens` 提供进程的其他资源。把 `io` 传给
+所有执行 I/O 的函数，不要在函数内部读取隐藏的全局状态：
+
+```zig
+const std = @import("std");
+
+pub fn main(init: std.process.Init) !void {
+    try printGreeting(init.io, "Zig");
+}
+
+fn printGreeting(io: std.Io, name: []const u8) !void {
+    try std.Io.File.stdout().writeStreamingAll(io, "Hello, ");
+    try std.Io.File.stdout().writeStreamingAll(io, name);
+    try std.Io.File.stdout().writeStreamingAll(io, "!\n");
+}
+```
+
+这样依赖就是可测试、可移植的。测试时可以给辅助函数传入不同的
+`std.Io` 实现；同一个应用也可以在不改变业务逻辑的情况下使用
+threaded、evented 或 failing 后端。应用只依赖稳定接口，具体实现只在
+进程边界选择。
+
+## Reader 与 Writer
+
+`std.Io.Reader` 和 `std.Io.Writer` 是字节流接口，将处理字节的算法与
+字节的来源或目的地分离。主要构造函数和适配器如下：
+
+| API | 用途 |
+| --- | --- |
+| `Reader.fixed(bytes)` | 从内存字节切片读取。 |
+| `Reader.limited(limit, buffer)` | 暴露另一个 reader 的有界视图。 |
+| `Writer.fixed(buffer)` | 写入调用方拥有的内存。 |
+| `Writer.Allocating.init(gpa)` | 使用分配器动态增长输出。 |
+| `Reader.hashed` / `Writer.hashed` | 经过流时同时计算哈希。 |
+| `Reader.stream` / `Writer.sendFile` | 在流和文件之间复制数据。 |
+
+Reader 的操作包括 `readVec`、`readVecAll`、`readSliceAll`、`readAlloc`、
+`peek`、`take`、`takeArray`、`fill`、`peekByte`、`takeByte`，分隔符操作
+（`takeDelimiter`、`peekDelimiterExclusive`、`streamDelimiter`），以及
+二进制操作（`takeVarInt`、`takeLeb128`、`takeEnum`、`takeStructPointer`）。
+需要完整载荷时使用 `readSliceAll` 或 `streamExact`；单次 read 允许只返回
+部分数据。
+
+Writer 的操作包括 `write`、`writeAll`、`writeVecAll`、`writeByte`、
+`splatByteAll`、`print`、`writeLeb128`、`writeSleb128`、`writeUleb128`、
+`sendFile`、`alignBuffer`、`flush` 和 `buffered`。`write` 可能只写入
+部分数据；写完整字节切片应使用 `writeAll`。`print` 直接在 writer 上
+完成 Zig 格式化，不需要旧版单独的 formatter。
+
+当最大尺寸已知时使用 fixed writer：
+
+```zig
+var buffer: [128]u8 = undefined;
+var writer = std.Io.Writer.fixed(&buffer);
+try writer.print("count = {d}\n", .{7});
+const output = writer.buffered();
+```
+
+输出大小动态变化时使用 `Writer.Allocating`。重要生命周期方法包括
+`init`、`initCapacity`、`initOwnedSlice`、`written`、`toOwnedSlice`、
+`ensureTotalCapacity`、`clearRetainingCapacity`、`shrinkRetainingCapacity`
+和 `deinit`。调用 `toOwnedSlice` 转移所有权前，存储由 allocator 管理。
+
+Reader 和 Writer 可以层层组合。文件 reader 可以先经过解析器、哈希
+reader，再交给网络 writer，而不需要修改解析器。调用 `peek`、`toss`、
+`rebase` 或 `flush` 时，要明确处理保留的缓冲数据。
+
+## 文件与目录
+
+`std.Io.Dir` 表示目录能力，`std.Io.File` 表示打开的文件句柄。优先使用
+目录相对操作：`Dir.cwd().openFile(io, path, options)` 不需要反复拼接绝对
+路径，也能减少容易产生竞态的“先检查、后使用”流程。
+
+### `std.Io.Dir`
+
+目录 API 包括：
+
+- 查询：`cwd`、`stat`、`statFile`、`access`、`realPath`、
+  `realPathFile` 及其 absolute/allocating 变体；
+- 打开：`openDir`、`openFile`、`createFile`、`createFileAtomic`；
+- 内容：`readFile`、`readFileAlloc`、`writeFile`、`updateFile`；
+- 修改目录：`createDir`、`createDirPath`、`deleteFile`、`deleteDir`、
+  `deleteTree`、`rename`、`renamePreserve`、`copyFile`、`hardLink`；
+- 链接和元数据：`symLink`、`readLink`、`setPermissions`、`setOwner`、
+  `setTimestamps`、`setTimestampsNow`；
+- 遍历：`iterate`、`walk`、`walkSelectively`。
+
+`iterate` 读取直接子项；`walk` 递归访问目录树并且必须 `deinit`。
+`walkSelectively` 允许程序只对需要深入的目录调用 `enter`，适合大多数
+目录不应打开的场景。
+
+### `std.Io.File`
+
+文件 API 包括 `stdin`、`stdout`、`stderr`、`stat`、`length`、`sync`、
+`setLength`、`setPermissions`、`setOwner`、`setTimestamps`、`realPath`、
+`hardLink` 和 `createMemoryMap`。数据访问使用：
+
+- `readStreaming`、`writeStreaming`：顺序访问；
+- `readPositional`、`readPositionalAll`、`writePositional`、
+  `writePositionalAll`：显式偏移访问；
+- `reader` / `readerStreaming`、`writer` / `writerStreaming`：
+  获取带缓冲的 Reader/Writer 适配器；
+- `lock`、`tryLock`、`unlock`、`downgradeLock`：文件锁；
+- `MemoryMap.create`、`read`、`write`、`setLength`、`destroy`：
+  内存映射 I/O。
+
+打开的句柄是资源。每个 `File` 和 `Dir` 必须且只能关闭一次，并把成功
+打开后的 `defer` 放在打开操作附近。如果文件必须先关闭再以其他模式打开，
+使用内部作用域明确表达生命周期。
+
+`File.Atomic` 和 `Dir.createFileAtomic` 使用“临时文件后重命名”的写入
+方式。写入并 flush 临时文件，再调用 `commit`；读者看到的要么是旧的
+完整文件，要么是新的完整文件，不会看到半写入状态。这是写配置文件和
+生成元数据的首选方式。
+
+## 网络与终端
+
+`std.Io.net` 提供 `IpAddress`（IPv4/IPv6）、`UnixAddress`、`Socket`、
+`Stream`、`Server`、`HostName` 和网卡名称解析。主要操作包括 IP
+bind/listen/connect、server accept、stream read/write、数据报发送、
+shutdown、socket pair、close、DNS 查询和网络接口查询。网络 stream
+与文件一样使用 Reader/Writer 思路。
+
+[Network](networking-web/tcp-server) 章节展示了 TCP、UDP、DNS、消息分帧、接收
+超时和 HTTP 连接复用。为每个接收或重试循环设置超时或有限重试次数，
+并区分连接关闭（读取到零字节）和成功收到载荷。
+
+`std.Io.Terminal` 提供终端颜色和模式支持。进程侧常用 API 包括
+`File.isTty`、`supportsAnsiEscapeCodes`、`enableAnsiEscapeCodes`、
+`lockStderr` 和 `tryLockStderr`。多个任务可能同时写诊断信息时，应锁定
+stderr，避免输出互相交错。
+
+## async、select 与 cancel 如何组合
+
+这些 API 是分层组合的关系，不是三种互相竞争的启动方式：
+
+- `std.Io.async(io, function, args)` 返回类型化的 `Future(Result)`。
+  函数可能立即执行，也可能被分配到一个并发执行单元。使用
+  `future.await(io)` 获取结果，并且应该只 await 一次。
+- `std.Io.concurrent(io, function, args)` 提供更强的调度保证：成功后，
+  函数已经被分配到并发执行单元。它可能返回
+  `error.ConcurrencyUnavailable`，只有确实需要这个保证时才使用。
+- `Future.cancel(io)` 请求取消并等待结果。任务会在下一个取消点观察
+  请求，例如可取消的 I/O 调用或 `io.checkCancel()`；它不是立即杀死线程。
+- `std.Io.Group` 管理多个任务，但不返回每个任务的值。使用
+  `group.await(io)` 等待全部完成，或 `group.cancel(io)` 请求全部取消。
+- `std.Io.Select(U)` 管理多个任务，并把完成的值放进 tagged union `U`。
+  使用 `select.await()` 等待下一个结果，或使用 `select.awaitMany()`
+  批量获取结果。
+
+`Select` 是“等待最先完成者”这一竞速模式的标准组合方式：
+
+```zig
+const Result = union(enum) {
+    dns: []const u8,
+    timeout: void,
+};
+
+var result_buffer: [2]Result = undefined;
+var select = std.Io.Select(Result).init(io, &result_buffer);
+
+select.async(.dns, resolveName, .{io});
+select.async(.timeout, waitBriefly, .{io});
+
+const result = try select.await();
+switch (result) {
+    .dns => |address| useAddress(address),
+    .timeout => waitExpired(),
+}
+
+// 取消并 join 所有没有赢得竞速的任务。
+select.cancelDiscard();
+```
+
+实际代码中，`resolveName` 和 `waitBriefly` 必须返回所选 union 字段
+对应的确切载荷类型。Select 拥有这些任务的资源，因此离开作用域前必须
+await 或 cancel。如果任务可能返回已分配对象，应反复调用 `select.cancel()`
+来取出并释放所有剩余结果，而不是使用会丢弃所有结果的
+`cancelDiscard()`。结果缓冲区必须足够容纳取消 join 期间可能完成的任务。
+
+因此组合流程通常是：
+
+1. 将独立操作写成接收 `std.Io` 的小函数。
+2. 单个操作使用 `async` 并保留 `Future`，竞速场景使用 `Select`。
+3. await 第一个有用结果。
+4. 取消失败者，并在释放其输入缓冲区、文件、套接字或 allocator 前
+   join 它们。
+5. 除非调用方明确拥有取消边界，否则继续传播 `error.Canceled`。
+
+如果不需要各个任务的返回值，可以使用 `Group` 扇出执行：
+
+```zig
+var group: std.Io.Group = .init;
+errdefer group.cancel(io);
+
+group.async(io, worker, .{io, item_a});
+group.async(io, worker, .{io, item_b});
+try group.await(io);
+```
+
+`Group.async` 和 `Group.concurrent` 是顶层 API 的分组版本；
+`Select.async` 和 `Select.concurrent` 则是在分组的基础上再把 tagged
+结果放入队列。`async` 更具可移植性，因为单线程阻塞后端可能直接内联
+执行函数；只有确实需要并行进展时才选择 `concurrent`。
+
+## 时间、休眠、随机数与取消
+
+`Clock` 有 `.real`、`.awake` 和 `.boot` 三种时钟域。使用
+`Clock.now(clock, io)` 获取时间戳，使用 `Timestamp.durationTo` 计算
+经过时间；不要比较来自不同 clock domain 的时间戳。`clockResolution`
+可以查询时钟精度。
+
+`Duration` 以纳秒表示。`Timeout` 可以表示一段时长、绝对 deadline 或
+无限等待。把 `Timeout` 传给支持有界等待的操作，并用
+`std.Io.sleep(io, duration, clock)` 替代已删除的 `std.time.sleep`。
+超时是正确性边界，而不只是性能提示。
+
+`std.Io.random` 适合非安全敏感的随机行为。密钥、token、salt 等安全
+敏感值使用 `std.Io.randomSecure(io, buffer)`；它可能返回熵不可用或
+取消错误。
+
+可取消操作返回 `std.Io.Cancelable`。在合作式边界使用 `io.checkCancel()`
+检查取消；`recancel`、`swapCancelProtection` 和 `CancelProtection` 用于
+临时保护必须完成的清理区域。取消不能替代普通错误处理。
+
+## 并发与同步
+
+`std.Io.async` 调度可能异步完成的工作并返回类型化 `Future`；
+`std.Io.concurrent` 请求一个并发执行单元。`Future.await` 等待结果，
+`Future.cancel` 请求取消。`std.Io.Group` 管理一组任务：用
+`group.async` 或 `group.concurrent` 提交工作，在生命周期结束前调用
+`group.await(io)` 或 `group.cancel(io)`。`Batch`、`Select`、`Queue` 和 `TypeErasedQueue`
+用于批处理、等待多个结果和生产者-消费者流水线。
+
+同步 API 包括 `Mutex`、`RwLock`、`Condition`、`Event`、`Semaphore`
+以及 futex 辅助函数。当操作可能在同一执行模型中阻塞时，优先使用
+这些 I/O 感知的原语。必须明确所有权：创建 group、queue 或 lock 的
+任务负责安排关闭，且不能在其他任务仍可能访问时销毁对象。
+
+## 推荐实践
+
+1. 使用 `pub fn main(init: std.process.Init) !void`，传递 `init.io`。
+2. 在分配或读取前，先选择有界 Reader/Writer 策略。
+3. 使用目录相对路径和能力检查，避免“先检查、后打开”。
+4. 明确管理句柄关闭、writer flush 和 atomic file commit 的生命周期。
+5. 为文件大小、消息大小、重试次数和等待时间设置上限。
+6. 在应用边界保留错误并补充有用上下文。
+7. 使用 `Reader.fixed`、`Writer.fixed`、`Io.failing` 和临时目录测试
+   逻辑，再测试平台特定后端。
+
+配套示例覆盖每个公开的 VTable 分组：[Io 上下文](io/io-context)、
+[Reader 与 Writer](io/io-reader-writer)、[动态 Writer](io/io-allocating-writer)、
+[文件与目录](io/io-file-dir)、[时钟与超时](io/io-clock-timeout)、
+[安全随机数](io/io-random)、[任务与取消](io/io-tasks)、
+[同步与队列](io/io-sync)、[底层 Batch](io/io-batch)、
+[进程与终端能力](io/io-process-terminal)、[内存映射](io/io-memory-map)
+以及 [Io 网络](io/io-network)。文件系统和网络章节可能展示相似的
+操作系统动作，但这里从 `std.Io` 接口和 VTable 的角度解释这些动作。

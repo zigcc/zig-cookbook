@@ -1,0 +1,12 @@
+---
+.title = "Submit Low-Level Io Operations in a Batch",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Operation` is the lower-level interface beneath `Future` and `Select`.
+`std.Io.Batch` submits several file, device, or network operations, reports
+completions by index, and can cancel pending operations.
+
+[]($code.siteAsset('src/io/io-batch.zig').language('zig'))

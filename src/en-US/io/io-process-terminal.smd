@@ -1,0 +1,12 @@
+---
+.title = "Use Io Process and Terminal Capabilities",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+The process-facing Io APIs expose the current path and executable path without
+global state. File terminal APIs report whether output is a TTY and whether ANSI
+escape codes are supported.
+
+[]($code.siteAsset('src/io/io-process-terminal.zig').language('zig'))

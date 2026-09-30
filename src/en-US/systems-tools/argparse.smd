@@ -1,0 +1,14 @@
+---
+.title = "Argument Parsing",
+.date = "2026-09-28",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Command line arguments are available through `std.process.Init`. This small parser walks through
+them once and recognizes one flag, one option with a value, and positional arguments.
+
+It uses only Zig's standard library, so the parsing logic is visible instead of hidden behind a
+package. The fixed-size file list also keeps memory ownership simple.
+
+[]($code.siteAsset('src/systems-tools/argparse.zig').language('zig'))

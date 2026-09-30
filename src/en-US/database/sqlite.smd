@@ -1,0 +1,12 @@
+---
+.title = "SQLite",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Although there are some [wrapper package](https://github.com/vrischmann/zig-sqlite) options for SQLite in Zig, they are unstable. So here we will introduce the [C API interface](https://www.sqlite.org/cintro.html) via `addTranslateC`.
+
+Data models are introduced in the Database section.
+
+[]($code.siteAsset('src/database/sqlite.zig').language('zig'))

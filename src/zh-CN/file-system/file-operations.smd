@@ -1,0 +1,11 @@
+---
+.title = "创建和管理文件",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Dir` 提供创建、复制、重命名和删除操作。本例会清理自己创建的
+目录，因此可以重复运行。
+
+[]($code.siteAsset('src/file-system/file-operations.zig').language('zig'))

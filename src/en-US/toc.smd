@@ -9,105 +9,91 @@
 
 - File System
 
-  - [Read file line by line](01-01-read-file-line-by-line)
-  - [Mmap file](01-02-mmap-file)
-  - [Check file existence](01-03-file-exists)
-  - [Recursively find recent files](01-04-iterate-dir)
-  - [Build portable paths](01-05-paths)
-  - [Create and manage files](01-06-file-operations)
-  - [Watch files with platform APIs](01-07-file-watching)
-  - [Temporary files and atomic writes](01-08-atomic-writes)
-  - [Create a TAR archive](01-09-tar-archive)
+  - [Read file line by line](file-system/read-file-line-by-line)
+  - [Mmap file](file-system/mmap-file)
+  - [Check file existence](file-system/file-exists)
+  - [Recursively find recent files](file-system/iterate-dir)
+  - [Build portable paths](file-system/paths)
+  - [Create and manage files](file-system/file-operations)
+  - [Watch files with platform APIs](file-system/file-watching)
+  - [Temporary files and atomic writes](file-system/atomic-writes)
+  - [Create a TAR archive](file-system/tar-archive)
 
 - Cryptography
 
-  - [Calculate SHA-256 digest of a file](02-01-sha-digest)
-  - [Salt and hash a password with PBKDF2](02-02-pbkdf2)
-  - [Salt and hash a password with Argon2](02-03-argon2)
+  - [Calculate SHA-256 digest of a file](cryptography/sha-digest)
+  - [Salt and hash a password with PBKDF2](cryptography/pbkdf2)
+  - [Salt and hash a password with Argon2](cryptography/argon2)
 
 - Date and Time
 
-  - [Measure the elapsed time between two code sections](03-01-elapsed-time)
+  - [Measure the elapsed time between two code sections](date-time/elapsed-time)
 
-- Network
+- Networking and Web
 
-  - [Listen on unused port TCP/IP](04-01-tcp-server)
-  - [TCP Client](04-02-tcp-client)
-  - [UDP Echo](04-03-udp-echo)
-  - [Resolve a host name](04-04-dns-lookup)
-  - [Frame messages on a TCP stream](04-05-tcp-framing)
-  - [Bound a network receive with a timeout](04-06-network-timeout)
-  - [Retry HTTP failures and reuse connections](04-07-http-retry-reuse)
+  - [Listen on unused port TCP/IP](networking-web/tcp-server)
+  - [TCP Client](networking-web/tcp-client)
+  - [UDP Echo](networking-web/udp-echo)
+  - [Resolve a host name](networking-web/dns-lookup)
+  - [Frame messages on a TCP stream](networking-web/tcp-framing)
+  - [Bound a network receive with a timeout](networking-web/network-timeout)
+  - [Retry HTTP failures and reuse connections](networking-web/http-retry-reuse)
+  - [HTTP Get](networking-web/http-get)
+  - [HTTP Post](networking-web/http-post)
+  - [HTTP Server(std)](networking-web/http-server-std)
 
-- Web Programming
+- Algorithms and Data Structures
 
-  - [HTTP Get](05-01-http-get)
-  - [HTTP Post](05-02-http-post)
-  - [HTTP Server(std)](05-03-http-server-std)
-
-- Algorithms
-
-  - [Generate Random Values](06-01-rand)
-
-- Concurrency
-
-  - [Explicit Threads](07-01-spawn)
-  - [Shared Data](07-02-shared-data)
-  - [Thread pool](07-03-threadpool)
-  - [Run Once](07-04-run-once)
-
-- Operating System
-
-  - [Processor](08-01-cpu-count)
-  - [External Command](08-02-external)
-
-- Development Tools
-
-  - [Versioning](09-01-semver)
-
-- Encoding
-
-  - [(De)serialize JSON](10-01-json)
-  - [(De)serialize Zon](10-02-zon)
-  - [Encode and decode base64](10-03-base64)
+  - [Generate Random Values](algorithms-data-structures/rand)
+  - [Bitfield](algorithms-data-structures/bitfield)
+  - [Singly Linked List](algorithms-data-structures/singly-linked-list)
+  - [Doubly Linked List](algorithms-data-structures/doubly-linked-list)
 
 - Mathematics
 
-  - [Complex Numbers](11-01-complex-numbers)
+  - [Complex Numbers](algorithms-data-structures/complex-numbers)
 
-- Data Structures
+- Concurrency
 
-  - [Bitfield](12-01-bitfield)
-  - [Singly Linked List](12-02-singly-linked-list)
-  - [Doubly Linked List](12-03-doubly-linked-list)
+  - [Explicit Threads](concurrency/spawn)
+  - [Shared Data](concurrency/shared-data)
+  - [Thread pool](concurrency/threadpool)
+  - [Run Once](concurrency/run-once)
 
-- Command line
+- Systems and Tools
 
-  - [Argument Parsing Without a Library](13-01-argparse)
-  - [Argument Parsing with structargs](13-02-structargs)
-  - ANSI Terminal
+  - [Processor](systems-tools/cpu-count)
+  - [External Command](systems-tools/external)
+  - [Versioning](systems-tools/semver)
+  - [Argument Parsing Without a Library](systems-tools/argparse)
+  - [Argument Parsing with structargs](systems-tools/structargs)
+  - [ANSI Terminal](systems-tools/ansi-terminal)
 
-- [14. Database](14-database)
+- Encoding and Text Processing
 
-  - [SQLite](14-01-sqlite)
-  - [Postgres](14-02-postgres)
-  - [MySQL](14-03-mysql)
+  - [(De)serialize JSON](encoding-text-processing/json)
+  - [(De)serialize Zon](encoding-text-processing/zon)
+  - [Encode and decode base64](encoding-text-processing/base64)
+  - [Regex Expressions](encoding-text-processing/regex)
+  - [String Parsing](encoding-text-processing/string)
 
-- Text Processing
-  - [Regex Expressions](15-01-regex)
-  - [String Parsing](15-02-string)
+- [Database](database)
 
-- [16. Io](16-io)
+  - [SQLite](database/sqlite)
+  - [Postgres](database/postgres)
+  - [MySQL](database/mysql)
 
-  - [Pass the Io Context Through an Application](16-01-io-context)
-  - [Read and Write Bytes with Io Interfaces](16-02-io-reader-writer)
-  - [Build Dynamic Output with Io.Writer.Allocating](16-03-io-allocating-writer)
-  - [Use Io.Dir and Io.File Handles](16-04-io-file-dir)
-  - [Measure and Bound Work with Io Clock and Timeout](16-05-io-clock-timeout)
-  - [Get Secure Random Bytes through Io](16-06-io-random)
-  - [Compose Io Tasks with Async, Groups, Select, and Cancel](16-07-io-tasks)
-  - [Coordinate Io Work with Synchronization Primitives](16-08-io-sync)
-  - [Submit Low-Level Io Operations in a Batch](16-09-io-batch)
-  - [Use Io Process and Terminal Capabilities](16-10-io-process-terminal)
-  - [Synchronize a File with Io MemoryMap](16-11-io-memory-map)
-  - [Resolve Hosts through Io Networking](16-12-io-network)
+- [Io](io)
+
+  - [Pass the Io Context Through an Application](io/io-context)
+  - [Read and Write Bytes with Io Interfaces](io/io-reader-writer)
+  - [Build Dynamic Output with Io.Writer.Allocating](io/io-allocating-writer)
+  - [Use Io.Dir and Io.File Handles](io/io-file-dir)
+  - [Measure and Bound Work with Io Clock and Timeout](io/io-clock-timeout)
+  - [Get Secure Random Bytes through Io](io/io-random)
+  - [Compose Io Tasks with Async, Groups, Select, and Cancel](io/io-tasks)
+  - [Coordinate Io Work with Synchronization Primitives](io/io-sync)
+  - [Submit Low-Level Io Operations in a Batch](io/io-batch)
+  - [Use Io Process and Terminal Capabilities](io/io-process-terminal)
+  - [Synchronize a File with Io MemoryMap](io/io-memory-map)
+  - [Resolve Hosts through Io Networking](io/io-network)

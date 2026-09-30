@@ -1,0 +1,17 @@
+---
+.title = "Serialize and deserialize JSON",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+The [`std.json`] module provides [`parseFromSlice`] for deserializing JSON, and [`json.Stringify`] struct for serializing values back to JSON via an `Io.Writer.Allocating`.
+
+The example below shows a `[]u8` of JSON being parsed. Compare each member one by one.
+Then, we modify the `verified` field to `false` and serialize it back into a JSON string.
+
+[]($code.siteAsset('src/encoding-text-processing/json.zig').language('zig'))
+
+[`std.json`]: https://ziglang.org/documentation/0.16.0/std/#std.json
+[`json.Stringify`]: https://ziglang.org/documentation/0.16.0/std/#std.json.Stringify
+[`parsefromslice`]: https://ziglang.org/documentation/0.16.0/std/#std.json.parseFromSlice

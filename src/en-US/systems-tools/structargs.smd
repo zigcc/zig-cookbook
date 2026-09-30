@@ -1,0 +1,22 @@
+---
+.title = "Argument Parsing with structargs",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Parsing arguments is common in command line programs and there are some packages in Zig to make this
+task easier. To name a few:
+
+- [Hejsil/zig-clap](https://github.com/Hejsil/zig-clap)
+- [MasterQ32/zig-args](https://github.com/MasterQ32/zig-args/)
+- [structargs](https://zigcli.liujiacai.net/)
+
+[Manual parsing](systems-tools/argparse) is a good fit for small programs with a few options. For larger or
+more complex command line interfaces, a mature argument-parsing library is usually a better choice
+because it can provide consistent help text, validation, subcommands, and error handling.
+
+Here we use `structargs` from the [zigcli](https://github.com/jiacai2050/zigcli) toolkit. This
+package maps command line options to fields in a Zig struct.
+
+[]($code.siteAsset('src/systems-tools/structargs.zig').language('zig'))

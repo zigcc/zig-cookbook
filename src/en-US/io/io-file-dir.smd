@@ -1,0 +1,12 @@
+---
+.title = "Use Io.Dir and Io.File Handles",
+.date = "2026-09-29",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.Dir` opens paths relative to a directory, while `std.Io.File` represents an open file
+handle. Every operation receives the same `std.Io` context. The example writes, closes, reopens,
+and reads a temporary file, then removes it.
+
+[]($code.siteAsset('src/io/io-file-dir.zig').language('zig'))

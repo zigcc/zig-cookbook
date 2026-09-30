@@ -1,0 +1,12 @@
+---
+.title = "逐行读取文件",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.Io.File.reader` API 使用固定大小的缓冲区读取文件，不需要将整个文件加载到内存中。
+它提供了多种方法来读取文件内容，例如 `readAll`、`readInt` 等。这里使用 `takeDelimiter`
+方法按行分割读取。
+
+[]($code.siteAsset('src/file-system/read-file-line-by-line.zig').language('zig'))

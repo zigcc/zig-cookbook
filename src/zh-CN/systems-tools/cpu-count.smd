@@ -1,0 +1,12 @@
+---
+.title = "检查逻辑 CPU 核心数",
+.date = "2024-01-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+使用 [`std.Thread.getCpuCount`] 显示当前机器中的逻辑 CPU 核心数。
+
+[]($code.siteAsset('src/systems-tools/cpu-count.zig').language('zig'))
+
+[`std.Thread.getCpuCount`]: https://ziglang.org/documentation/0.16.0/std/#std.Thread.getCpuCount

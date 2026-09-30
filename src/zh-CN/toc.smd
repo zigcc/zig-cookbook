@@ -9,105 +9,92 @@
 
 - 文件系统
 
-  - [逐行读取文件](01-01-read-file-line-by-line)
-  - [内存映射文件](01-02-mmap-file)
-  - [检查文件是否存在](01-03-file-exists)
-  - [递归查找最近文件](01-04-iterate-dir)
-  - [构建跨平台路径](01-05-paths)
-  - [创建和管理文件](01-06-file-operations)
-  - [使用平台 API 监听文件](01-07-file-watching)
-  - [临时文件和原子写入](01-08-atomic-writes)
-  - [创建 TAR 归档](01-09-tar-archive)
+  - [逐行读取文件](file-system/read-file-line-by-line)
+  - [内存映射文件](file-system/mmap-file)
+  - [检查文件是否存在](file-system/file-exists)
+  - [递归查找最近文件](file-system/iterate-dir)
+  - [构建跨平台路径](file-system/paths)
+  - [创建和管理文件](file-system/file-operations)
+  - [使用平台 API 监听文件](file-system/file-watching)
+  - [临时文件和原子写入](file-system/atomic-writes)
+  - [创建 TAR 归档](file-system/tar-archive)
 
 - 加密
 
-  - [计算文件的 SHA-256 摘要](02-01-sha-digest)
-  - [使用 PBKDF2 对密码进行加盐和哈希](02-02-pbkdf2)
-  - [使用 Argon2 对密码进行加盐和哈希](02-03-argon2)
+  - [计算文件的 SHA-256 摘要](cryptography/sha-digest)
+  - [使用 PBKDF2 对密码进行加盐和哈希](cryptography/pbkdf2)
+  - [使用 Argon2 对密码进行加盐和哈希](cryptography/argon2)
 
 - 日期和时间
 
-  - [测量两个代码段之间的经过时间](03-01-elapsed-time)
+  - [测量两个代码段之间的经过时间](date-time/elapsed-time)
 
-- 网络
+- 网络与 Web
 
-  - [监听未使用的 TCP/IP 端口](04-01-tcp-server)
-  - [TCP 客户端](04-02-tcp-client)
-  - [UDP 回显](04-03-udp-echo)
-  - [解析主机名](04-04-dns-lookup)
-  - [在 TCP 流上进行消息分帧](04-05-tcp-framing)
-  - [为网络接收设置超时](04-06-network-timeout)
-  - [重试 HTTP 失败并复用连接](04-07-http-retry-reuse)
+  - [监听未使用的 TCP/IP 端口](networking-web/tcp-server)
+  - [TCP 客户端](networking-web/tcp-client)
+  - [UDP 回显](networking-web/udp-echo)
+  - [解析主机名](networking-web/dns-lookup)
+  - [在 TCP 流上进行消息分帧](networking-web/tcp-framing)
+  - [为网络接收设置超时](networking-web/network-timeout)
+  - [重试 HTTP 失败并复用连接](networking-web/http-retry-reuse)
+  - [HTTP Get](networking-web/http-get)
+  - [HTTP Post](networking-web/http-post)
+  - [HTTP Server(std)](networking-web/http-server-std)
 
-- Web 编程
+- 算法与数据结构
 
-  - [HTTP Get](05-01-http-get)
-  - [HTTP Post](05-02-http-post)
-  - [HTTP Server(std)](05-03-http-server-std)
+  - [生成随机数](algorithms-data-structures/rand)
 
-- 算法
-
-  - [生成随机数](06-01-rand)
+  - [位域](algorithms-data-structures/bitfield)
+  - [单向链表](algorithms-data-structures/singly-linked-list)
+  - [双向链表](algorithms-data-structures/doubly-linked-list)
 
 - 并发
 
-  - [显式线程](07-01-spawn)
-  - [共享数据](07-02-shared-data)
-  - [线程池](07-03-threadpool)
-  - [运行一次](07-04-run-once)
+  - [显式线程](concurrency/spawn)
+  - [共享数据](concurrency/shared-data)
+  - [线程池](concurrency/threadpool)
+  - [运行一次](concurrency/run-once)
 
-- 操作系统
+- 系统与工具
 
-  - [处理器](08-01-cpu-count)
-  - [外部命令](08-02-external)
+  - [处理器](systems-tools/cpu-count)
+  - [外部命令](systems-tools/external)
+  - [版本控制](systems-tools/semver)
+  - [不使用库解析命令行参数](systems-tools/argparse)
+  - [使用 structargs 解析命令行参数](systems-tools/structargs)
+  - [ANSI 终端](systems-tools/ansi-terminal)
 
-- 开发工具
+- 编码与文本处理
 
-  - [版本控制](09-01-semver)
-
-- 编码
-
-  - [JSON 序列化/反序列化](10-01-json)
-  - [Zon 序列化/反序列化](10-02-zon)
-  - [Base64 编码和解码](10-03-base64)
+  - [JSON 序列化/反序列化](encoding-text-processing/json)
+  - [Zon 序列化/反序列化](encoding-text-processing/zon)
+  - [Base64 编码和解码](encoding-text-processing/base64)
+  - [正则表达式](encoding-text-processing/regex)
+  - [字符串解析](encoding-text-processing/string)
 
 - 数学
 
-  - [复数](11-01-complex-numbers)
+  - [复数](algorithms-data-structures/complex-numbers)
 
-- 数据结构
+- [14. 数据库](database)
 
-  - [位域](12-01-bitfield)
-  - [单向链表](12-02-singly-linked-list)
-  - [双向链表](12-03-doubly-linked-list)
+  - [SQLite](database/sqlite)
+  - [Postgres](database/postgres)
+  - [MySQL](database/mysql)
 
-- 命令行
+- [16. Io](io)
 
-  - [不使用库解析命令行参数](13-01-argparse)
-  - [使用 structargs 解析参数](13-02-structargs)
-  - ANSI 终端
-
-- [14. 数据库](14-database)
-
-  - [SQLite](14-01-sqlite)
-  - [Postgres](14-02-postgres)
-  - [MySQL](14-03-mysql)
-
-- 文本处理
-  - [正则表达式](15-01-regex)
-  - [字符串解析](15-02-string)
-
-- [16. Io](16-io)
-
-  - [在应用中传递 Io 上下文](16-01-io-context)
-  - [使用 Io 接口读写字节](16-02-io-reader-writer)
-  - [使用 Io.Writer.Allocating 构建动态输出](16-03-io-allocating-writer)
-  - [使用 Io.Dir 和 Io.File 句柄](16-04-io-file-dir)
-  - [使用 Io Clock 和 Timeout 测量并限制操作](16-05-io-clock-timeout)
-  - [通过 Io 获取安全随机字节](16-06-io-random)
-  - [使用 Async、Group、Select 和 Cancel 组合 Io 任务](16-07-io-tasks)
-  - [使用同步原语协调 Io 任务](16-08-io-sync)
-  - [使用 Batch 提交底层 Io 操作](16-09-io-batch)
-  - [使用 Io 的进程和终端能力](16-10-io-process-terminal)
-  - [使用 Io MemoryMap 同步文件](16-11-io-memory-map)
-  - [通过 Io 网络接口解析主机名](16-12-io-network)
+  - [在应用中传递 Io 上下文](io/io-context)
+  - [使用 Io 接口读写字节](io/io-reader-writer)
+  - [使用 Io.Writer.Allocating 构建动态输出](io/io-allocating-writer)
+  - [使用 Io.Dir 和 Io.File 句柄](io/io-file-dir)
+  - [使用 Io Clock 和 Timeout 测量并限制操作](io/io-clock-timeout)
+  - [通过 Io 获取安全随机字节](io/io-random)
+  - [使用 Async、Group、Select 和 Cancel 组合 Io 任务](io/io-tasks)
+  - [使用同步原语协调 Io 任务](io/io-sync)
+  - [使用 Batch 提交底层 Io 操作](io/io-batch)
+  - [使用 Io 的进程和终端能力](io/io-process-terminal)
+  - [使用 Io MemoryMap 同步文件](io/io-memory-map)
+  - [通过 Io 网络接口解析主机名](io/io-network)
