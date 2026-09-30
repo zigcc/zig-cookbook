@@ -42,7 +42,12 @@
       toggle.setAttribute('aria-label', 'Toggle section');
       toggle.setAttribute('aria-expanded', String(savedSections[index] === true));
       toggle.innerHTML = '<span aria-hidden="true">›</span>';
-      label?.after(toggle);
+      if (label) {
+        const wrapper = document.createElement('span');
+        wrapper.className = 'chapter-link-wrapper';
+        label.replaceWith(wrapper);
+        wrapper.append(label, toggle);
+      }
 
       if (savedSections[index] === true) item.classList.add('expanded');
 
@@ -74,7 +79,7 @@
       while (parent) {
         if (parent.classList.contains('has-children')) {
           parent.classList.add('expanded');
-          parent.querySelector(':scope > .chapter-fold-toggle')?.setAttribute('aria-expanded', 'true');
+          parent.querySelector(':scope > .chapter-link-wrapper > .chapter-fold-toggle')?.setAttribute('aria-expanded', 'true');
         }
         parent = parent.parentElement?.closest('li');
       }
