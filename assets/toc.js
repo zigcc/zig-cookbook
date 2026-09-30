@@ -2,7 +2,6 @@
   const root = document.documentElement;
   const body = document.body;
   const tocToggle = document.querySelector('#toc-toggle');
-  const sidebarCollapse = document.querySelector('#sidebar-collapse');
   const sidebarExpand = document.querySelector('#sidebar-expand');
   const search = document.querySelector('#toc-search');
   const savedSections = JSON.parse(localStorage.getItem('zig-cookbook-sections') || '{}');
@@ -47,15 +46,27 @@
 
       if (savedSections[index] === true) item.classList.add('expanded');
 
-      toggle.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
+      const toggleSection = () => {
         const expanded = item.classList.toggle('expanded');
         toggle.setAttribute('aria-expanded', String(expanded));
         const sections = JSON.parse(localStorage.getItem('zig-cookbook-sections') || '{}');
         sections[index] = expanded;
         localStorage.setItem('zig-cookbook-sections', JSON.stringify(sections));
+      };
+
+      toggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        toggleSection();
       });
+
+      if (label?.tagName !== 'A') {
+        label?.addEventListener('click', (event) => {
+          if (event.target.closest('a')) return;
+          event.preventDefault();
+          toggleSection();
+        });
+      }
     });
 
     document.querySelectorAll('.toc-nav a[aria-current="page"]').forEach((link) => {
@@ -80,7 +91,6 @@
     localStorage.setItem('zig-cookbook-sidebar', body.classList.contains('sidebar-collapsed') ? 'hidden' : 'visible');
   };
 
-  sidebarCollapse?.addEventListener('click', toggleSidebar);
   sidebarExpand?.addEventListener('click', toggleSidebar);
 
   document.querySelector('.toc-nav')?.addEventListener('click', (event) => {

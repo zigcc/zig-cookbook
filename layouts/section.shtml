@@ -19,9 +19,6 @@
           <strong :text="$i18n.get('site_title')"></strong>
         </span>
       </a>
-      <div class="sidebar-actions">
-        <button class="icon-button" id="sidebar-collapse" aria-label="Collapse sidebar">‹</button>
-      </div>
     </div>
     <label class="search">
       <span aria-hidden="true">⌕</span>
