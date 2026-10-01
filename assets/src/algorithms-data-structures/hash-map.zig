@@ -1,4 +1,4 @@
-//! Demonstrate hash map operations with std.AutoHashMap in Zig 0.16.
+//! Demonstrate hash map operations with std.AutoHashMap in Zig.
 
 const std = @import("std");
 

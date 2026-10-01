@@ -1,0 +1,23 @@
+---
+.title = "Arena Memory Allocator (ArenaAllocator)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.heap.ArenaAllocator` is one of the most idiomatic memory management patterns in Zig. It wraps an underlying backing allocator (such as the GPA or PageAllocator), allowing applications to perform numerous granular allocations without the cognitive and performance overhead of tracking individual deallocations. When the arena is deinitialized or reset, all accumulated allocations are released at once.
+
+Common use cases include:
+
+- Compilers and parsers constructing AST (abstract syntax tree) nodes;
+- Per-request lifetimes in web and network servers;
+- Complex nested graphs, trees, or parsed configuration objects.
+
+Key methods:
+
+- `std.heap.ArenaAllocator.init(child_allocator)`: Initialize an arena backed by another allocator;
+- `arena.allocator()`: Obtain a standard `std.mem.Allocator` interface for allocations;
+- `arena.deinit()`: Release all allocated memory back to the system;
+- `arena.reset(.retain_capacity)`: Invalidate all allocated items while retaining underlying memory pages, ideal for reusing the arena across request loops to minimize OS allocation overhead.
+
+[](<$code.siteAsset('src/algorithms-data-structures/arena-allocator.zig').language('zig')>)

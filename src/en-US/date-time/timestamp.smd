@@ -1,0 +1,23 @@
+---
+.title = "Unix Timestamp and Date Calculation",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+In Zig, real-world wall-clock time is obtained via `std.Io.Clock.real.now(io)`. The legacy `std.time.timestamp()` function has been superseded by the unified I/O clock architecture.
+
+The returned `Timestamp` instance provides convenient conversions across precision levels:
+
+- `now.toSeconds()`: Unix timestamp in seconds;
+- `now.toMilliseconds()`: Unix timestamp in milliseconds;
+- `now.toNanoseconds()`: Unix timestamp in nanoseconds.
+
+Combined with the `std.time.epoch` module, raw epoch seconds can be broken down into calendar components (year, month, day, hour, minute, second):
+
+- `epoch_seconds.getEpochDay()`: Obtains the day count relative to the epoch;
+- `epoch_day.calculateYearDay()`: Computes the calendar year;
+- `year_day.calculateMonthDay()`: Computes the month and day within the month;
+- `epoch_seconds.getDaySeconds()`: Provides seconds elapsed in the current day for hour, minute, and second extraction.
+
+[](<$code.siteAsset('src/date-time/timestamp.zig').language('zig')>)

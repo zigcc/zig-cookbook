@@ -1,7 +1,7 @@
 const std = @import("std");
 
 var n: u8 = 0;
-// Three-state atomic protocol (replaces std.once which was removed in Zig 0.16):
+// Three-state atomic protocol (replaces legacy std.once):
 //   0 = idle      – no thread has started the work yet
 //   1 = running   – one thread is executing the payload
 //   2 = done      – the payload has finished; all threads may proceed

@@ -1,0 +1,16 @@
+---
+.title = "信号处理与优雅退出",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在长期运行的服务（如后台守护进程、网络服务器、工作流 Worker）中，捕获操作系统信号（如用户按下 `Ctrl+C` 触发的 `SIGINT`，或进程管理器发送的 `SIGTERM`）并进行平滑退出（Graceful Shutdown）是保障数据完整性的关键实践。
+
+核心要点：
+
+- `std.posix.Sigaction`：定义信号处理行为，设置回调函数（需声明为 `callconv(.c)`）及信号掩码 `std.posix.sigemptyset()`；
+- `std.posix.sigaction(sig, &act, null)`：向操作系统注册指定信号的处理逻辑；
+- 原子标志位：在信号处理函数中，通常只进行最小限度的操作（如设置 `std.atomic.Value(bool)` 原子标志），主循环检测到标志变化后再执行刷新缓存、关闭连接等复杂清理工作，避免信号处理函数内的竞态与死锁。
+
+[](<$code.siteAsset('src/systems-tools/signals.zig').language('zig')>)

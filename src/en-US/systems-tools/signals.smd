@@ -1,0 +1,16 @@
+---
+.title = "Signal Handling and Graceful Shutdown",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+In long-running applications (such as HTTP servers, background workers, or daemons), catching operating system signals (such as `SIGINT` from `Ctrl+C` or `SIGTERM` from process supervisors) and performing a graceful shutdown is crucial for preventing state corruption and resource leaks.
+
+Key concepts:
+
+- `std.posix.Sigaction`: Configures signal response characteristics, specifying a C-calling-convention handler function (`callconv(.c)`) and an initial signal mask via `std.posix.sigemptyset()`;
+- `std.posix.sigaction(sig, &act, null)`: Registers the signal action with the OS kernel;
+- Atomic flags: Signal handlers must execute minimal, async-signal-safe logic. Setting an atomic boolean (`std.atomic.Value(bool)`) allows the main event or worker loop to detect shutdown requests and safely perform multistep cleanup (draining requests, flushing disk buffers, closing sockets).
+
+[](<$code.siteAsset('src/systems-tools/signals.zig').language('zig')>)

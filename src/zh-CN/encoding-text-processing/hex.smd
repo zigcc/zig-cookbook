@@ -1,0 +1,16 @@
+---
+.title = "十六进制编解码 (Hex)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+十六进制（Hexadecimal）编码广泛应用于哈希值展示、二进制协议调试和加密密钥表示。在 Zig 中，标准库提供了高效且零动态内存分配的 API。
+
+核心功能：
+
+- `std.fmt.bytesToHex(bytes, .lower | .upper)`：将字节切片直接编码为定长数组 `[bytes.len * 2]u8`，可指定小写或大写格式，无需堆内存分配；
+- `std.fmt.hexToBytes(out_buf, hex_str)`：将十六进制字符串解码写入预先分配的缓冲区 `out_buf`；
+- 错误处理：当输入包含非十六进制非法字符时返回 `error.InvalidCharacter`；若字符串长度为奇数则返回 `error.InvalidLength`。
+
+[](<$code.siteAsset('src/encoding-text-processing/hex.zig').language('zig')>)

@@ -1,0 +1,23 @@
+---
+.title = "区域内存分配器 (ArenaAllocator)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.heap.ArenaAllocator` 是 Zig 中极具代表性的内存管理机制。它包装一个底层的分配器（如 GPA 或 PageAllocator），允许使用者在生命周期内自由进行多次细粒度分配，而无需手动逐一释放。当 Arena 被销毁或重置时，所有分配的内存将被一次性快速回收。
+
+典型应用场景包括：
+
+- 编译器或解析器中的 AST（抽象语法树）节点构建；
+- 短生命周期的网络请求处理（请求结束直接整块释放）；
+- 复杂嵌套数据结构（如树、图、解析后的配置字典）的整体构建与释放。
+
+核心用法：
+
+- `std.heap.ArenaAllocator.init(child_allocator)`：创建包装底层分配器的 Arena；
+- `arena.allocator()`：获取 `std.mem.Allocator` 接口供业务代码分配使用；
+- `arena.deinit()`：整体释放 Arena 申请的所有内存；
+- `arena.reset(.retain_capacity)`：清空已分配内容但保留已申请的内存块，用于循环处理（如批处理、网络服务循环）以避免频繁向操作系统申请内存。
+
+[](<$code.siteAsset('src/algorithms-data-structures/arena-allocator.zig').language('zig')>)

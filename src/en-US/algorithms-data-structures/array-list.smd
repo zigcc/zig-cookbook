@@ -7,7 +7,7 @@
 
 `std.ArrayList` is the standard library's growable contiguous array buffer.
 
-In Zig 0.16, `std.ArrayList(T)` is unmanaged by default and initialized with `.empty`. Operations requiring memory allocation or release explicitly accept an `Allocator` parameter:
+`std.ArrayList(T)` is unmanaged by default and initialized with `.empty`. Operations requiring memory allocation or release explicitly accept an `Allocator` parameter:
 
 - `append(allocator, item)`: Append a single element to the end;
 - `appendSlice(allocator, items)`: Append a slice of elements;
@@ -17,4 +17,4 @@ In Zig 0.16, `std.ArrayList(T)` is unmanaged by default and initialized with `.e
 - `pop()`: Pop and return the last element;
 - `deinit(allocator)`: Release allocated storage.
 
-[]($code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig'))
+[](<$code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig')>)

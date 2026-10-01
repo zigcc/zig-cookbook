@@ -1,0 +1,23 @@
+---
+.title = "Unix 时间戳与日期计算",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在 Zig 中，获取当前挂钟真实时间（Wall-clock / Real time）推荐通过 `std.Io.Clock.real.now(io)` 完成，旧版本的 `std.time.timestamp()` 已被统一的 I/O 时钟机制替代。
+
+通过返回的 `Timestamp` 对象，可以方便地获取秒级、毫秒级和纳秒级 Unix 时间戳：
+
+- `now.toSeconds()`：获取 Unix 秒级时间戳；
+- `now.toMilliseconds()`：获取毫秒级时间戳；
+- `now.toNanoseconds()`：获取纳秒级时间戳。
+
+结合标准库中的 `std.time.epoch` 模块，可以将秒级时间戳解析并计算为 UTC 的年、月、日、时、分、秒等具体日历分量：
+
+- `epoch_seconds.getEpochDay()`：获取 Epoch 纪元天数；
+- `epoch_day.calculateYearDay()`：计算具体公历年份；
+- `year_day.calculateMonthDay()`：计算具体月份与当月第几天；
+- `epoch_seconds.getDaySeconds()`：获取当天已过去的秒数，并提取时、分、秒。
+
+[](<$code.siteAsset('src/date-time/timestamp.zig').language('zig')>)

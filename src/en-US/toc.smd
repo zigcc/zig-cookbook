@@ -28,6 +28,7 @@
 - Date and Time
 
   - [Measure the elapsed time between two code sections](date-time/elapsed-time)
+  - [Unix Timestamp and Date Calculation](date-time/timestamp)
 
 - Networking and Web
 
@@ -47,6 +48,7 @@
   - [Generate Random Values](algorithms-data-structures/rand)
   - [Dynamic Array (ArrayList)](algorithms-data-structures/array-list)
   - [Hash Map (HashMap)](algorithms-data-structures/hash-map)
+  - [Arena Memory Allocator (ArenaAllocator)](algorithms-data-structures/arena-allocator)
   - [Bitfield](algorithms-data-structures/bitfield)
   - [Singly Linked List](algorithms-data-structures/singly-linked-list)
   - [Doubly Linked List](algorithms-data-structures/doubly-linked-list)
@@ -63,6 +65,8 @@
 
   - [Processor](systems-tools/cpu-count)
   - [External Command](systems-tools/external)
+  - [Environment Variables](systems-tools/environment)
+  - [Signal Handling and Graceful Shutdown](systems-tools/signals)
   - [Versioning](systems-tools/semver)
   - [Argument Parsing Without a Library](systems-tools/argparse)
   - [Argument Parsing with structargs](systems-tools/structargs)
@@ -72,6 +76,7 @@
 
   - [(De)serialize JSON](encoding-text-processing/json)
   - [(De)serialize Zon](encoding-text-processing/zon)
+  - [Hexadecimal Encoding and Decoding](encoding-text-processing/hex)
   - [Encode and decode base64](encoding-text-processing/base64)
   - [Regex Expressions](encoding-text-processing/regex)
   - [String Parsing](encoding-text-processing/string)

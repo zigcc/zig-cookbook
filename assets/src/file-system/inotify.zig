@@ -1,8 +1,7 @@
 const builtin = @import("builtin");
 const std = @import("std");
 
-pub fn main(init: std.process.Init) !void {
-    _ = init;
+pub fn main() !void {
     if (comptime builtin.os.tag == .linux) {
         try watchWithInotify();
     } else {

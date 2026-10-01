@@ -1,0 +1,16 @@
+---
+.title = "Hexadecimal Encoding and Decoding",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+Hexadecimal (hex) encoding is extensively used for representing binary digests, cryptographic keys, and debugging raw packet structures. In Zig, the standard library offers zero-allocation primitives for both encoding and decoding.
+
+Key features:
+
+- `std.fmt.bytesToHex(bytes, .lower | .upper)`: Encodes a byte array into a fixed-size `[bytes.len * 2]u8` value without dynamic heap allocation, supporting both lowercase and uppercase formats;
+- `std.fmt.hexToBytes(out_buf, hex_str)`: Decodes a hexadecimal string directly into a caller-provided byte buffer;
+- Error handling: Returns `error.InvalidCharacter` upon encountering non-hexadecimal characters, and `error.InvalidLength` when the input string length is odd.
+
+[](<$code.siteAsset('src/encoding-text-processing/hex.zig').language('zig')>)

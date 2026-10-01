@@ -1,0 +1,18 @@
+---
+.title = "环境变量读取与操作",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+在 Zig 中，进程入口点 `main(init: std.process.Init)` 提供了预先加载的环境变量映射表 `init.environ_map`（类型为 `*std.process.Environ.Map`）。无需手动调用外部函数解析，即可直接读取、查询、添加及遍历环境变量。
+
+主要操作包括：
+
+- `env.get(key)`：根据键获取环境变量的值，若不存在返回 `null`；
+- `env.contains(key)`：快速判断环境变量是否存在；
+- `env.put(key, value)`：插入或更新环境变量；
+- `env.iterator()`：获取迭代器遍历所有的环境变量键值对；
+- `env.orderedRemove(key)` 或 `env.swapRemove(key)`：移除指定环境变量。
+
+[](<$code.siteAsset('src/systems-tools/environment.zig').language('zig')>)

@@ -7,7 +7,7 @@
 
 `std.ArrayList` 是 Zig 标准库中最常用的可变长连续数组容器。
 
-在 Zig 0.16 中，`std.ArrayList(T)` 默认属于非托管（unmanaged）类型，使用 `.empty` 进行初始化，在进行追加、扩容或释放等需要内存分配的操作时显式传入分配器（`Allocator`）：
+`std.ArrayList(T)` 默认属于非托管（unmanaged）类型，使用 `.empty` 进行初始化，在进行追加、扩容或释放等需要内存分配的操作时显式传入分配器（`Allocator`）：
 
 - `append(allocator, item)`：向末尾添加单个元素；
 - `appendSlice(allocator, items)`：追加元素切片；
@@ -17,4 +17,4 @@
 - `pop()`：弹出末尾元素；
 - `deinit(allocator)`：释放分配的连续内存。
 
-[]($code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig'))
+[](<$code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig')>)

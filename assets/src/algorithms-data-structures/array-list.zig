@@ -1,11 +1,11 @@
-//! Demonstrate dynamic array operations with std.ArrayList in Zig 0.16.
+//! Demonstrate dynamic array operations with std.ArrayList in Zig.
 
 const std = @import("std");
 
 pub fn main(init: std.process.Init) !void {
     const gpa = init.gpa;
 
-    // In Zig 0.16, std.ArrayList(T) is unmanaged by default and initialized with .empty.
+    // std.ArrayList(T) is unmanaged by default and initialized with .empty.
     var list: std.ArrayList(i32) = .empty;
     defer list.deinit(gpa);
 

@@ -1,0 +1,18 @@
+---
+.title = "Environment Variables",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+In Zig, the standard process entry point `main(init: std.process.Init)` provides an already populated environment variable map via `init.environ_map` (an instance of `*std.process.Environ.Map`). Applications can directly query, inspect, set, or iterate environment variables without manual OS-level parsing.
+
+Key operations:
+
+- `env.get(key)`: Looks up an environment variable value, returning `null` if not present;
+- `env.contains(key)`: Checks whether a variable exists in the environment map;
+- `env.put(key, value)`: Inserts or updates an environment variable;
+- `env.iterator()`: Returns an iterator over all key-value environment pairs;
+- `env.orderedRemove(key)` or `env.swapRemove(key)`: Deletes an entry from the map.
+
+[](<$code.siteAsset('src/systems-tools/environment.zig').language('zig')>)

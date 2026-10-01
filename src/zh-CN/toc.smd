@@ -28,6 +28,7 @@
 - 日期和时间
 
   - [测量两个代码段之间的经过时间](date-time/elapsed-time)
+  - [Unix 时间戳与日期计算](date-time/timestamp)
 
 - 网络与 Web
 
@@ -47,6 +48,7 @@
   - [生成随机数](algorithms-data-structures/rand)
   - [动态数组 (ArrayList)](algorithms-data-structures/array-list)
   - [哈希表 (HashMap)](algorithms-data-structures/hash-map)
+  - [区域内存分配器 (ArenaAllocator)](algorithms-data-structures/arena-allocator)
   - [位域](algorithms-data-structures/bitfield)
   - [单向链表](algorithms-data-structures/singly-linked-list)
   - [双向链表](algorithms-data-structures/doubly-linked-list)
@@ -63,6 +65,8 @@
 
   - [处理器](systems-tools/cpu-count)
   - [外部命令](systems-tools/external)
+  - [环境变量读取与操作](systems-tools/environment)
+  - [信号处理与优雅退出](systems-tools/signals)
   - [版本控制](systems-tools/semver)
   - [不使用库解析命令行参数](systems-tools/argparse)
   - [使用 structargs 解析命令行参数](systems-tools/structargs)
@@ -72,6 +76,7 @@
 
   - [JSON 序列化/反序列化](encoding-text-processing/json)
   - [Zon 序列化/反序列化](encoding-text-processing/zon)
+  - [十六进制编解码 (Hex)](encoding-text-processing/hex)
   - [Base64 编码和解码](encoding-text-processing/base64)
   - [正则表达式](encoding-text-processing/regex)
   - [字符串解析](encoding-text-processing/string)
