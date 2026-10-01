@@ -9,4 +9,6 @@
 handle. Every operation receives the same `std.Io` context. The example writes, closes, reopens,
 and reads a temporary file, then removes it.
 
+> 💡 For comprehensive file and directory operations, please see [Create and manage files](file-system/file-operations).
+
 []($code.siteAsset('src/io/io-file-dir.zig').language('zig'))

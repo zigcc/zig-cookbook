@@ -433,12 +433,18 @@ must not destroy it while another task can still access it.
 7. Test logic with `Reader.fixed`, `Writer.fixed`, `Io.failing`, and temporary
    directories before testing platform-specific backends.
 
-The focused examples cover every public VTable group: [Io context](io/io-context),
-[Reader and Writer](io/io-reader-writer), [allocating writers](io/io-allocating-writer),
-[files and directories](io/io-file-dir), [clocks and timeouts](io/io-clock-timeout),
-[secure randomness](io/io-random), [tasks and cancellation](io/io-tasks),
-[synchronization and queues](io/io-sync), [low-level batches](io/io-batch),
-[process and terminal capabilities](io/io-process-terminal), [memory maps](io/io-memory-map),
-and [Io networking](io/io-network). Existing File System and Network chapters
-may demonstrate similar operating-system actions, but these recipes explain the
-same actions from the `std.Io` interface and VTable perspective.
+The focused examples cover every public VTable group:
+
+- [Io Context](io/io-context)
+- [Reader and Writer](io/io-reader-writer)
+- [Allocating Writers](io/io-allocating-writer)
+- [Use Io.Dir and Io.File Handles](io/io-file-dir) (also see [Create and Manage Files](file-system/file-operations))
+- [Clocks and Timeouts](io/io-clock-timeout)
+- [Secure Random Bytes](io/io-random)
+- [Tasks and Cancellation (Async/Group/Select)](io/io-tasks)
+- [Synchronization and Queues](io/io-sync)
+- [Low-Level Batches](io/io-batch)
+- [Use Io Process and Terminal Capabilities](io/io-process-terminal) (also see [ANSI Terminal](systems-tools/ansi-terminal) and [External Command](systems-tools/external))
+- [Synchronize a File with Io MemoryMap](io/io-memory-map) (also see [Mmap File](file-system/mmap-file))
+- [Resolve Hosts through Io Networking](io/io-network) (also see [Resolve a Host Name](networking-web/dns-lookup))
+

@@ -45,12 +45,11 @@
 - Algorithms and Data Structures
 
   - [Generate Random Values](algorithms-data-structures/rand)
+  - [Dynamic Array (ArrayList)](algorithms-data-structures/array-list)
+  - [Hash Map (HashMap)](algorithms-data-structures/hash-map)
   - [Bitfield](algorithms-data-structures/bitfield)
   - [Singly Linked List](algorithms-data-structures/singly-linked-list)
   - [Doubly Linked List](algorithms-data-structures/doubly-linked-list)
-
-- Mathematics
-
   - [Complex Numbers](algorithms-data-structures/complex-numbers)
 
 - Concurrency

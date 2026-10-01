@@ -1,0 +1,20 @@
+---
+.title = "动态数组 (ArrayList)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.ArrayList` 是 Zig 标准库中最常用的可变长连续数组容器。
+
+在 Zig 0.16 中，`std.ArrayList(T)` 默认属于非托管（unmanaged）类型，使用 `.empty` 进行初始化，在进行追加、扩容或释放等需要内存分配的操作时显式传入分配器（`Allocator`）：
+
+- `append(allocator, item)`：向末尾添加单个元素；
+- `appendSlice(allocator, items)`：追加元素切片；
+- `insert(allocator, index, item)`：在指定位置插入元素（O(N)）；
+- `orderedRemove(index)`：移除指定索引处的元素并保持剩余元素顺序（O(N)）；
+- `swapRemove(index)`：将最后一个元素移至待删除位置进行快速移除（O(1)，不保证顺序）；
+- `pop()`：弹出末尾元素；
+- `deinit(allocator)`：释放分配的连续内存。
+
+[]($code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig'))

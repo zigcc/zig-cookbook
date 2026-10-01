@@ -1,0 +1,20 @@
+---
+.title = "Dynamic Array (ArrayList)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.ArrayList` is the standard library's growable contiguous array buffer.
+
+In Zig 0.16, `std.ArrayList(T)` is unmanaged by default and initialized with `.empty`. Operations requiring memory allocation or release explicitly accept an `Allocator` parameter:
+
+- `append(allocator, item)`: Append a single element to the end;
+- `appendSlice(allocator, items)`: Append a slice of elements;
+- `insert(allocator, index, item)`: Insert an element at the specified index (O(N));
+- `orderedRemove(index)`: Remove the element at index while preserving order (O(N));
+- `swapRemove(index)`: Fast removal by swapping with the last element (O(1), order not preserved);
+- `pop()`: Pop and return the last element;
+- `deinit(allocator)`: Release allocated storage.
+
+[]($code.siteAsset('src/algorithms-data-structures/array-list.zig').language('zig'))

@@ -9,4 +9,6 @@
 文件路径。文件终端 API 可以判断输出是否为 TTY，以及是否支持 ANSI
 转义序列。
 
+> 💡 关于终端样式的应用场景，请参考 [ANSI 终端](systems-tools/ansi-terminal)；子进程调用请参考 [外部命令](systems-tools/external)。
+
 []($code.siteAsset('src/io/io-process-terminal.zig').language('zig'))

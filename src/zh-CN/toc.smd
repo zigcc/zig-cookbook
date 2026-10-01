@@ -45,10 +45,12 @@
 - 算法与数据结构
 
   - [生成随机数](algorithms-data-structures/rand)
-
+  - [动态数组 (ArrayList)](algorithms-data-structures/array-list)
+  - [哈希表 (HashMap)](algorithms-data-structures/hash-map)
   - [位域](algorithms-data-structures/bitfield)
   - [单向链表](algorithms-data-structures/singly-linked-list)
   - [双向链表](algorithms-data-structures/doubly-linked-list)
+  - [复数](algorithms-data-structures/complex-numbers)
 
 - 并发
 
@@ -74,17 +76,13 @@
   - [正则表达式](encoding-text-processing/regex)
   - [字符串解析](encoding-text-processing/string)
 
-- 数学
-
-  - [复数](algorithms-data-structures/complex-numbers)
-
-- [14. 数据库](database)
+- [数据库](database)
 
   - [SQLite](database/sqlite)
   - [Postgres](database/postgres)
   - [MySQL](database/mysql)
 
-- [16. Io](io)
+- [Io](io)
 
   - [在应用中传递 Io 上下文](io/io-context)
   - [使用 Io 接口读写字节](io/io-reader-writer)

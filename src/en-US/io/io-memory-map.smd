@@ -9,4 +9,6 @@
 `setLength`, and `destroy` synchronization points. The example changes a mapped
 byte and flushes it back to the file.
 
+> 💡 For practical file memory-mapping scenarios, please see the [Mmap file](file-system/mmap-file) recipe.
+
 []($code.siteAsset('src/io/io-memory-map.zig').language('zig'))

@@ -400,11 +400,18 @@ try group.await(io);
 7. 使用 `Reader.fixed`、`Writer.fixed`、`Io.failing` 和临时目录测试
    逻辑，再测试平台特定后端。
 
-配套示例覆盖每个公开的 VTable 分组：[Io 上下文](io/io-context)、
-[Reader 与 Writer](io/io-reader-writer)、[动态 Writer](io/io-allocating-writer)、
-[文件与目录](io/io-file-dir)、[时钟与超时](io/io-clock-timeout)、
-[安全随机数](io/io-random)、[任务与取消](io/io-tasks)、
-[同步与队列](io/io-sync)、[底层 Batch](io/io-batch)、
-[进程与终端能力](io/io-process-terminal)、[内存映射](io/io-memory-map)
-以及 [Io 网络](io/io-network)。文件系统和网络章节可能展示相似的
-操作系统动作，但这里从 `std.Io` 接口和 VTable 的角度解释这些动作。
+配套示例覆盖每个公开的 VTable 分组：
+
+- [Io 上下文传递](io/io-context)
+- [Reader 与 Writer 接口](io/io-reader-writer)
+- [动态分配 Writer](io/io-allocating-writer)
+- [使用 Io.Dir 和 Io.File 句柄](io/io-file-dir)（应用实践亦可参考 [创建和管理文件](file-system/file-operations)）
+- [时钟与超时控制](io/io-clock-timeout)
+- [安全随机字节](io/io-random)
+- [任务调度与取消 (Async/Group/Select)](io/io-tasks)
+- [同步原语与队列](io/io-sync)
+- [底层 Batch 操作](io/io-batch)
+- [进程与终端能力](io/io-process-terminal)（终端应用亦可参考 [ANSI 终端](systems-tools/ansi-terminal) 与 [外部命令](systems-tools/external)）
+- [使用 Io MemoryMap 同步文件](io/io-memory-map)（应用实践亦可参考 [内存映射文件](file-system/mmap-file)）
+- [通过 Io 网络接口解析主机名](io/io-network)（应用实践亦可参考 [解析主机名](networking-web/dns-lookup)）
+

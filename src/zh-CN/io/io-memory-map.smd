@@ -9,4 +9,6 @@
 `write`、`setLength` 和 `destroy` 建立同步点。示例修改映射中的字节，
 再将变化写回文件。
 
+> 💡 完整的文件内存映射应用场景，请参考 [内存映射文件](file-system/mmap-file) 示例。
+
 []($code.siteAsset('src/io/io-memory-map.zig').language('zig'))

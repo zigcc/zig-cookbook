@@ -10,7 +10,7 @@
   --bracket: #93aa9e;
 }
 
-code {
+pre code {
   color: var(--code-fg);
 }
 
@@ -97,7 +97,7 @@ code.json{
 }
 
 @media (prefers-color-scheme: light) {
-  code{
+  pre code {
     filter: brightness(0.8) contrast(1.5);
   }
 }

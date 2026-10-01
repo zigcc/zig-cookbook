@@ -9,4 +9,6 @@ The process-facing Io APIs expose the current path and executable path without
 global state. File terminal APIs report whether output is a TTY and whether ANSI
 escape codes are supported.
 
+> 💡 For terminal styling, please see [ANSI Terminal](systems-tools/ansi-terminal); for child processes, please see [External Command](systems-tools/external).
+
 []($code.siteAsset('src/io/io-process-terminal.zig').language('zig'))

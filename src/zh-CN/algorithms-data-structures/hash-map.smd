@@ -1,0 +1,20 @@
+---
+.title = "哈希表 (HashMap)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.AutoHashMap` 是 Zig 标准库中最常用的键值映射容器，它会根据键的类型自动生成哈希与等值比较函数。对于字符串切片等引用类型，也可以使用对应的 `std.StringHashMap`。
+
+常用操作包括：
+- `init(allocator)`：创建哈希表；
+- `put(key, value)`：插入或更新键值对；
+- `get(key)`：查询对应的值，不存在返回 `null`；
+- `contains(key)`：判断键是否存在；
+- `getOrPut(key)`：查找现有条目，不存在则就地创建条目并返回指针；
+- `remove(key)`：根据键删除对应条目；
+- `iterator()`：获取遍历所有键值对的迭代器；
+- `deinit()`：释放哈希表占用的内存。
+
+[]($code.siteAsset('src/algorithms-data-structures/hash-map.zig').language('zig'))

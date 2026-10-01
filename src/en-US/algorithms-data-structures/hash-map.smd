@@ -1,0 +1,20 @@
+---
+.title = "Hash Map (HashMap)",
+.date = "2026-10-01",
+.author = "ZigCC",
+.layout = "section.shtml",
+---
+
+`std.AutoHashMap` is the standard key-value map in Zig, automatically deriving hashing and equality strategies for the key type. For string slice keys, `std.StringHashMap` is also available.
+
+Common operations:
+- `init(allocator)`: Initialize the hash map;
+- `put(key, value)`: Insert or update a key-value entry;
+- `get(key)`: Retrieve value by key (returns `null` if not found);
+- `contains(key)`: Check whether a key is present;
+- `getOrPut(key)`: Find an existing entry or allocate a new entry in-place;
+- `remove(key)`: Remove entry by key;
+- `iterator()`: Create an iterator over all key-value entries;
+- `deinit()`: Free all allocated hash table memory.
+
+[]($code.siteAsset('src/algorithms-data-structures/hash-map.zig').language('zig'))

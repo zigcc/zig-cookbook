@@ -6,7 +6,7 @@
 ---
 
 `std.Io.net.HostName.lookup` sends DNS results into a typed `std.Io.Queue`.
-This is the Io-facing shape used by network code; the Network chapter contains
+This is the Io-facing shape used by network code; the [Networking and Web](networking-web/dns-lookup) chapter contains
 longer TCP, UDP, timeout, and HTTP examples.
 
 []($code.siteAsset('src/io/io-network.zig').language('zig'))

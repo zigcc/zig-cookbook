@@ -8,4 +8,6 @@
 `std.Io.Dir` 相对于目录打开路径，`std.Io.File` 表示打开的文件句柄。每个操作都接收同一个
 `std.Io` 上下文。本例写入、关闭、重新打开并读取临时文件，最后删除它。
 
+> 💡 更多文件与目录的应用级操作，请参考 [创建和管理文件](file-system/file-operations)。
+
 []($code.siteAsset('src/io/io-file-dir.zig').language('zig'))
